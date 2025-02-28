@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dddn.mapper.PatientMapper">
+
+    <!--    根据条件查询 返回病例列表-->
+    <select id="getPatientList" resultType="com.dddn.pojo.Patient">
+        select p.*, group_concat(
+        (case when s.ill = 1 then '正常'
+        when s.ill = 2 then '糖尿病'
+        when s.ill = 3 then '青光眼'
+        when s.ill = 4 then '白内障'
+        when s.ill = 5 then 'AMD'
+        when s.ill = 6 then '高血压'
+        when s.ill = 7 then '近视'
+        else '其他疾病' end
+        )
+        ) statusName
+        from patient p left outer join status s on p.id = s.patient_id
+        <where>
+            <if test="name != null and name != ''">
+                p.name like concat('%', #{name}, '%')
+            </if>
+            <if test="gender != null">
+                and p.gender = #{gender}
+            </if>
+            <if test="begin != null">
+                and p.diag_time &gt; #{begin}
+            </if>
+            <if test="end != null">
+                and p.diag_time &lt; #{end}
+            </if>
+        </where>
+        group by p.id, p.name, p.age, p.gender, p.phone, p.left_img, p.right_img, p.left_diag, p.right_diag,
+        p.create_time, p.update_time, p.diag_time, p.res_info
+        order by p.update_time desc
+    </select>
+
+<!--    根据ids查询病人的左眼图片-->
+    <select id="getleftImagsByIds" resultType="java.lang.String">
+        select p.left_img from patient p where p.id in
+        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
+            #{patientId}
+        </foreach>
+    </select>
+
+<!--    根据ids查询病人的右眼图片-->
+    <select id="getrightImagsByIds" resultType="java.lang.String">
+        select p.right_img from patient p where p.id in
+        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
+            #{patientId}
+        </foreach>
+    </select>
+
+    <!--    根据ids删除/批量删除病例-->
+    <delete id="deleteByIds">
+        delete from patient p where p.id in
+        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
+            #{patientId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteStatusName">
+        delete from status s where s.patient_id in
+        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
+            #{patientId}
+        </foreach>
+    </delete>
+
+</mapper>
