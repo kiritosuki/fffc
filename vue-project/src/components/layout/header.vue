@@ -4,7 +4,13 @@
       <header class="header">Header</header>
   
       <!-- 固定侧边栏 -->
-      <aside class="sidebar">Sidebar</aside>
+      <aside class="sidebar">
+        <router-link to="/home">主页</router-link>
+        <router-link to="/admin">管理</router-link>
+        <router-link to="/analyze">分析</router-link>
+        <router-link to="/introduce">介绍</router-link>
+        <router-link to="/personal">个人</router-link>
+      </aside>
   
       <!-- 动态内容区域 -->
       <main class="content">
@@ -22,6 +28,7 @@
     grid-template-rows: auto 1fr;
     grid-template-columns: 200px 1fr;
     height: 100vh;
+    width: 100vw;
   }
   
   .header {
