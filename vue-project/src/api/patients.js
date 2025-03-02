@@ -1,8 +1,8 @@
 import request from "../utils/request"
 
 
-export function CheckPatient(name, gender, begin, end, page = 1, pagesize = 10){
-    let url = `/patients?page=${page}&pagesize=${pagesize}`
+export function CheckPatient(name, gender, begin, end, page = 1, pageSize = 10){
+    let url = `/patients?page=${page}&pageSize=${pageSize}`
     if(name) url += `&name=${name}`
     if(gender) url += `&gender=${gender}`
     if(begin) url += `&begin=${begin}`
