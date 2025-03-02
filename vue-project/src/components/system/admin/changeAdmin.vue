@@ -62,13 +62,23 @@
     username: '',
     password: ''
   })
+
+  const validatePassword = (rule, value, callback) => {
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/
+  if (!regex.test(value)) {
+    callback(new Error('需8-20位字母和数字组合'))
+  } else {
+    callback()
+  }
+}
   
   const rules = reactive({
     username: [
       { required: true, message: '用户名不能为空', trigger: 'blur' }
     ],
     password: [
-      { required: true, message: '密码不能为空', trigger: 'blur' }
+      { required: true, message: '密码不能为空', trigger: 'blur' },
+      { validator: validatePassword, trigger: 'blur' }
     ]
   })
   
