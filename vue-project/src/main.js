@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
+import api from './api/index.js'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
@@ -13,5 +13,10 @@ app.use(router)
 
 app.mount('#app')
 
+app.config.globalProperties.$api = api
 
 app.use(ElementPlus)
+
+
+
+

@@ -1,4 +1,11 @@
+import axios from 'axios'
 
+const request = axios.create({
+  baseURL: 'http://localhost:8080',    // 请求基础URL
+  timeout: 1000
+})
+
+export default request
 // import { defineStore } from 'pinia'
 // import axios from 'axios';
 
