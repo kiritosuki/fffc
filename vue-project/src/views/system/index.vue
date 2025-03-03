@@ -6,15 +6,15 @@ export default {
       gender: '',
       begin: '',
       end: '',
-      page: '',
-      pagesize: '',
+      page: 1,
+      pageSize: 10,
       deleteIds: [],
       rows: []
     }
   },
   methods: {
-    CheckPatient(name, gender, begin, end, page, pagesize) {
-      this.$api.CheckPatient(this.name, this.gender, this.begin, this.end, this.page, this.pagesize).then(res => {
+    CheckPatient(name, gender, begin, end, page = 1, pageSize = 10) {
+      this.$api.CheckPatient(this.name, this.gender, this.begin, this.end, this.page, this.pageSize).then(res => {
         console.log(res);
       })
     },
@@ -43,9 +43,9 @@ export default {
     <input type="text" v-model="begin" placeholder="begin"><br>
     <input type="text" v-model="end" placeholder="end"><br>
     <input type="text" v-model="page" placeholder="page"><br>
-    <input type="text" v-model="pagesize" placeholder="pagesize"><br>
+    <input type="text" v-model="pageSize" placeholder="pageSize"><br>
     
-    <button @click="CheckPatient(name, gender, begin, end, page, pagesize)">查询
+    <button @click="CheckPatient(name, gender, begin, end, page, pageSize)">查询
     </button><br>
 
 
@@ -56,11 +56,11 @@ export default {
 
     <h1>总览与删除功能</h1>
 
-<button @click="buttontest()">查询全部</button>
+<button @click="CheckPatient()">查询全部</button>
 
 <h1>查询全部并显示</h1>
 
-<div v-for="item in rows":key="item.id">
+<div v-for="item in rows" :key="item.id">
 <input type="checkbox" :id="item.id" :value="item.id" v-model="deleteIds">
 <span>    {{ item.name }}         {{ item.gender ? "女" : "男" }}        {{ item.createTime }}      {{ item.updataTime }}</span> 
 
