@@ -15,7 +15,7 @@
   
   <script setup>
   import { ref } from 'vue'
-  import AddPatientDialog from '@/components/patient/AddPatientDialog.vue'
+  import AddPatientDialog from '@/components/system/patient/addPatient.vue'
   
   const addDialogRef = ref(null)
   
