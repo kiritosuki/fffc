@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     CheckPatient(name, gender, begin, end, page, pagesize) {
-      this.$api.CheckPatient(name, gender, begin, end, page, pagesize).then(res => {
+      this.$api.CheckPatient(this.name, this.gender, this.begin, this.end, this.page, this.pagesize).then(res => {
         console.log(res);
       })
     },
@@ -39,7 +39,7 @@ export default {
     <input type="text" v-model="page" placeholder="page"><br>
     <input type="text" v-model="pagesize" placeholder="pagesize"><br>
     <input type="text" v-model="Delids" placeholder="Ids"><br>
-    <button :@click="CheckPatient(name, gender, begin, end, page, pagesize)">查询
+    <button @click="CheckPatient(name, gender, begin, end, page, pagesize)">查询
     </button><br>
     <button @click="DelPatient(ids)">删除</button>
 
