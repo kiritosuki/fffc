@@ -1,5 +1,18 @@
-<!-- 在病例管理页面 -->
-<template>
+  <script setup>
+  import { ref } from 'vue'
+  import AddPatientDialog from '@/components/system/patient/addPatient.vue'
+  
+  const addDialogRef = ref(null)
+  
+  const openAddDialog = () => {
+    addDialogRef.value.handleOpen()
+  }
+
+
+
+  </script>
+  
+  <template>
     <div class="patient-management">
       <el-button 
         type="primary" 
@@ -13,13 +26,4 @@
     </div>
   </template>
   
-  <script setup>
-  import { ref } from 'vue'
-  import AddPatientDialog from '@/components/system/patient/addPatient.vue'
-  
-  const addDialogRef = ref(null)
-  
-  const openAddDialog = () => {
-    addDialogRef.value.handleOpen()
-  }
-  </script>
+
