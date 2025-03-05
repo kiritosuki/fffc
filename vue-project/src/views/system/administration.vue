@@ -9,7 +9,7 @@
         新增病例
       </el-button>
       
-      <add-patient-dialog ref="addDialogRef" />
+      <AddPatientDialog ref="addDialogRef" />
     </div>
   </template>
   
