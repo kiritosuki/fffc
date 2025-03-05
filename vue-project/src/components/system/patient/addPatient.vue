@@ -56,27 +56,6 @@
           </el-col>
         </el-row>
   
-        <!-- 诊断信息 -->
-        <el-form-item label="诊断日期" prop="diagTime">
-          <el-date-picker
-            v-model="form.diagTime"
-            type="date"
-            value-format="YYYY-MM-DD"
-            placeholder="选择日期"
-          />
-        </el-form-item>
-  
-        <el-form-item label="诊断结果" prop="resInfo">
-          <el-input
-            v-model="form.resInfo"
-            type="textarea"
-            :rows="4"
-            placeholder="请输入诊断详情"
-            show-word-limit
-            maxlength="500"
-          />
-        </el-form-item>
-  
         <!-- 图片上传 -->
       
         <el-form-item label="左眼照片" prop="leftImage">
@@ -118,7 +97,7 @@
             :loading="submitting"
             @click="handleSubmit"
           >
-            确认添加
+          {{ submitting ? '提交中...' : '确认添加' }}
           </el-button>
         </span>
       </template>
@@ -129,6 +108,7 @@
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+// import { uploadImage, addPatient } from '@/api/api.js'
 
 const visible = ref(false)
 const submitting = ref(false)
@@ -140,9 +120,7 @@ const form = reactive({
   name: '',
   age: null,
   gender: 1,
-  phone: '',
-  diagTime: '',
-  resInfo: ''
+  phone: ''
 })
 
 // 新增验证函数
@@ -169,12 +147,6 @@ const rules = reactive({
     { required: true, message: '请输入手机号码', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
   ],
-  diagTime: [
-    { required: true, message: '请选择诊断日期', trigger: 'change' }
-  ],
-  resInfo: [
-    { required: true, message: '请输入诊断结果', trigger: 'blur' }
-  ],
   leftImage: [
     { required: true, validator: validateImage('left'), trigger: 'change' }
   ],
@@ -182,6 +154,10 @@ const rules = reactive({
     { required: true, validator: validateImage('right'), trigger: 'change' }
   ]
 })
+
+const handleOpen = () => {
+  visible.value = true;
+};
 
 // 修改上传处理函数
 const handleUpload = (file, type) => { // 添加type参数
@@ -207,45 +183,49 @@ const handleUpload = (file, type) => { // 添加type参数
   return false
 }
 
-// 修改提交处理
-const handleSubmit = async () => {
-  try {
-    // 先验证图片字段
-    await formRef.value.validateField(['leftImage', 'rightImage'])
-    // 验证其他字段
-    await formRef.value.validate()
+// const handleSubmit = async () => {
+//   try {
+//     // 验证表单
+//     await formRef.value.validateField(['leftImage', 'rightImage'])
+//     await formRef.value.validate()
 
-    submitting.value = true
+//     submitting.value = true
 
-    // 构造FormData
-    const formData = new FormData()
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value)
-    })
+//     // 1. 上传左眼图片
+//     const leftRes = await uploadImage(leftImage.value)
+//     const leftImgUrl = leftRes.data.data
     
-    // 添加图片文件
-    if (leftImage.value) {
-      formData.append('leftEyeImage', leftImage.value)
-    }
-    if (rightImage.value) {
-      formData.append('rightEyeImage', rightImage.value)
-    }
+//     // 2. 上传右眼图片
+//     const rightRes = await uploadImage(rightImage.value)
+//     const rightImgUrl = rightRes.data.data
 
-    // 模拟API调用
-    console.log('提交数据:', Object.fromEntries(formData))
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    ElMessage.success('病例添加成功（演示模式）')
-    handleCancel()
-  } catch (error) {
-    if (error) {
-      ElMessage.error('请正确填写表单')
-    }
-  } finally {
-    submitting.value = false
-  }
-}
+//     // 3. 提交病例数据
+//     await addPatient({
+//       name: form.name,
+//       age: form.age,
+//       gender: form.gender,
+//       phone: form.phone,
+//       leftImg: leftImgUrl,
+//       rightImg: rightImgUrl
+//     })
 
+//     ElMessage.success('病例添加成功')
+//     handleCancel()
+//   } catch (error) {
+//     if (error.response) {
+//       const msgMap = {
+//         400: '请求参数错误',
+//         401: '身份验证失败',
+//         500: '服务器错误'
+//       }
+//       ElMessage.error(msgMap[error.response.status] || '操作失败')
+//     } else {
+//       ElMessage.error('请求失败，请检查网络')
+//     }
+//   } finally {
+//     submitting.value = false
+//   }
+// }
 // 修改取消处理
 const handleCancel = () => {
   formRef.value.resetFields()
@@ -253,10 +233,8 @@ const handleCancel = () => {
   rightImage.value = null
   visible.value = false
 }
-// 定义 handleOpen 函数
-const handleOpen = () => {
-  visible.value = true;
-};
+
+
 
 defineExpose({ handleOpen });
 </script>

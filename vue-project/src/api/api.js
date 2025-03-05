@@ -15,3 +15,19 @@
     //     data
     //   })
     // }
+
+//     // 上传图片接口
+// export const uploadImage = (file) => {
+//     const formData = new FormData()
+//     formData.append('file', file)
+//     return request.post('/upload', formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data'
+//       }
+//     })
+//   }
+  
+//   // 添加病例接口
+//   export const addPatient = (data) => {
+//     return request.post('/patients', data)
+//   }
