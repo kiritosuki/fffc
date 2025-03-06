@@ -2,7 +2,7 @@ import request from "../utils/request"
 
 
 
- //  获取特定的患者信息
+ //  获取特定的患者大概信息
 export function CheckPatient(name, gender, begin, end, page = 1, pageSize = 10){
     let url = `/patients?page=${page}&pageSize=${pageSize}`
     if(name) url += `&name=${name}`
