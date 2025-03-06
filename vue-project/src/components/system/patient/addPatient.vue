@@ -62,29 +62,42 @@
           <el-upload
             action="#"
             list-type="picture-card"
+            :class="['custom-upload', { 'hide-border': leftImageList.length > 0 }]"
             :auto-upload="false"
             :limit="1"
+            :file-list="leftImageList"
             :on-change="(file) => handleUpload(file, 'left')"
             :on-remove="() => handleRemove('left')"
           >
-            <el-icon><Plus /></el-icon>
+          <template #trigger>
+            <el-icon v-if="leftImageList.length < 1"><Plus /></el-icon>
+          </template>
           </el-upload>
           <div class="upload-tip">支持JPG/PNG格式</div>
         </el-form-item>
-
+        
         <el-form-item label="右眼照片" prop="rightImage">
+          
           <el-upload
             action="#"
             list-type="picture-card"
+            :class="['custom-upload', { 'hide-border': rightImageList.length > 0 }]"
             :auto-upload="false"
             :limit="1"
+            :file-list="rightImageList"
             :on-change="(file) => handleUpload(file, 'right')"
             :on-remove="() => handleRemove('right')"
           >
-            <el-icon><Plus /></el-icon>
+          
+          <template #trigger>
+            <el-icon v-if="rightImageList.length < 1"><Plus /></el-icon>
+          </template>
+          
           </el-upload>
+        
           <div class="upload-tip">支持JPG/PNG格式</div>
         </el-form-item>
+      
 
         <!-- 提交按钮 -->
       </el-form>
@@ -115,6 +128,8 @@ const submitting = ref(false)
 const formRef = ref(null)
 const leftImage = ref(null)
 const rightImage = ref(null)
+const leftImageList = ref([]);
+const rightImageList = ref([]);
 
 const form = reactive({
   name: '',
@@ -166,17 +181,25 @@ const handleUpload = (file, type) => { // 添加type参数
 
   if (!isImage) {
     ElMessage.error('只能上传图片格式!')
+    if (type === 'left') leftImageList.value = []
+    if (type === 'right') rightImageList.value = []
     return false
   }
   if (!isLt5M) {
     ElMessage.error('图片大小不能超过5MB!')
+    if (type === 'left') leftImageList.value = []
+    if (type === 'right') rightImageList.value = []
     return false
   }
   
   // 清除已有文件
   if (type === 'left') {
+    leftImageList.value = []  // 先清空数组
+    leftImageList.value.push(file)  // 添加新文件
     leftImage.value = file.raw
   } else {
+    rightImageList.value = []
+    rightImageList.value.push(file)
     rightImage.value = file.raw
   }
   
@@ -226,7 +249,17 @@ const handleUpload = (file, type) => { // 添加type参数
 //     submitting.value = false
 //   }
 // }
-// 修改取消处理
+
+const handleRemove = (type) => {
+  if (type === 'left') {
+    leftImage.value = null
+    leftImageList.value = []  // 清空左眼图片列表
+  } else {
+    rightImage.value = null
+    rightImageList.value = []  // 清空右眼图片列表
+  }
+}
+
 const handleCancel = () => {
   formRef.value.resetFields()
   leftImage.value = null
@@ -244,5 +277,51 @@ defineExpose({ handleOpen });
     font-size: 12px;
     color: #909399;
     margin-top: 8px;
+  }
+
+  /* 去除默认边框 */
+:deep(.custom-upload .el-upload--picture-card) {
+  border: dashed 1px #d9d9d9;
+  background: none;
+  width: 14.5vw;
+  height: 14.5vw;
+}
+
+:deep(.custom-upload .el-upload--picture-card:hover) {
+    border-color: rgba(0, 120, 189, 0.363); /* 鼠标悬浮时的蓝色边框 */
+  }
+
+/* 隐藏上传按钮 */
+:deep(.custom-upload.hide-border .el-upload--picture-card) {
+  display: none;
+}
+
+/* 调整预览卡片样式 */
+:deep(.custom-upload .el-upload-list--picture-card .el-upload-list__item) {
+  border-radius: 6px;
+  margin: 0;
+}
+
+/* 调整预览图片大小 */
+:deep(.el-upload-list__item-thumbnail img) {
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+  }
+
+/* 响应式调整上传卡片的大小 */
+  @media (max-width: 600px) {
+    :deep(.custom-upload .el-upload--picture-card) {
+      width: 40vw;
+      height: 40vw;
+    }
+  }
+
+  @media (min-width: 601px) {
+    :deep(.custom-upload .el-upload--picture-card) {
+      width: 14.5vw;
+      height: 14.5vw;
+    }
   }
   </style>
