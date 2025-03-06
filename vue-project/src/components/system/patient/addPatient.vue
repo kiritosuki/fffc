@@ -108,11 +108,20 @@
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+import api from '../../../api/index'
 // import { uploadImage, addPatient } from '@/api/api.js'
 
+
+// 总弹窗的显示属性
 const visible = ref(false)
+
+// 上传文件加载中的属性
 const submitting = ref(false)
+
+// form表单实例，代行验证功能
 const formRef = ref(null)
+
+
 const leftImage = ref(null)
 const rightImage = ref(null)
 
@@ -135,6 +144,7 @@ const validateImage = (type) => {
   }
 }
 
+// formRef的数据验证规则
 const rules = reactive({
   name: [
     { required: true, message: '请输入患者姓名', trigger: 'blur' },
@@ -183,49 +193,49 @@ const handleUpload = (file, type) => { // 添加type参数
   return false
 }
 
-// const handleSubmit = async () => {
-//   try {
-//     // 验证表单
-//     await formRef.value.validateField(['leftImage', 'rightImage'])
-//     await formRef.value.validate()
+const handleSubmit = async () => {
+  try {
+    // 验证表单
+    await formRef.value.validateField(['leftImage', 'rightImage'])
+    await formRef.value.validate()
 
-//     submitting.value = true
+    submitting.value = true
 
-//     // 1. 上传左眼图片
-//     const leftRes = await uploadImage(leftImage.value)
-//     const leftImgUrl = leftRes.data.data
+    // 1. 上传左眼图片
+    const leftRes = await api.uploadImage(leftImage.value)
+    const leftImgUrl = leftRes.data.data
     
-//     // 2. 上传右眼图片
-//     const rightRes = await uploadImage(rightImage.value)
-//     const rightImgUrl = rightRes.data.data
+    // 2. 上传右眼图片
+    const rightRes = await api.uploadImage(rightImage.value)
+    const rightImgUrl = rightRes.data.data
 
-//     // 3. 提交病例数据
-//     await addPatient({
-//       name: form.name,
-//       age: form.age,
-//       gender: form.gender,
-//       phone: form.phone,
-//       leftImg: leftImgUrl,
-//       rightImg: rightImgUrl
-//     })
+    // 3. 提交病例数据
+    await api.AddPatient({
+      name: form.name,
+      age: form.age,
+      gender: form.gender,
+      phone: form.phone,
+      leftImg: leftImgUrl,
+      rightImg: rightImgUrl
+    })
 
-//     ElMessage.success('病例添加成功')
-//     handleCancel()
-//   } catch (error) {
-//     if (error.response) {
-//       const msgMap = {
-//         400: '请求参数错误',
-//         401: '身份验证失败',
-//         500: '服务器错误'
-//       }
-//       ElMessage.error(msgMap[error.response.status] || '操作失败')
-//     } else {
-//       ElMessage.error('请求失败，请检查网络')
-//     }
-//   } finally {
-//     submitting.value = false
-//   }
-// }
+    ElMessage.success('病例添加成功')
+    handleCancel()
+  } catch (error) {
+    if (error.response) {
+      const msgMap = {
+        400: '请求参数错误',
+        401: '身份验证失败',
+        500: '服务器错误'
+      }
+      ElMessage.error(msgMap[error.response.status] || '操作失败')
+    } else {
+      ElMessage.error('请求失败，请检查网络')
+    }
+  } finally {
+    submitting.value = false
+  }
+}
 // 修改取消处理
 const handleCancel = () => {
   formRef.value.resetFields()
