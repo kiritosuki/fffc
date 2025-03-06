@@ -111,6 +111,7 @@
   import { ref, reactive } from 'vue'
   import { ElMessage } from 'element-plus'
   import { Plus } from '@element-plus/icons-vue'
+  import api from '../../../api/index'
   
   const visible = ref(false)
   const submitting = ref(false)
@@ -203,6 +204,29 @@
   }
   
   defineExpose({ handleOpen })
+
+
+
+// const data = ref({
+//   name: this.form.name.value,
+//   age: this.form.age,
+//   gender: this.form.gender,
+//   phone: this.form.phone,
+//   leftImg: '',
+//   rightImg: '',
+// }) 
+
+//   function AddPatient(data){
+//     api.AddPatient(data).then(res => {
+//       if (res.data.code === 1) {
+//         ElMessage.success('病例添加成功')
+//       } else {
+//         ElMessage.error('病例添加失败')
+//       }
+//     })
+    
+//   }
+  
   </script>
   
   <style scoped>

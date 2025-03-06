@@ -23,7 +23,21 @@ export function DelPatient(ids){
     })
 }
 
+
+
+export function AddPatient(data){
+    return request({
+        url:"/patients",
+        method:"POST",
+        data
+    })
+}
+
+
+
+
 export default {
     CheckPatient,
-    DelPatient
+    DelPatient,
+    AddPatient
 }

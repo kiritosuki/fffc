@@ -1,8 +1,4 @@
-<script>
-import * as patient from '../../api/patients'
-
-
-let data;
+<!-- <script>
 
 export default {
   data() {
@@ -14,16 +10,26 @@ export default {
       page: 1,
       pageSize: 10,
       deleteIds: [],
-      rows: []
+      rows: [],
+      totalNum: '',
+      // addData: {
+      //   name: '',
+      //   age: '',
+      //   gender: '',
+      //   phone: '',
+      //   leftImg: '',
+      //   rightImg: '',
+      // },
     }
   },
   methods: {
     CheckPatient(name, gender, begin, end, page = 1, pageSize = 10) {
       this.$api.CheckPatient(this.name, this.gender, this.begin, this.end, this.page, this.pageSize).then(res => {
-        console.log(res);
+        this.rows = res.data.data.rows
+        this.totalNum = res.data.total
+        this.maxPage = this.totalNum / this.pageSize
 
-      
-    })
+      })
     },
     DelPatient(ids) {
       this.$api.DelPatient(ids).then(res => {
@@ -32,20 +38,73 @@ export default {
       })
       ids = [];
     },
-    buttontask() {
-       this.$api.CheckPatient("","","","",1,10).then(res => {
-        let data =  res.data.data.rows
-        this.rows = data
-       console.log(data)
-      },)
-
+    
+    //   buttontask() {
+    //      this.$api.CheckPatient("","","","",1,10).then(res => {
+    //       // let data =  res.data.data.rows
+    //       // this.rows = data
+    //       this.rows = res.data.data.rows
+    //     },)
+    // },
 
 
 
   },
-},
+  computed: {
+    comMaxPage() {
+      return Math.ceil(this.totalNum / this.pageSize)
+    }
+  },
+  mounted() {
+    this.CheckPatient("","","","", this.page, this.pageSize)
+  }
+
+} -->
+
+<!-- </script> -->
+ <script setup>
+import { ref, onMounted, computed, onBeforeMount } from 'vue'
+import api from '../../api/index.js'
+
+
+
+const name = ref('')
+const gender = ref('')
+const begin = ref('')
+const end = ref('')
+const page = ref(1)
+const pageSize = ref(10)
+const deleteIds = ref([])
+const rows = ref([])
+const totalNum = ref('')
+function CheckPatient(name, gender, begin, end, page = 1, pageSize = 10) {
+  api.CheckPatient(name, gender, begin, end, page, pageSize).then(res => {
+    rows.value = res.data.data.rows
+    totalNum.value = res.data.total
+
+  })
 }
-   
+
+function DelPatient(ids) {
+  api.DelPatient(ids).then(res => {
+    console.log(res);
+    CheckPatient("", "", "", "", page.value, pageSize.value)
+  })
+  ids = [];
+}
+
+
+const comMaxPage = computed(() => {
+  return Math.ceil(totalNum.value / pageSize.value)
+})
+
+
+onBeforeMount(() => {
+  CheckPatient("", "", "", "", page.value, pageSize.value)
+})
+
+
+
 </script>
 
 
@@ -60,8 +119,13 @@ export default {
   <input type="text" v-model="gender" placeholder="gender"><br>
   <input type="text" v-model="begin" placeholder="begin"><br>
   <input type="text" v-model="end" placeholder="end"><br>
-  <input type="text" v-model="page" placeholder="page"><br>
-  <input type="text" v-model="pageSize" placeholder="pageSize"><br>
+
+
+
+
+
+
+
 
   <button @click="CheckPatient(name, gender, begin, end, page, pageSize)">查询
   </button><br>
@@ -74,19 +138,32 @@ export default {
 
   <h1>总览与删除功能</h1>
 
-  <button @click="buttontask()">查询全部</button>
+  <!-- <button @click="buttontask()">查询全部</button> -->
 
-
+  <div>
+    <select v-model="pageSize">
+      <option disabled value="">10</option>
+      <option>10</option>
+      <option>15</option>
+      <option>20</option>
+    </select>
+    <button @click="page--" v-if="page > 1" class="page">上一页</button>
+    <button v-for="n in comMaxPage" @click="page = n" class="page">{{ n }}</button>
+    <button @click="page++" v-if="page < comMaxPage" class="page"></button>
+  </div>
 
   <div v-for="item in rows" :key="item.id" class="patient">
     <input type="checkbox" :id="item.id" :value="item.id" v-model="deleteIds">
-    <span> {{ item.name }}       {{ item.gender ? "女" : "男" }}      {{ item.createTime }}       {{ item.updataTime }}</span>
+    <span> {{ item.name }} {{ item.gender ? "女" : "男" }} {{ item.createTime }} {{ item.updataTime }}</span>
 
   </div>
 
-<h1>查询全部并显示</h1>
 
-    <button @click="DelPatient(deleteIds)">一键删除</button>
+
+
+  <h1>查询全部并显示</h1>
+
+  <button @click="DelPatient(deleteIds)">一键删除</button>
 
 
 </template>
@@ -94,5 +171,9 @@ export default {
 .patient {
   margin: 10px;
   display: block;
+}
+
+.page {
+  margin: 10px;
 }
 </style>
