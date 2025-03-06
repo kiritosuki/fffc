@@ -20,12 +20,22 @@
         type="primary" 
         icon="Plus"
         @click="openAddDialog"
+        class="add-patient-btn"
       >
         新增病例
       </el-button>
       
-      <add-patient-dialog ref="addDialogRef" />
+      <AddPatientDialog ref="addDialogRef" />
     </div>
   </template>
+  <style scoped>
+  .patient-management {
+    padding-left: -10px;
+    }
+    .add-patient-btn {
+      padding-left: 0px;
+      padding-right:20px;
+    }
+  </style>
   
 
