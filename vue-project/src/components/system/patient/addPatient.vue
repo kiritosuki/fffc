@@ -68,11 +68,18 @@
             :file-list="leftImageList"
             :on-change="(file) => handleUpload(file, 'left')"
             :on-remove="() => handleRemove('left')"
+            drag
+            :multiple="false"
           >
-          <template #trigger>
-            <el-icon v-if="leftImageList.length < 1"><Plus /></el-icon>
-          </template>
-          </el-upload>
+            <template #default>
+              <div class="drag-area"> <!-- 拖拽区域样式 -->
+                <template v-if="leftImageList.length < 1">
+                  <el-icon class="drag-icon"><Plus /></el-icon>
+                  <div class="drag-text">点击或拖拽文件到此区域</div>
+                </template>
+              </div>
+            </template>
+            </el-upload>
           <div class="upload-tip">支持JPG/PNG格式</div>
         </el-form-item>
         
@@ -87,14 +94,21 @@
             :file-list="rightImageList"
             :on-change="(file) => handleUpload(file, 'right')"
             :on-remove="() => handleRemove('right')"
+            drag
+            :multiple="false"
           >
           
-          <template #trigger>
-            <el-icon v-if="rightImageList.length < 1"><Plus /></el-icon>
+          <template #default>
+              <div class="drag-area"> <!-- 拖拽区域样式 -->
+                <template v-if="rightImageList.length < 1">
+                  <el-icon class="drag-icon"><Plus /></el-icon>
+                  <div class="drag-text">点击或拖拽文件到此区域</div>
+                </template>
+              </div>
           </template>
           
           </el-upload>
-        
+          <!-- 提示信息 -->
           <div class="upload-tip">支持JPG/PNG格式</div>
         </el-form-item>
       
@@ -147,7 +161,7 @@ const form = reactive({
   phone: ''
 })
 
-// 新增验证函数
+// 验证函数
 const validateImage = (type) => {
   return (rule, value, callback) => {
     if ((type === 'left' && !leftImage.value) || 
@@ -185,7 +199,8 @@ const handleOpen = () => {
 };
 
 // 修改上传处理函数
-const handleUpload = (file, type) => { // 添加type参数
+const handleUpload = (file, type) => { 
+  // 限制文件格式和大小
   const isImage = file.raw.type.includes('image/')
   const isLt5M = file.raw.size / 1024 / 1024 < 5
 
@@ -259,6 +274,17 @@ const handleSubmit = async () => {
     submitting.value = false
   }
 }
+
+// 删除函数
+const handleRemove = (type) => {
+  if (type === 'left') {
+    leftImage.value = null
+    leftImageList.value = []  // 清空左眼图片列表
+  } else {
+    rightImage.value = null
+    rightImageList.value = []  // 清空右眼图片列表
+  }
+}
 // 修改取消处理
 const handleCancel = () => {
   formRef.value.resetFields()
@@ -286,9 +312,9 @@ defineExpose({ handleOpen });
   width: 14.5vw;
   height: 14.5vw;
 }
-
+/* 鼠标悬浮时的蓝色边框 */
 :deep(.custom-upload .el-upload--picture-card:hover) {
-    border-color: rgba(0, 120, 189, 0.363); /* 鼠标悬浮时的蓝色边框 */
+    border-color: rgba(0, 120, 189, 0.363); 
   }
 
 /* 隐藏上传按钮 */
@@ -309,6 +335,60 @@ defineExpose({ handleOpen });
     width: 100%;
     height: 100%;
   }
+
+  /* 优化拖拽区域的显示 */
+:deep(.el-upload__drag) {
+  border: dashed 2px #d9d9d9;
+  padding: 20px;
+  background-color: #f7f7f7;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+}
+/* 鼠标悬停时的边框颜色 */
+:deep(.el-upload__drag-hover) {
+  border-color: #409eff;  
+  background-color: #e6f7ff;
+}
+/* 设置拖拽区域的样式 */
+.drag-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drag-icon {
+  font-size: 2em;
+  color: var(--el-color-primary);
+  margin-bottom: 8px;
+}
+
+.drag-text {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  text-align: center;
+  line-height: 1.4;
+}
+
+:deep(.custom-upload .el-upload-dragger) {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+:deep(.el-upload-dragger:hover) {
+  border-color: var(--el-color-primary);
+}
+
+:deep(.custom-upload .el-upload-list--picture-card .el-upload-list__item) {
+  transition: all 0.3s;
+}
 
 /* 响应式调整上传卡片的大小 */
   @media (max-width: 600px) {
