@@ -1,11 +1,11 @@
 import axios from 'axios'
 
-const request = axios.create({
-  baseURL: 'http://localhost:8080',    // 请求基础URL
-  timeout: 1000
-})
+// const request = axios.create({
+//   baseURL: 'http://localhost:8080',    // 请求基础URL
+//   timeout: 1000
+// })
 
-export default request
+// export default request
 // import { defineStore } from 'pinia'
 // import axios from 'axios';
 
@@ -27,40 +27,31 @@ export default request
 //   }
 // })
 
-// // 创建 axios 实例
-// const service = axios.create({
-//     baseURL: 'your_api_base_url', // 替换为你的 API 基础 URL
-//     timeout: 5000 // 请求超时时间
-//   });
-  
-//   // 请求拦截器
-//   service.interceptors.request.use(
-//     config => {
-//       // 在发送请求之前做些什么，例如添加 token
-//       const token = localStorage.getItem('token');
-//       if (token) {
-//         config.headers['Authorization'] = `Bearer ${token}`;
-//       }
-//       return config;
-//     },
-//     error => {
-//       // 处理请求错误
-//       console.log(error);
-//       return Promise.reject(error);
-//     }
-//   );
-  
-//   // 响应拦截器
-//   service.interceptors.response.use(
-//     response => {
-//       // 对响应数据做点什么
-//       return response.data;
-//     },
-//     error => {
-//       // 处理响应错误
-//       console.log('err' + error);
-//       return Promise.reject(error);
-//     }
-//   );
-  
-//   export default service;
+
+const service = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL, // 请求基础URL
+  timeout: 10000
+})
+
+// 请求拦截器
+service.interceptors.request.use(config => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+// 响应拦截器
+service.interceptors.response.use(
+  response => response.data,
+  error => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token')
+      window.location.reload()
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default service

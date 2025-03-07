@@ -1,29 +1,33 @@
-  <script setup>
-  import { ref } from 'vue'
-  import AddPatientDialog from '@/components/system/patient/addPatient.vue'
-  
-  const addDialogRef = ref(null)
-  
-  const openAddDialog = () => {
-    addDialogRef.value.handleOpen()
-  }
+<script setup>
+import { ElMessage } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
+import api from '../../api/index'
+import { ref } from 'vue'
+
+const drawer = ref(false)
 
 
 
-  </script>
-  
-  <template>
-    <div class="patient-management">
-      <el-button 
-        type="primary" 
-        icon="Plus"
-        @click="openAddDialog"
-      >
-        新增病例
-      </el-button>
-      
-      <add-patient-dialog ref="addDialogRef" />
-    </div>
-  </template>
-  
 
+
+
+</script>
+
+
+
+
+<template>
+<el-button @click="drawer = true" type="primary" style="margin-left: 16px;">
+  搜索病例
+</el-button>
+
+<el-drawer
+  title="我是标题"
+  :visible.sync="drawer"
+  direction="rtl"
+  :before-close="handleClose">
+  <span>我来啦!</span>
+</el-drawer>
+
+
+</template>
