@@ -6,5 +6,7 @@ import { ref, onMounted } from 'vue'
 
 <template>
 
-    <rooter-link to="/homeResult" @click=""> </rooter-link>
+    <rooter-link to="/homeResult" @click="">完成提交</rooter-link>
+    
+
 </template>

@@ -23,7 +23,8 @@ const routes = [
       { path: '/homeResult', component: HomeResult },
       { path: '/analyze', component: Analyze },
       { path: '/introduce', component: introduce },
-      { path: '/personal', component: personal }
+      { path: '/personal', component: personal},
+      
 
     ]
   }
@@ -35,3 +36,4 @@ const router = createRouter({
 })
 
 export default router
+// router.js
