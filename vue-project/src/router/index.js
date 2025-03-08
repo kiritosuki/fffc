@@ -21,10 +21,7 @@ const routes = [
       { path: '/admin', component: Admin },
       { path: '/analyze', component: Analyze },
       { path: '/introduce', component: introduce },
-      { path: '/personal', component: personal},
-      {path: '/index',name: 'AddPatient',
-        component: () => import('@/views/system/index.vue')
-      }
+      { path: '/personal', component: personal}
     ]
   }
 ]
