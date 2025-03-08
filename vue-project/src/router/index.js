@@ -5,6 +5,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 
 import Home from '../views/system/index.vue'
+import HomeResult from '../views/system/homeResult.vue'
 import introduce from '../views/system/introduce.vue'
 import AppLayout from '../components/layout/header.vue'
 import Admin from '../views/system/administration.vue'
@@ -17,11 +18,12 @@ const routes = [
   path: '/',
   component: AppLayout, // 父路由使用布局组件
   children: [
-      { path: '/home', component: Home},
+      { path: '/home', component: Home },
       { path: '/admin', component: Admin },
+      { path: '/homeResult', component: HomeResult },
       { path: '/analyze', component: Analyze },
       { path: '/introduce', component: introduce },
-      { path: '/personal', component: personal}
+      { path: '/personal', component: personal }
 
     ]
   }
