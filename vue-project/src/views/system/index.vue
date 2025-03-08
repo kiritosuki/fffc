@@ -175,7 +175,7 @@ const rules = reactive({
   ],
   idcard: [
     { required: true, message: '请输入身份证号', trigger: 'blur' },
-    { pattern: /^\d{17}(\d|X)$/, message: '身份证号格式不正确', trigger: 'blur' } 
+    { pattern: /^\d{17}(\d|X|x)$/, message: '身份证号格式不正确', trigger: 'blur' } 
   ],
   leftImage: [
     { required: true, validator: validateImage('left'), trigger: 'change' }
@@ -242,6 +242,16 @@ const handleSubmit = async () => {
       leftImg: leftImgUrl,
       rightImg: rightImgUrl
     })
+    
+
+    router.push({
+      path: `/patient/detail/${res.data.patientId}`, // 假设返回患者ID
+      query: { newCreated: true } // 可选参数
+    })
+
+    // 4. 重置表单
+    formRef.value.resetFields()
+    leftImage.value = null
 
     ElMessage.success('病例添加成功')
     handleCancel()
