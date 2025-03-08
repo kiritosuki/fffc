@@ -53,7 +53,7 @@
         <el-col :span="12">
           <el-form-item label="身份证号" prop="idcard">
             <el-input
-              v-model="form.phone"
+              v-model="form.idcard"
               placeholder="请输入身份证号"
               clearable
             />
