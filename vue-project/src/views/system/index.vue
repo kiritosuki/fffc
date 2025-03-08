@@ -145,7 +145,8 @@ const form = reactive({
   name: '',
   age: null,
   gender: 1,
-  phone: ''
+  phone: '',
+  idcard: ''
 })
 
 // 验证函数
@@ -239,19 +240,28 @@ const handleSubmit = async () => {
       age: form.age,
       gender: form.gender,
       phone: form.phone,
+      idcard: form.idcard,
       leftImg: leftImgUrl,
       rightImg: rightImgUrl
     })
     
 
     router.push({
-      path: `/patient/detail/${res.data.patientId}`, // 假设返回患者ID
-      query: { newCreated: true } // 可选参数
+      path: `/homeResult`,
+      query: {
+        phone: form.phone,
+        idcard: form.idcard,
+        leftImg: leftImgUrl,
+        rightImg: rightImgUrl
+      }
     })
 
     // 4. 重置表单
     formRef.value.resetFields()
     leftImage.value = null
+    rightImage.value = null
+    leftImageList.value = []
+    rightImageList.value = []
 
     ElMessage.success('病例添加成功')
     handleCancel()
