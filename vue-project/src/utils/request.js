@@ -29,7 +29,7 @@ import axios from 'axios'
 
 
 const service = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // 请求基础URL
+  baseURL: 'http://localhost:8080', // 请求基础URL
   timeout: 10000
 })
 
