@@ -110,8 +110,93 @@
           </template>
         </el-upload>
         <div class="upload-tip">支持JPG/PNG格式</div>
+        
       </el-form-item>
 
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <el-form-item label="过敏药物" prop="allergy">
+            <el-input
+              v-model="form.allergy"
+              placeholder="请输入过敏药物"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="患者主诉" prop="complaint">
+            <el-input
+              v-model="form.complaint"
+              placeholder="请输入患者主诉"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="是否初诊" prop="visit">
+            <el-radio-group v-model="form.visit">
+              <el-radio :label="1">初诊</el-radio>
+              <el-radio :label="2">复诊</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="现病史" prop="presHistory">
+            <el-input
+              v-model="form.presHistory"
+              placeholder="请输入现病史"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="既往史" prop="pastsHistory">
+            <el-input
+              v-model="form.pastsHistory"
+              placeholder="请输入既往史"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="阳体特征" prop="posFeature">
+            <el-input
+              v-model="form.posFeature"
+              placeholder="请输入阳体特征"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="阴体特征" prop="negFeature">
+            <el-input
+              v-model="form.negFeature"
+              placeholder="请输入阴体特征"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="患病情况" prop="statusIllList">
+            <el-checkbox-group v-model="form.statusIllList">
+              <el-checkbox :label="1">初诊</el-checkbox>
+              <el-checkbox :label="2">复诊</el-checkbox>
+              <el-checkbox :label="3">其他</el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+        </el-col>
+        <!-- 这段要写啥我没看懂 -->
+        <el-col :span="12">
+          <el-form-item label="备注" prop="illInfo">
+            <el-input
+              v-model="form.illInfo"
+              placeholder="请输入备注"
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      
       <!-- 提交按钮 -->
       <div class="form-actions">
         <el-button @click="handleCancel">取消</el-button>
@@ -146,7 +231,18 @@ const form = reactive({
   age: null,
   gender: 1,
   phone: '',
-  idcard: ''
+  idcard: '',
+  leftImage: '',
+  rightImage: '',
+  allergy: '',
+  complaint: '',
+  visit: 1,
+  presHistory: '',
+  pastsHistory: '',
+  posFeature: '',
+  negFeature: '',
+  statusIllList: [],
+  illInfo: ''
 })
 
 
@@ -189,7 +285,33 @@ const rules = reactive({
   ],
   rightImage: [
     { required: true, validator: validateImage('right'), trigger: 'change' }
+  ],
+  allergy: [  
+  ],
+  complaint: [ 
+  ],
+  visit: [
+    
+  ],
+  presHistory: [
+    
+  ],
+  pastsHistory: [
+    
+  ],
+  posFeature: [
+    
+  ],
+  negFeature: [
+    
+  ],
+  statusIllList: [
+  { required: true, message: '请选择患病情况', trigger: 'change' }
+  ],
+  illInfo: [
+    
   ]
+
 })
 
 const handleUpload = (file, type) => { 
@@ -249,7 +371,16 @@ const handleSubmit = async () => {
       idcard: form.idcard,
       docterId:"1",
       leftImg: "1",
-      rightImg: "2"
+      rightImg: "2",
+      allergy: form.allergy,
+      complaint: form.complaint,
+      visit: form.visit,
+      presHistory: form.presHistory,
+      pastsHistory: form.pastsHistory,
+      posFeature: form.posFeature,
+      negFeature: form.negFeature,
+      statusIllList: form.statusIllList,
+      illInfo: form.illInfo
     })
     
 
