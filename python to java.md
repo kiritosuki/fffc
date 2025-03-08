@@ -37,9 +37,9 @@
 |--------|------|----------|--------|----------|
 | code | string | 是 |1 |响应是否成功|
 | msg | int | 是 | "success" |相关信息|
-| data | Object  | 是       | 返回的数据 |
-| --\|--illness | Integer | 是 | 返回疾病种类 |
-| --\|--diagnosis | String | 否 | 疾病诊断 |
+| data | Object  | 是    |   | 返回的数据 |
+| --\|--illness | Integer | 是 | 1 | 返回疾病种类 |
+| --\|--diagnosis | String | 否 |abab | 疾病诊断 |
 
 
 **请求示例**：
