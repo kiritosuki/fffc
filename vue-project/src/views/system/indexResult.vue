@@ -24,6 +24,10 @@ const handleFinalResult = () => {
     submitting.value = true
 
 
+    // 请求提交病例改动
+
+    // 跳转
+
 }
 </script>
 

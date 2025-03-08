@@ -149,6 +149,12 @@ const form = reactive({
   idcard: ''
 })
 
+
+
+
+
+
+
 // 验证函数
 const validateImage = (type) => {
   return (rule, value, callback) => {
