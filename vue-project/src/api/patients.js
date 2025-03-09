@@ -45,6 +45,11 @@ export function uploadImg(data){
 
 
 
+export default {
+    AddPatient,
+    uploadImg
+
+}
 
 
 
@@ -153,14 +158,3 @@ export function uploadImg(data){
 
 
 
-
-// export default {
-//     CheckPatient,
-//     DelPatient,
-//     AddPatient,
-//     uploadImage,
-//     changePassword,
-//     changeUser,
-    
-
-// }

@@ -323,18 +323,18 @@ const handleUpload = (file, type) => {
 const handleSubmit = async () => {
   try {
     // // 验证表单
-    // await formRef.value.validateField(['leftImage', 'rightImage'])
-    // await formRef.value.validate()
+    await formRef.value.validateField(['leftImage', 'rightImage'])
+    await formRef.value.validate()
 
-    // submitting.value = true
+    submitting.value = true
 
     // // 1. 上传左眼图片
-    // const leftRes = await api.uploadImage(leftImage.value)
-    // const leftImgUrl = leftRes.data.data
+    const leftRes = await api.uploadImg(leftImage.value)
+    const leftImgUrl = leftRes.data.data
     
     // // 2. 上传右眼图片
-    // const rightRes = await api.uploadImage(rightImage.value)
-    // const rightImgUrl = rightRes.data.data
+    const rightRes = await api.uploadImg(rightImage.value)
+    const rightImgUrl = rightRes.data.data
 
     // 3. 提交病例数据
     await api.AddPatient({
@@ -344,8 +344,8 @@ const handleSubmit = async () => {
       phone: form.phone,
       idcard: form.idcard,
       docterId:"1",
-      leftImg: "1",
-      rightImg: "2",
+      leftImg: leftImgUrl,
+      rightImg: rightImgUrl,
       allergy: form.allergy,
       complaint: form.complaint,
       visit: form.visit,
