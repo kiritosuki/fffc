@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import router from '../../router';
 
 // 接收数据
+
 /* const id = router.routerRecent.value.query.id
 console.log(id) */
 
@@ -17,6 +18,7 @@ onMounted(() => {
   id.value = route.query.id // 获取查询参数中的 id
   console.log("当前 ID:", id.value)
 })
+
 
 // 图片初始化
 const leftImg = ref('')
@@ -65,6 +67,9 @@ const handleFinalResult = () => {
         <label for="6">6号病症</label><br>
         <input type="checkbox" name="leftIllness" value="7" id="7" v-model="leftIllness">
         <label for="7">7号病症</label><br>
+        <input type="checkbox" name="leftIllness" value="8" id="8" v-model="leftIllness">
+        <label for="8">其他</label><br>
+
     </div>
 
     <div class="indexResult">
@@ -85,6 +90,9 @@ const handleFinalResult = () => {
         <label for="6">6号病症</label><br>
         <input type="checkbox" name="rightIllness" value="7" id="7" v-model="rightIllness">
         <label for="7">7号病症</label><br>
+        <input type="checkbox" name="rightIllness" value="8" id="8" v-model="rightIllness">
+        <label for="8">其他</label><br>
+
     </div>
 
     <div>
