@@ -5,7 +5,10 @@ import request from "../utils/request"
     return request.service({
         url:"/home",
         method:"POST",
-        data:data
+        data:data, // 确保这是普通对象格式
+        headers: {
+          'Content-Type': 'application/json' // 明确指定 JSON 格式
+        }
     })
   }
 
@@ -17,7 +20,7 @@ import request from "../utils/request"
 //   gender:"",
 //   phone:"",
 //   idCard:"",
-//   docterId:"",
+//   doctorId:"",
 //   leftImg:"",
 //   rightImg:"",
 //   allergy:"",

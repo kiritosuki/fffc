@@ -337,13 +337,13 @@ const handleSubmit = async () => {
     const rightImgUrl = rightRes.data.data
 
     // 3. 提交病例数据
-    await api.AddPatient({
+    const res = await api.AddPatient({
       name: form.name,
       age: form.age,
       gender: form.gender,
       phone: form.phone,
       idcard: form.idcard,
-      docterId:"1",
+      doctorId:"1",
       leftImg: leftImgUrl,
       rightImg: rightImgUrl,
       allergy: form.allergy,
@@ -355,14 +355,15 @@ const handleSubmit = async () => {
       negFeature: form.negFeature
     })
     
-    if (res.data.code === 1) {
-      router.push({
-        path: '/homeResult',
-        query: {
-          id: res.data.data.id
-        }
-      })
-    }
+    console.log('响应结果:', res.data)
+    // if (res.data.code === 1) {
+    //   router.push({
+    //     path: '/homeResult',
+    //     query: {
+    //       id: res.data.data.id
+    //     }
+    //   })
+    // }
 
     // 4. 重置表单
     formRef.value.resetFields()
