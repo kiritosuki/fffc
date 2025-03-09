@@ -5,7 +5,7 @@ import request from "../utils/request"
     return request.service({
         url:"/home",
         method:"POST",
-        data:formData
+        data
     })
   }
 
