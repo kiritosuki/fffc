@@ -214,8 +214,8 @@ const form = reactive({
   gender: 1,
   phone: '',
   idCard: '',
-  leftImage: '',
-  rightImage: '',
+  leftImg: '',
+  rightImg: '',
   allergy: '',
   complaint: '',
   visit: 1,
@@ -330,11 +330,11 @@ const handleSubmit = async () => {
 
     // // 1. 上传左眼图片
     const leftRes = await api.uploadImg(leftImage.value)
-    const leftImgUrl = leftRes.data.data
+    const leftImgUrl = leftRes.data
     
     // // 2. 上传右眼图片
     const rightRes = await api.uploadImg(rightImage.value)
-    const rightImgUrl = rightRes.data.data
+    const rightImgUrl = rightRes.data
 
     // 3. 提交病例数据
     const res = await api.AddPatient({
@@ -356,7 +356,8 @@ const handleSubmit = async () => {
     })
     
     console.log('响应结果:', res.data)
-    if (res.data.code === 1) {
+    if (res.code === 1) {
+      console.log('result:',res.data)
       router.push({
         path: '/homeResult',
         query: {

@@ -3,8 +3,8 @@ import { ref, onMounted, computed } from 'vue'
 import router from '../../router';
 
 // 接收数据
-// const id = ref(router.query.id)
-
+const id = router.currentRoute.value.query.id
+console.log(id)
 // 图片初始化
 const leftImg = ref('')
 const rightImg = ref('')
