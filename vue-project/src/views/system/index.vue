@@ -36,8 +36,8 @@
         <el-col :span="12">
           <el-form-item label="性别" prop="gender">
             <el-radio-group v-model="form.gender">
-              <el-radio :label="1">男</el-radio>
-              <el-radio :label="0">女</el-radio>
+              <el-radio :value="1">男</el-radio>
+              <el-radio :value="0">女</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -135,8 +135,8 @@
         <el-col :span="12">
           <el-form-item label="是否初诊" prop="visit">
             <el-radio-group v-model="form.visit">
-              <el-radio :label="1">初诊</el-radio>
-              <el-radio :label="2">复诊</el-radio>
+              <el-radio :value="1">初诊</el-radio>
+              <el-radio :value="2">复诊</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
