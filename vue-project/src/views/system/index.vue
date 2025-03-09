@@ -356,7 +356,8 @@ const handleSubmit = async () => {
     })
     
     console.log('响应结果:', res.data)
-    if (res.data.code === 1) {
+    if (res.code === 1) {
+      console.log('result:',res.data)
       router.push({
         path: '/homeResult',
         query: {
