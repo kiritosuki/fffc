@@ -1,9 +1,22 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router';
 import router from '../../router';
 
 // 接收数据
-const id = ref(router.query.data.data.id)
+/* const id = router.routerRecent.value.query.id
+console.log(id) */
+
+
+const route = useRoute()
+// 使用 ref 来保存 id
+const id = ref('')
+
+// 通过 watch 监听 route.query 的变化
+onMounted(() => {
+  id.value = route.query.id // 获取查询参数中的 id
+  console.log("当前 ID:", id.value)
+})
 
 // 图片初始化
 const leftImg = ref('')
