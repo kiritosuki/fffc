@@ -203,8 +203,8 @@ import api from '../../api/index'
 const submitting = ref(false)
 const formRef = ref(null)
 
-const leftImage = ref(null)
-const rightImage = ref(null)
+const leftImage =ref( new FormData())
+const rightImage = ref(new FormData())
 const leftImageList = ref([])
 const rightImageList = ref([])
 
@@ -289,7 +289,7 @@ const rules = reactive({
 })
 
 const handleUpload = (file, type) => { 
-  // 限制文件格式和大小
+  // 限制文件格式和大
   const isImage = file.raw.type.includes('image/')
   const isLt5M = file.raw.size / 1024 / 1024 < 5
 
