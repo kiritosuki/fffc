@@ -16,7 +16,7 @@
 |----------|--------|---------|--------|----------|
 | image    | string | 是 |"https://web-framework.oss-cn-hangzhou.aliyuncs.com/2022-09-03-07-37-38222.jpg"|图片URL|
 | age      | int | 是 | 35 | 0 ≤ age ≤ 120 |
-| sex      | int | 是 | 1 | 0: 女性<br>1: 男性 |
+| gender      | int | 是 | 1 | 0: 女性<br>1: 男性 |
 | symptoms | string | 是 | "视力模糊3个月，伴飞蚊症" | 10-500个字符 |
 
 **请求示例**:
@@ -24,7 +24,7 @@
 {
   "image": "/medical_images/2023/patient_123.jpg",
   "age": 45,
-  "sex": 1,
+  "gender": 1,
   "symptoms": "左眼视力下降伴闪光感两周"
 }
 ```
@@ -38,8 +38,9 @@
 | code | string | 是 |1 |响应是否成功|
 | msg | int | 是 | "success" |相关信息|
 | data | Object  | 是    |   | 返回的数据 |
-| --\|--illness | Integer | 是 | 1 | 返回疾病种类 |
-| --\|--diagnosis | String | 否 |abab | 疾病诊断 |
+| --\|--illnessLeft | list | 是 | 1 | 返回左眼疾病种类 |
+| --\|--illnessRight | list | 是 | 1 | 返回右眼疾病种类 |
+| --\|--diagnosis | String | 否 | "asfas" | 疾病诊断 |
 
 
 **请求示例**：
@@ -48,7 +49,8 @@
   "code": 1,
   "msg": "success",
   "data": {
-    "illness": 1,
+    "illnessLeft": [1],
+    "illnessRight": [2, 3],
     "diagnosis": ""
   }
 }
