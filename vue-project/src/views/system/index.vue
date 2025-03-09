@@ -51,9 +51,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="身份证号" prop="idcard">
+          <el-form-item label="身份证号" prop="idCard">
             <el-input
-              v-model="form.idcard"
+              v-model="form.idCard"
               placeholder="请输入身份证号"
               clearable
             />
@@ -213,7 +213,7 @@ const form = reactive({
   age: null,
   gender: 1,
   phone: '',
-  idcard: '',
+  idCard: '',
   leftImage: '',
   rightImage: '',
   allergy: '',
@@ -256,7 +256,7 @@ const rules = reactive({
     { required: true, message: '请输入手机号码', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }
   ],
-  idcard: [
+  idCard: [
     { required: true, message: '请输入身份证号', trigger: 'blur' },
     { pattern: /^\d{17}(\d|X|x)$/, message: '身份证号格式不正确', trigger: 'blur' } 
   ],
@@ -342,7 +342,7 @@ const handleSubmit = async () => {
       age: form.age,
       gender: form.gender,
       phone: form.phone,
-      idcard: form.idcard,
+      idCard: form.idCard,
       doctorId:"1",
       leftImg: leftImgUrl,
       rightImg: rightImgUrl,
