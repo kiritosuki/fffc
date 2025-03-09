@@ -356,14 +356,14 @@ const handleSubmit = async () => {
     })
     
     console.log('响应结果:', res.data)
-    // if (res.data.code === 1) {
-    //   router.push({
-    //     path: '/homeResult',
-    //     query: {
-    //       id: res.data.data.id
-    //     }
-    //   })
-    // }
+    if (res.data.code === 1) {
+      router.push({
+        path: '/homeResult',
+        query: {
+          id: res.data.data.id
+        }
+      })
+    }
 
     // 4. 重置表单
     formRef.value.resetFields()

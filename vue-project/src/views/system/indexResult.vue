@@ -3,19 +3,20 @@ import { ref, onMounted, computed } from 'vue'
 import router from '../../router';
 
 // 接收数据
-const phone = computed(() => router.query.phone)
-const idcard = computed(() => router.query.idcard)
-const leftImg = computed(() => router.query.leftImg)
-const rightImg = computed(() => router.query.rightImg)
+const id = ref(router.query.id)
 
-// 手动快速添加病症
+// 图片初始化
+const leftImg = ref('')
+const rightImg = ref('')
+
+// 检测病症初始化
 const leftIllness = ref([])
 const rightIllness = ref([])
 
-// 输入栏内容
+// 输入栏内容初始化
 const textarea = ref('')
 
-// 提交按钮加载控制
+// 提交按钮加载控制初始化
 const submitting = ref(false)
 
 // 最后提交按钮点击事件
@@ -38,19 +39,19 @@ const handleFinalResult = () => {
         <img :src="leftImg" alt="左眼图片损毁">
         <p>潜在病症：</p>
         <input type="checkbox" name="leftIllness" value="1" id="1" v-model="leftIllness">
-        <label for="1">1号病症</label>
+        <label for="1">1号病症</label><br>
         <input type="checkbox" name="leftIllness" value="2" id="2" v-model="leftIllness">
-        <label for="2">2号病症</label>
+        <label for="2">2号病症</label><br>
         <input type="checkbox" name="leftIllness" value="3" id="3" v-model="leftIllness">
-        <label for="3">3号病症</label>
+        <label for="3">3号病症</label><br>
         <input type="checkbox" name="leftIllness" value="4" id="4" v-model="leftIllness">
-        <label for="4">4号病症</label>
+        <label for="4">4号病症</label><br>
         <input type="checkbox" name="leftIllness" value="5" id="5" v-model="leftIllness">
-        <label for="5">5号病症</label>
+        <label for="5">5号病症</label><br>
         <input type="checkbox" name="leftIllness" value="6" id="6" v-model="leftIllness">
-        <label for="6">6号病症</label>
+        <label for="6">6号病症</label><br>
         <input type="checkbox" name="leftIllness" value="7" id="7" v-model="leftIllness">
-        <label for="7">7号病症</label>
+        <label for="7">7号病症</label><br>
     </div>
 
     <div class="indexResult">
@@ -58,23 +59,23 @@ const handleFinalResult = () => {
         <img :src="rightImg" alt="右眼图片损毁">
         <p>潜在病症：</p>
         <input type="checkbox" name="rightIllness" value="1" id="1" v-model="rightIllness">
-        <label for="1">1号病症</label>
+        <label for="1">1号病症</label><br>
         <input type="checkbox" name="rightIllness" value="2" id="2" v-model="rightIllness">
-        <label for="2">2号病症</label>
-        <input type="checkbox" name="rightIllness" value="3" id="3" v-model="rightIllness" />
-        <label for="3">3号病症</label>
+        <label for="2">2号病症</label><br>
+        <input type="checkbox" name="rightIllness" value="3" id="3" v-model="rightIllness">
+        <label for="3">3号病症</label><br>
         <input type="checkbox" name="rightIllness" value="4" id="4" v-model="rightIllness">
-        <label for="4">4号病症</label>
+        <label for="4">4号病症</label><br>
         <input type="checkbox" name="rightIllness" value="5" id="5" v-model="rightIllness">
-        <label for="5">5号病症</label>
+        <label for="5">5号病症</label><br>
         <input type="checkbox" name="rightIllness" value="6" id="6" v-model="rightIllness">
-        <label for="6">6号病症</label>
+        <label for="6">6号病症</label><br>
         <input type="checkbox" name="rightIllness" value="7" id="7" v-model="rightIllness">
-        <label for="7">7号病症</label>
-    </div><br>
+        <label for="7">7号病症</label><br>
+    </div>
 
     <div>
-        <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="textarea">
+        <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="textarea" style="width: 70vw;">
         </el-input>
     </div>
 
@@ -92,7 +93,7 @@ img {
 
 .indexResult {
     display: inline-block;
-    width: 35vw;
+    width: 25vw;
     margin: 3vw;
     padding: 3vw;
     border: 1px solid #ccc;
