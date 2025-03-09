@@ -5,7 +5,7 @@ import request from "../utils/request"
     return request.service({
         url:"/home",
         method:"POST",
-        data
+        data:formData
     })
   }
 
@@ -34,11 +34,16 @@ import request from "../utils/request"
 
 
 
-export function uploadImg(data){
+export function uploadImg(file) {
+  const formData = new FormData()
+  formData.append('file', file) 
   return request({
-      url:"/upload",
-      method:"POST",
-      data
+    url: "/upload",
+    method: "POST",
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 
