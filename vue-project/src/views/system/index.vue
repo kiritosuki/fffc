@@ -176,25 +176,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="患病情况" prop="statusIllList">
-            <el-checkbox-group v-model="form.statusIllList">
-              <el-checkbox :label="1">初诊</el-checkbox>
-              <el-checkbox :label="2">复诊</el-checkbox>
-              <el-checkbox :label="3">其他</el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-col>
-        <!-- 这段要写啥我没看懂 -->
-        <el-col :span="12">
-          <el-form-item label="备注" prop="illInfo">
-            <el-input
-              v-model="form.illInfo"
-              placeholder="请输入备注"
-              clearable
-            />
-          </el-form-item>
-        </el-col>
+        
       </el-row>
       
       <!-- 提交按钮 -->
@@ -240,9 +222,7 @@ const form = reactive({
   presHistory: '',
   pastsHistory: '',
   posFeature: '',
-  negFeature: '',
-  statusIllList: [],
-  illInfo: ''
+  negFeature: ''
 })
 
 
@@ -303,12 +283,6 @@ const rules = reactive({
     
   ],
   negFeature: [
-    
-  ],
-  statusIllList: [
-  { required: true, message: '请选择患病情况', trigger: 'change' }
-  ],
-  illInfo: [
     
   ]
 
@@ -378,21 +352,17 @@ const handleSubmit = async () => {
       presHistory: form.presHistory,
       pastsHistory: form.pastsHistory,
       posFeature: form.posFeature,
-      negFeature: form.negFeature,
-      statusIllList: form.statusIllList,
-      illInfo: form.illInfo
+      negFeature: form.negFeature
     })
     
-
-    router.push({
-      path: `/homeResult`,
-      query: {
-        phone: form.phone,
-        idcard: form.idcard,
-        leftImg: leftImgUrl,
-        rightImg: rightImgUrl
-      }
-    })
+    if (res.data.code === 1) {
+      router.push({
+        path: '/homeResult',
+        query: {
+          id: res.data.data.id
+        }
+      })
+    }
 
     // 4. 重置表单
     formRef.value.resetFields()
@@ -437,6 +407,7 @@ const handleCancel = () => {
   leftImageList.value = []
   rightImageList.value = []
 }
+
 </script>
 
 <style scoped>
