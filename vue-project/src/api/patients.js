@@ -2,7 +2,7 @@ import request from "../utils/request"
 
 
   export function AddPatient(data){
-    return request.service({
+    return request({
         url:"/home",
         method:"POST",
         data:data, // 确保这是普通对象格式
