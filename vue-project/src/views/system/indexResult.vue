@@ -149,7 +149,7 @@ const handleFinalResult = () => {
         </el-input>
     </div>
 
-    <el-button type="primary" :loading="submitting" @click="handleFinalResult"> 
+    <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit"> 
         {{ submitting ? '提交中...' : '提交病例' }}
     </el-button>
 
@@ -177,8 +177,13 @@ img {
 }
 #lefinput, #riginput {
   display: inline-block;
+  width: 15vw;
   position: absolute;
   top: 70%;
   left: 40%;
+}
+#submit {
+  margin-top: 1vw;
+  margin-left: 64vw;
 }
 </style>
