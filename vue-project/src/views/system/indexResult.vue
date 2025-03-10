@@ -40,6 +40,20 @@ const resInfo = ref('')
 // 提交按钮加载控制初始化
 const submitting = ref(false)
 
+watch(leftIllnessList, (newVal) => {
+  if (newVal.includes('1')) {
+    // 如果包含正常选项，则过滤掉其他选项
+    leftIllnessList.value = ['1']
+  }
+}, { deep: true })
+
+watch(rightIllnessList, (newVal) => {
+  if (newVal.includes('1')) {
+    // 如果包含正常选项，则过滤掉其他选项
+    rightIllnessList.value = ['1']
+  }
+}, { deep: true })
+
 
 onMounted(async () => {
 id.value = route.query.id // 获取查询参数中的 id
@@ -261,19 +275,19 @@ const handleFinalResult = () => {
         <p>潜在病症：</p>
         <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList" @click="handleLeftIllnessList">
         <label for="1">正常</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='2' id="2" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='2' id="2" v-model="leftIllnessList">
         <label for="2">糖尿病</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='3' id="3" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='3' id="3" v-model="leftIllnessList">
         <label for="3">青光眼</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='4' id="4" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='4' id="4" v-model="leftIllnessList">
         <label for="4">白内障</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='5' id="5" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='5' id="5" v-model="leftIllnessList">
         <label for="5">AMD</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='6' id="6" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='6' id="6" v-model="leftIllnessList">
         <label for="6">高血压</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='7' id="7" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='7' id="7" v-model="leftIllnessList">
         <label for="7">近视</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal" value='8' id="8" v-model="leftIllnessList">
+        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')"" value='8' id="8" v-model="leftIllnessList">
         <label for="8">其他异常</label><br>
         <p>{{ leftDiag }}</p>
         <div id="lefInput">
@@ -290,19 +304,19 @@ const handleFinalResult = () => {
         <p>潜在病症：</p>
         <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList" @click="handleRightIllnessList">
         <label for="9">正常</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='2' id="10" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='2' id="10" v-model="rightIllnessList">
         <label for="10">糖尿病</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='3' id="11" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='3' id="11" v-model="rightIllnessList">
         <label for="11">青光眼</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='4' id="12" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='4' id="12" v-model="rightIllnessList">
         <label for="12">白内障</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='5' id="13" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='5' id="13" v-model="rightIllnessList">
         <label for="13">AMD</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='6' id="14" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='6' id="14" v-model="rightIllnessList">
         <label for="14">高血压</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='7' id="15" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='7' id="15" v-model="rightIllnessList">
         <label for="15">近视</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal" value='8' id="16" v-model="rightIllnessList">
+        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')"" value='8' id="16" v-model="rightIllnessList">
         <label for="16">其他异常</label><br>
         <p>{{ rightDiag }}</p>
         <div id="rigInput">
