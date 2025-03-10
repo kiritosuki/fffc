@@ -20,7 +20,7 @@ const routes = [
   children: [
       { path: '/home', component: Home },
       { path: '/admin', component: Admin },
-      { path: '/homeResult', component: HomeResult },
+      { path: '/homeResult', component: HomeResult,props: (route) => ({ id: route.query.id }),name: 'HomeResult'},
       { path: '/analyze', component: Analyze },
       { path: '/introduce', component: introduce },
       { path: '/personal', component: personal}
