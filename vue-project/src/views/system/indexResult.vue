@@ -19,16 +19,16 @@ const leftIllnessList = ref([])
 const rightIllnessList = ref([])
 
 // 是否是正常的
-const ifLeftNomal = ref(false)
-const ifRightNomal = ref(false)
+const ifLeftNomal = computed(() =>leftIllnessList.value.includes('1'))
+const ifRightNomal = computed(() => rightIllnessList.value.includes('1'))
 
 // 其他异常病症
 const leftOtherIllness= ref('')
 const rightOtherIllness= ref('')
 
 // 是否有输入栏
-const leftinput = ref(false)
-const rightinput = ref(false)
+const leftinput = computed(() => leftIllnessList.value.includes('8'));
+const rightinput = computed(() => rightIllnessList.value.includes('8'));
 
 // 诊断关键字
 const leftDiag = ref('')
@@ -96,7 +96,39 @@ const submitting = ref(false)
   }
 })
 */
-onMounted(async () => {
+
+/* onMounted(async () => {
+id.value = route.query.id // 获取查询参数中的 id
+console.log("当前 ID:", id.value)
+
+  try {
+    // 使用 await 等待数据返回
+    const response = await CheckPatientFir(id.value)
+
+    // 确保返回的数据结构正确
+    if (response.code === 1) {
+      leftImg.value = response.data.leftImg
+      rightImg.value = response.data.rightImg
+
+      leftIllnessList.value = response.data.leftStatusIllList
+      rightIllnessList.value = response.data.rightStatusIllList
+
+      
+
+
+      leftDiag.value = response.data.leftDiag
+      rightDiag.value = response.data.rightDiag
+
+      resInfo.value = response.data.resInfo
+    } else {
+      console.error("后端返回的 code 不是 1:", response?.data)
+    }
+  } catch (error) {
+    console.error("请求失败:", error)
+  }
+})
+ */
+ onMounted(async () => {
   id.value = route.query.id // 获取查询参数中的 id
   console.log("当前 ID:", id.value)
 
@@ -112,23 +144,13 @@ onMounted(async () => {
       leftIllnessList.value = response.data.leftStatusIllList
       rightIllnessList.value = response.data.rightStatusIllList
 
-      if (leftIllnessList.value.includes('8')){
-        leftinput.value = true
-      } else {
-        leftinput.value = false
-      }
-      if (rightIllnessList.value.includes('8')){
-        rightinput.value = true
-      } else {
-        rightinput.value = false
-      }
-      
-
-
       leftDiag.value = response.data.leftDiag
       rightDiag.value = response.data.rightDiag
 
       resInfo.value = response.data.resInfo
+
+      // 确保 UI 及时更新
+      // updateIllnessState()
     } else {
       console.error("后端返回的 code 不是 1:", response?.data)
     }
@@ -138,49 +160,50 @@ onMounted(async () => {
 })
 
 
+
 // 判断是否需要显示其他异常病症的输入栏
-watch(() => leftIllnessList.value, (newValue, oldValue) => {
-  if (newValue.includes('8')) {
-    leftinput.value = true
-  } else {
-    leftinput.value = false
-  }
-},
-{ immediate: true }
-)
-watch(() => rightIllnessList.value, (newValue, oldValue) => {
-  if (newValue.includes('8')) {
-    rightinput.value = true
-  } else {
-    rightinput.value = false
-  }
-},
-{ immediate: true }
-)
+// watch(() => leftIllnessList.value, (newValue, oldValue) => {
+//   if (newValue.includes('8')) {
+//     leftinput.value = true
+//   } else {
+//     leftinput.value = false
+//   }
+// },
+// { immediate: true , deep:true}
+// )
+// watch(() => rightIllnessList.value, (newValue, oldValue) => {
+//   if (newValue.includes('8')) {
+//     rightinput.value = true
+//   } else {
+//     rightinput.value = false
+//   }
+// },
+// { immediate: true , deep:true}
+// )
 
-watch(() => leftIllnessList.value, (newValue,oldValue) => {
-  if (newValue.includes('1')) {
-        // 如果选中了“正常”，则清空其他选项
-        // leftIllnessList.value = ['1'];
-        ifLeftNomal.value = true
-      } else {
-        ifLeftNomal.value = false
-      }
-    },
-    { immediate: true }
-);
+// watch(() => leftIllnessList.value, (newValue,oldValue) => {
+//   if (newValue.includes('1')) {
+//         // 如果选中了“正常”，则清空其他选项
+//         // leftIllnessList.value = ['1'];
+//         ifLeftNomal.value = true
+//       } else {
+//         ifLeftNomal.value = false
+//       }
+//     },
+//     { immediate: true , deep:true}
+// );
 
-watch(() => rightIllnessList.value, (newValue,oldValue) => {
-      if (newValue.includes('1')) {
-        // 如果选中了“正常”，则清空其他选项
-        // rightIllnessList.value = ['1'];
-        ifRightNomal.value = true
-      } else {
-        ifRightNomal.value = false
-      }
-    },
-    { immediate: true }
-);
+// watch(() => rightIllnessList.value, (newValue,oldValue) => {
+//       if (newValue.includes('1')) {
+//         // 如果选中了“正常”，则清空其他选项
+//         // rightIllnessList.value = ['1'];
+//         ifRightNomal.value = true
+//       } else {
+//         ifRightNomal.value = false
+//       }
+//     },
+//     { immediate: true , deep:true}
+// );
 
 // const handleLeftIllnessList = () => {
 //   if (leftIllnessList.value.includes('1')) {
@@ -200,9 +223,6 @@ watch(() => rightIllnessList.value, (newValue,oldValue) => {
 //     ifRightNomal.value = false
 //   }
 // }
-
-
-
 
 
 
