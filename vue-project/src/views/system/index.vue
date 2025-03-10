@@ -359,11 +359,9 @@ const handleSubmit = async () => {
     if (res.code === 1) {
       console.log('result:',res.data)
       router.push({
-        path: '/homeResult',
-        query: {
-          id: res.data.data.id
-        }
-      })
+  name: 'HomeResult',  // 使用命名路由
+  query: { id: res.data.data.id }
+})
     }
 
     // 4. 重置表单
