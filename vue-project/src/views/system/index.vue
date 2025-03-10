@@ -200,6 +200,9 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import api from '../../api/index' 
+import api from '../../api/index'
+import { useRouter } from 'vue-router'
+const router = useRouter();
 const submitting = ref(false)
 const formRef = ref(null)
 
@@ -436,20 +439,23 @@ const handleSubmit = async () => {
     console.log('响应结果:', res.data);
     
     console.log('提交响应:', res)
-if (res.data.code === 1) {
+
+if (res.code === 1) {
   console.log('跳转参数:', {
     path: '/homeResult',
-    query: { id: res.data.data.id }
+    query: { id: res.data }
   })
   router.push({
     path: '/homeResult',
-    query: { id: res.data.data.id }
+    query: { id: res.data }
   }).then(() => {
     console.log('跳转成功')
   }).catch((err) => {
     console.error('跳转失败:', err)
   })
 }
+
+
 
     // 4. 重置表单
     formRef.value.resetFields();
