@@ -354,15 +354,24 @@ const handleSubmit = async () => {
       posFeature: form.posFeature,
       negFeature: form.negFeature
     })
+
+
     
-    console.log('响应结果:', res.data)
-    if (res.code === 1) {
-      console.log('result:',res.data)
-      router.push({
-  name: 'HomeResult',  // 使用命名路由
-  query: { id: res.data.data.id }
-})
-    }
+    console.log('提交响应:', res)
+if (res.code === 1) {
+  console.log('跳转参数:', {
+    path: '/homeResult',
+    query: { id: res.data.data.id }
+  })
+  router.push({
+    path: '/homeResult',
+    query: { id: res.data.data.id }
+  }).then(() => {
+    console.log('跳转成功')
+  }).catch((err) => {
+    console.error('跳转失败:', err)
+  })
+}
 
     // 4. 重置表单
     formRef.value.resetFields()
