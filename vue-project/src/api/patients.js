@@ -51,12 +51,19 @@ export function uploadImg(file) {
 }
 
 
+export function CheckPatientFir(id) {
+  return request({
+    url: `/homeResult?id=${id}`,
+    method: "GET"
+  })
+}
+
 
 
 export default {
     AddPatient,
-    uploadImg
-
+    uploadImg,
+    CheckPatientFir,
 }
 
 
