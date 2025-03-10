@@ -436,7 +436,7 @@ const handleSubmit = async () => {
     console.log('响应结果:', res.data);
     
     console.log('提交响应:', res)
-if (res.code === 1) {
+if (res.code.data === 1) {
   console.log('跳转参数:', {
     path: '/homeResult',
     query: { id: res.data.data.id }
