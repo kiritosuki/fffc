@@ -320,7 +320,7 @@ const handleUpload = (file, type) => {
   return false
 }
 
-const handleSubmit = async () => {
+/* const handleSubmit = async () => {
   try {
     // // 验证表单
     await formRef.value.validateField(['leftImage', 'rightImage'])
@@ -396,7 +396,81 @@ if (res.code === 1) {
   } finally {
     submitting.value = false
   }
-}
+} */
+
+const handleSubmit = async () => {
+  try {
+    // 验证表单
+    await formRef.value.validateField(['leftImage', 'rightImage']);
+    await formRef.value.validate();
+
+    submitting.value = true;
+
+    // 1. 上传左眼图片
+    const leftRes = await api.uploadImg(leftImage.value);
+    const leftImgUrl = leftRes.data;
+
+    // 2. 上传右眼图片
+    const rightRes = await api.uploadImg(rightImage.value);
+    const rightImgUrl = rightRes.data;
+
+    // 3. 提交病例数据
+    const res = await api.AddPatient({
+      name: form.name,
+      age: form.age,
+      gender: form.gender,
+      phone: form.phone,
+      idCard: form.idCard,
+      doctorId: "1",
+      leftImg: leftImgUrl,
+      rightImg: rightImgUrl,
+      allergy: form.allergy,
+      complaint: form.complaint,
+      visit: form.visit,
+      presHistory: form.presHistory,
+      pastHistory: form.pastHistory,
+      posFeature: form.posFeature,
+      negFeature: form.negFeature
+    });
+
+    console.log('响应结果:', res.data);
+    
+    if (res.code === 1) {
+      console.log('result:', res.data);
+
+      // 确保在请求成功后再跳转
+      this.$router.push({
+        name: 'HomeResult',  // 使用命名路由
+        query: { id: res.data.data.id }
+      });
+    }
+
+    // 4. 重置表单
+    formRef.value.resetFields();
+    leftImage.value = null;
+    rightImage.value = null;
+    leftImageList.value = [];
+    rightImageList.value = [];
+
+    ElMessage.success('病例添加成功');
+    handleCancel();
+  } catch (error) {
+    if (error.response) {
+      const msgMap = {
+        400: '请求参数错误',
+        401: '身份验证失败',
+        500: '服务器错误'
+      };
+      ElMessage.error(msgMap[error.response.status] || '操作失败');
+    } else {
+      ElMessage.error('请求失败，请检查网络');
+    }
+  } finally {
+    submitting.value = false;
+  }
+};
+
+
 
 // 删除函数
 const handleRemove = (type) => {
