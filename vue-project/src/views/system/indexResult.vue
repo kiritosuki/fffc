@@ -8,7 +8,7 @@ import { ElLoading } from 'element-plus'
 // 接收数据
 const route = useRoute()
 // 使用 ref 来保存 id
-const id = computed(() => route.query.id);
+const id = route.query.id;
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
@@ -41,7 +41,7 @@ const resInfo = ref('')
 // 提交按钮加载控制初始化
 const submitting = ref(false)
 
-watch(leftIllnessList, (newVal) => {
+/* watch(leftIllnessList, (newVal) => {
   if (newVal.includes('1')) {
     // 如果包含正常选项，则过滤掉其他选项
     leftIllnessList.value = ['1']
@@ -53,7 +53,7 @@ watch(rightIllnessList, (newVal) => {
     // 如果包含正常选项，则过滤掉其他选项
     rightIllnessList.value = ['1']
   }
-}, { deep: true })
+}, { deep: true }) */
 
 
 onMounted(async () => {
