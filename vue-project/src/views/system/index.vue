@@ -150,9 +150,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="既往史" prop="pastsHistory">
+          <el-form-item label="既往史" prop="pastHistory">
             <el-input
-              v-model="form.pastsHistory"
+              v-model="form.pastHistory"
               placeholder="请输入既往史"
               clearable
             />
@@ -220,7 +220,7 @@ const form = reactive({
   complaint: '',
   visit: 1,
   presHistory: '',
-  pastsHistory: '',
+  pastHistory: '',
   posFeature: '',
   negFeature: ''
 })
@@ -276,7 +276,7 @@ const rules = reactive({
   presHistory: [
     
   ],
-  pastsHistory: [
+  pastHistory: [
     
   ],
   posFeature: [
@@ -350,7 +350,7 @@ const handleSubmit = async () => {
       complaint: form.complaint,
       visit: form.visit,
       presHistory: form.presHistory,
-      pastsHistory: form.pastsHistory,
+      pastHistory: form.pastHistory,
       posFeature: form.posFeature,
       negFeature: form.negFeature
     })

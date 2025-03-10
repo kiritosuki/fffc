@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { CheckPatientFir } from '../../api/patients';
+import { ElLoading } from 'element-plus'
 
 // 接收数据
 const route = useRoute()
