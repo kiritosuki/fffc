@@ -8,7 +8,7 @@ import { CheckPatientFir } from '../../api/patients';
 const route = useRoute()
 // 使用 ref 来保存 id
 const id = ref('')
-
+const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
 const leftImg = ref('')
@@ -41,14 +41,55 @@ const resInfo = ref('')
 const submitting = ref(false)
 
 
+onMounted(async () => {
+id.value = route.query.id // 获取查询参数中的 id
+console.log("当前 ID:", id.value)
+
+loading.value = ElLoading.service({
+    text: '加载中...',
+    background: 'rgba(0, 0, 0, 0.7)', // 背景颜色
+    spinner: 'el-icon-loading', // 自定义加载图标
+    target: document.body, // 指定加载动画覆盖的区域
+  });
+
+  try {
+    // 使用 await 等待数据返回
+    const response = await CheckPatientFir(id.value)
+
+    // 确保返回的数据结构正确
+    if (response.code === 1) {
+      leftImg.value = response.data.leftImg
+      rightImg.value = response.data.rightImg
+
+      leftIllnessList.value = response.data.leftStatusIllList
+      rightIllnessList.value = response.data.rightStatusIllList
+
+      // if (leftIllnessList.value.includes('8')){
+      //   leftinput.value = true
+      // } else {
+      //   leftinput.value = false
+      // }
+      // if (rightIllnessList.value.includes('8')){
+      //   rightinput.value = true
+      // } else {
+      //   rightinput.value = false
+      // }
+      
 
 
+      leftDiag.value = response.data.leftDiag
+      rightDiag.value = response.data.rightDiag
 
-
-
-
-
-
+      resInfo.value = response.data.resInfo
+    } else {
+      console.error("后端返回的 code 不是 1:", response?.data)
+    }
+  } catch (error) {
+    console.error("请求失败:", error)
+  }finally {
+    loading.value.close();
+  }
+})
 
 
 
@@ -97,67 +138,36 @@ const submitting = ref(false)
 })
 */
 
-/* onMounted(async () => {
-id.value = route.query.id // 获取查询参数中的 id
-console.log("当前 ID:", id.value)
+//  onMounted(async () => {
+//   id.value = route.query.id // 获取查询参数中的 id
+//   console.log("当前 ID:", id.value)
 
-  try {
-    // 使用 await 等待数据返回
-    const response = await CheckPatientFir(id.value)
+//   try {
+//     // 使用 await 等待数据返回
+//     const response = await CheckPatientFir(id.value)
 
-    // 确保返回的数据结构正确
-    if (response.code === 1) {
-      leftImg.value = response.data.leftImg
-      rightImg.value = response.data.rightImg
+//     // 确保返回的数据结构正确
+//     if (response.code === 1) {
+//       leftImg.value = response.data.leftImg
+//       rightImg.value = response.data.rightImg
 
-      leftIllnessList.value = response.data.leftStatusIllList
-      rightIllnessList.value = response.data.rightStatusIllList
+//       leftIllnessList.value = response.data.leftStatusIllList
+//       rightIllnessList.value = response.data.rightStatusIllList
 
-      
+//       leftDiag.value = response.data.leftDiag
+//       rightDiag.value = response.data.rightDiag
 
+//       resInfo.value = response.data.resInfo
 
-      leftDiag.value = response.data.leftDiag
-      rightDiag.value = response.data.rightDiag
-
-      resInfo.value = response.data.resInfo
-    } else {
-      console.error("后端返回的 code 不是 1:", response?.data)
-    }
-  } catch (error) {
-    console.error("请求失败:", error)
-  }
-})
- */
- onMounted(async () => {
-  id.value = route.query.id // 获取查询参数中的 id
-  console.log("当前 ID:", id.value)
-
-  try {
-    // 使用 await 等待数据返回
-    const response = await CheckPatientFir(id.value)
-
-    // 确保返回的数据结构正确
-    if (response.code === 1) {
-      leftImg.value = response.data.leftImg
-      rightImg.value = response.data.rightImg
-
-      leftIllnessList.value = response.data.leftStatusIllList
-      rightIllnessList.value = response.data.rightStatusIllList
-
-      leftDiag.value = response.data.leftDiag
-      rightDiag.value = response.data.rightDiag
-
-      resInfo.value = response.data.resInfo
-
-      // 确保 UI 及时更新
-      // updateIllnessState()
-    } else {
-      console.error("后端返回的 code 不是 1:", response?.data)
-    }
-  } catch (error) {
-    console.error("请求失败:", error)
-  }
-})
+//       // 确保 UI 及时更新
+//       // updateIllnessState()
+//     } else {
+//       console.error("后端返回的 code 不是 1:", response?.data)
+//     }
+//   } catch (error) {
+//     console.error("请求失败:", error)
+//   }
+// })
 
 
 
