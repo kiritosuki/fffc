@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { CheckPatientFir } from '../../api/patients';
@@ -21,6 +21,8 @@ const rightIllnessList = ref([])
 const leftOtherIllness= ref('')
 const rightOtherIllness= ref('')
 
+const leftinput = ref(false)
+const rightinput = ref(false)
 
 // 输入栏内容初始化
 const resInfo = ref('')
@@ -29,22 +31,54 @@ const resInfo = ref('')
 const submitting = ref(false)
 
 // 判断是否需要显示其他病症的输入栏
-const leftinput = computed(() => {
-  for (let i = 0; i < leftIllnessList.value.length; i++) {
-    if (leftIllnessList.value[i] === '8') {
-      return true
-    }
+watch(() => leftIllnessList.value, (newValue, oldValue) => {
+  if (newValue.includes('8')) {
+    leftinput.value = true
+  } else {
+    leftinput.value = false
   }
-  return false
-})
-const rightinput = computed(() => {
-    for (let i = 0; i < rightIllnessList.value.length; i++) {
-      if (rightIllnessList.value[i] === '8') {
-        return true
-      }
-    }
-    return false
-})
+},
+{ immediate: true }
+)
+watch(() => rightIllnessList.value, (newValue, oldValue) => {
+  if (newValue.includes('8')) {
+    rightinput.value = true
+  } else {
+    rightinput.value = false
+  }
+},
+{ immediate: true }
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const leftinput = computed(() => {
+//   for (let i = 0; i < leftIllnessList.value.length; i++) {
+//     if (leftIllnessList.value[i] === "8") {
+//       return true
+//     }
+//   }
+//   return false
+// })
+// const rightinput = computed(() => {
+//     for (let i = 0; i < rightIllnessList.value.length; i++) {
+//       if (rightIllnessList.value[i] === "8") {
+//         return true
+//       }
+//     }
+//     return false
+// })
 
 
 // 通过 watch 监听 route.query 的变化
@@ -54,7 +88,7 @@ onMounted(() => {
 
   // 请求图片和病症信息
   const response = CheckPatientFir(id.value)
-  if (response.status === 200) {
+  if (response.data.code === 1) {
     //  导入图片
     leftImg.value = response.data.data.leftImg
     rightImg.value = response.data.data.rightImg
@@ -110,7 +144,7 @@ const handleFinalResult = () => {
         <label for="7">7号病症</label><br>
         <input type="checkbox" name="leftIllnessList" value="8" id="8" v-model="leftIllnessList">
         <label for="8">其他</label><br>
-        <div id="lefinput">
+        <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入其他病症" v-model="leftOtherIllness" v-if="leftinput">
         </el-input>
       </div>
@@ -138,7 +172,7 @@ const handleFinalResult = () => {
         <label for="15">7号病症</label><br>
         <input type="checkbox" name="rightIllnessList" value="8" id="16" v-model="rightIllnessList">
         <label for="16">其他</label><br>
-        <div id="riginput">
+        <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入其他病症" v-model="rightOtherIllness" v-if="rightinput">
         </el-input></div>
       </div>
@@ -175,7 +209,7 @@ img {
     display: inline-block;
     width: 50%;
 }
-#lefinput, #riginput {
+#lefInput, #rigInput {
   display: inline-block;
   width: 15vw;
   position: absolute;
