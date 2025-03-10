@@ -82,7 +82,7 @@ watch(() => rightIllnessList.value, (newValue, oldValue) => {
 
 
 // 通过 watch 监听 route.query 的变化
-onMounted(() => {
+/*onMounted(() => {
   id.value = route.query.id // 获取查询参数中的 id
   console.log("当前 ID:", id.value)
 
@@ -104,7 +104,31 @@ onMounted(() => {
     resInfo.value = response.data.data.resInfo
   }
 })
+*/
+onMounted(async () => {
+  id.value = route.query.id // 获取查询参数中的 id
+  console.log("当前 ID:", id.value)
 
+  try {
+    // 使用 await 等待数据返回
+    const response = await CheckPatientFir(id.value)
+
+    // 确保返回的数据结构正确
+    if (response.code === 1) {
+      leftImg.value = response.data.leftImg
+      rightImg.value = response.data.rightImg
+
+      leftIllnessList.value = response.data.leftStatusIllList
+      rightIllnessList.value = response.data.rightStatusIllList
+
+      resInfo.value = response.data.resInfo
+    } else {
+      console.error("后端返回的 code 不是 1:", response?.data)
+    }
+  } catch (error) {
+    console.error("请求失败:", error)
+  }
+})
 
 
 
