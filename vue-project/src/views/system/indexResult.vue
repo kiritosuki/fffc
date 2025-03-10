@@ -8,7 +8,7 @@ import { CheckPatientFir } from '../../api/patients';
 const route = useRoute()
 // 使用 ref 来保存 id
 const id = ref('')
-
+const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
 const leftImg = ref('')
@@ -19,24 +19,16 @@ const leftIllnessList = ref([])
 const rightIllnessList = ref([])
 
 // 是否是正常的
-const ifLeftNomal = computed(() => {
-  return leftIllnessList.value.includes('1')
-})
-const ifRightNomal = computed(() => {
-  return rightIllnessList.value.includes('1')
-})
+const ifLeftNomal = computed(() =>leftIllnessList.value.includes('1'))
+const ifRightNomal = computed(() => rightIllnessList.value.includes('1'))
 
 // 其他异常病症
 const leftOtherIllness= ref('')
 const rightOtherIllness= ref('')
 
 // 是否有输入栏
-const leftinput = computed(() => {
-  leftIllnessList.value.includes('8')
-})
-const rightinput = computed(() => {
-  return rightIllnessList.value.includes('8')
-})
+const leftinput = computed(() => leftIllnessList.value.includes('8'));
+const rightinput = computed(() => rightIllnessList.value.includes('8'));
 
 // 诊断关键字
 const leftDiag = ref('')
@@ -49,14 +41,55 @@ const resInfo = ref('')
 const submitting = ref(false)
 
 
+onMounted(async () => {
+id.value = route.query.id // 获取查询参数中的 id
+console.log("当前 ID:", id.value)
+
+loading.value = ElLoading.service({
+    text: '加载中...',
+    background: 'rgba(0, 0, 0, 0.7)', // 背景颜色
+    spinner: 'el-icon-loading', // 自定义加载图标
+    target: document.body, // 指定加载动画覆盖的区域
+  });
+
+  try {
+    // 使用 await 等待数据返回
+    const response = await CheckPatientFir(id.value)
+
+    // 确保返回的数据结构正确
+    if (response.code === 1) {
+      leftImg.value = response.data.leftImg
+      rightImg.value = response.data.rightImg
+
+      leftIllnessList.value = response.data.leftStatusIllList
+      rightIllnessList.value = response.data.rightStatusIllList
+
+      // if (leftIllnessList.value.includes('8')){
+      //   leftinput.value = true
+      // } else {
+      //   leftinput.value = false
+      // }
+      // if (rightIllnessList.value.includes('8')){
+      //   rightinput.value = true
+      // } else {
+      //   rightinput.value = false
+      // }
+      
 
 
+      leftDiag.value = response.data.leftDiag
+      rightDiag.value = response.data.rightDiag
 
-
-
-
-
-
+      resInfo.value = response.data.resInfo
+    } else {
+      console.error("后端返回的 code 不是 1:", response?.data)
+    }
+  } catch (error) {
+    console.error("请求失败:", error)
+  }finally {
+    loading.value.close();
+  }
+})
 
 
 
@@ -104,49 +137,41 @@ const submitting = ref(false)
   }
 })
 */
-async () => {
-  id.value = route.query.id // 获取查询参数中的 id
-  console.log("当前 ID:", id.value)
 
-  try {
-    // 使用 await 等待数据返回
-    const response = await CheckPatientFir(id.value)
+//  onMounted(async () => {
+//   id.value = route.query.id // 获取查询参数中的 id
+//   console.log("当前 ID:", id.value)
 
-    // 确保返回的数据结构正确
-    if (response.code === 1) {
-      leftImg.value = response.data.leftImg
-      rightImg.value = response.data.rightImg
+//   try {
+//     // 使用 await 等待数据返回
+//     const response = await CheckPatientFir(id.value)
 
-      leftIllnessList.value = response.data.leftStatusIllList
-      rightIllnessList.value = response.data.rightStatusIllList
+//     // 确保返回的数据结构正确
+//     if (response.code === 1) {
+//       leftImg.value = response.data.leftImg
+//       rightImg.value = response.data.rightImg
 
-      // if (leftIllnessList.value.includes('8')){
-      //   leftinput.value = true
-      // } else {
-      //   leftinput.value = false
-      // }
-      // if (rightIllnessList.value.includes('8')){
-      //   rightinput.value = true
-      // } else {
-      //   rightinput.value = false
-      // }
-      
+//       leftIllnessList.value = response.data.leftStatusIllList
+//       rightIllnessList.value = response.data.rightStatusIllList
 
+//       leftDiag.value = response.data.leftDiag
+//       rightDiag.value = response.data.rightDiag
 
-      leftDiag.value = response.data.leftDiag
-      rightDiag.value = response.data.rightDiag
+//       resInfo.value = response.data.resInfo
 
-      resInfo.value = response.data.resInfo
-    } else {
-      console.error("后端返回的 code 不是 1:", response?.data)
-    }
-  } catch (error) {
-    console.error("请求失败:", error)
-  }
-}
+//       // 确保 UI 及时更新
+//       // updateIllnessState()
+//     } else {
+//       console.error("后端返回的 code 不是 1:", response?.data)
+//     }
+//   } catch (error) {
+//     console.error("请求失败:", error)
+//   }
+// })
 
 
-// // 判断是否需要显示其他异常病症的输入栏
+
+// 判断是否需要显示其他异常病症的输入栏
 // watch(() => leftIllnessList.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
 //     leftinput.value = true
@@ -154,7 +179,7 @@ async () => {
 //     leftinput.value = false
 //   }
 // },
-// { immediate: true }
+// { immediate: true , deep:true}
 // )
 // watch(() => rightIllnessList.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
@@ -163,7 +188,7 @@ async () => {
 //     rightinput.value = false
 //   }
 // },
-// { immediate: true }
+// { immediate: true , deep:true}
 // )
 
 // watch(() => leftIllnessList.value, (newValue,oldValue) => {
@@ -175,7 +200,7 @@ async () => {
 //         ifLeftNomal.value = false
 //       }
 //     },
-//     { immediate: true }
+//     { immediate: true , deep:true}
 // );
 
 // watch(() => rightIllnessList.value, (newValue,oldValue) => {
@@ -187,7 +212,7 @@ async () => {
 //         ifRightNomal.value = false
 //       }
 //     },
-//     { immediate: true }
+//     { immediate: true , deep:true}
 // );
 
 // const handleLeftIllnessList = () => {
@@ -208,9 +233,6 @@ async () => {
 //     ifRightNomal.value = false
 //   }
 // }
-
-
-
 
 
 
