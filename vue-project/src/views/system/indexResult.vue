@@ -274,14 +274,13 @@ onMounted(async () => {
 
 
 // 最后提交按钮点击事件
-const handleFinalResult = () => {
-  try {// 开始加载动画
-    submitting.value = true
+const handleFinalResult = async () => {
+  submitting.value = true
     // 请求提交病例改动
     console.log(idint)
     console.log(typeof idint)
     const resultdata = {
-      id: parseInt(idint, 10),
+      id: idint,
       leftStatusIllList: leftIllnessList,
       rightStatusIllList: rightIllnessList,
       leftDiag: leftDiag,
@@ -290,7 +289,10 @@ const handleFinalResult = () => {
       rightIllInfo: rightOtherIllness,
       resInfo: resInfo,
     }
-    const response = api.UploadAddPatient(resultdata)
+  
+  try {// 开始加载动画
+   
+    const response = await api.UploadAddPatient(resultdata)
     console.log(response)
     ElMessage.success('提交成功')
     
