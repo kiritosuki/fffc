@@ -11,6 +11,7 @@ const route = useRoute()
 // 保存 id
 const id = route.query.id;
 const idint = id
+console.log("当前dddddd ID:", id)
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
