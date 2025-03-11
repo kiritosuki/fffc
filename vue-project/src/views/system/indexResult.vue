@@ -6,12 +6,21 @@ import { CheckPatientFir } from '../../api/patients';
 import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
 
+
+defineProps({
+  id: {
+    type: [String, Number], // 根据需要，调整类型
+    required: true
+  }
+});
+
+
 // 接收数据
 const route = useRoute()
 // 保存 id
 const id = route.query.id;
-const idint = id
-console.log("当前dddddd ID:", id)
+
+// console.log("当前dddddd ID:", idint)
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
@@ -65,7 +74,7 @@ watch(rightIllnessList, (newVal) => {
 
 onMounted(async () => {
 
-  console.log("当前 ID:", id)
+  // console.log("当前 ID:", idint)
 
   loading.value = ElLoading.service({
     text: '加载中...',
@@ -85,7 +94,8 @@ onMounted(async () => {
 
       leftIllnessList.value = response.data.leftStatusIllList
       rightIllnessList.value = response.data.rightStatusIllList
-
+      idint.value = response.data.id
+      console.log("当前 ID:", id)
       // if (leftIllnessList.value.includes('8')){
       //   leftinput.value = true
       // } else {
@@ -265,17 +275,18 @@ onMounted(async () => {
 const handleFinalResult = () => {
   try{// 开始加载动画
   submitting.value = true
-  // 请求提交病例改动
   console.log(id)
+
+  // 请求提交病例改动
   const resultdata = {
-  id: idint,
-  leftStatusIllList: leftIllnessList,
+    leftStatusIllList:leftIllnessList,
+    id: parseInt(id),
   rightStatusIllList: rightIllnessList,
-  leftDiag: leftDiag,
-  rightDiag: rightDiag,
-  leftIllInfo: leftOtherIllness,
-  rightIllInfo: rightOtherIllness,
-  resInfo: resInfo,
+  leftDiag: leftDiag.value,
+  rightDiag: rightDiag.value,
+  leftIllInfo: leftOtherIllness.value,
+  rightIllInfo: rightOtherIllness.value,
+  resInfo: resInfo.value,
 }
   const response = api.UploadAddPatient(resultdata)
 
