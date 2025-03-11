@@ -10,7 +10,7 @@ import api from '../../api/index'
 const route = useRoute()
 // 保存 id
 const id = route.query.id;
-const idint = id
+const idint = parseInt(id, 10)
 console.log("当前dddddd ID:", id)
 const loading = ref(null); // 用于存储加载动画的实例
 
@@ -266,9 +266,10 @@ const handleFinalResult = () => {
   try{// 开始加载动画
   submitting.value = true
   // 请求提交病例改动
-  console.log(id)
+  console.log(idint)
+  console.log(typeof idint)
   const resultdata = {
-  id: idint,
+  id: parseInt(idint, 10),
   leftStatusIllList: leftIllnessList,
   rightStatusIllList: rightIllnessList,
   leftDiag: leftDiag,
