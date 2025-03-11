@@ -10,6 +10,7 @@ import api from '../../api/index'
 const route = useRoute()
 // 保存 id
 const id = route.query.id;
+const idint = id
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
@@ -264,8 +265,9 @@ const handleFinalResult = () => {
   try{// 开始加载动画
   submitting.value = true
   // 请求提交病例改动
+  console.log(id)
   const resultdata = {
-  id: id,
+  id: idint,
   leftStatusIllList: leftIllnessList,
   rightStatusIllList: rightIllnessList,
   leftDiag: leftDiag,
@@ -308,8 +310,8 @@ const handleFinalResult = () => {
     <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
     </el-image>
       <p>潜在病症：</p>
-      <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList">
-      <label for="1">正常</label><br>
+      <input type="checkbox" name="leftIllnessList" value='1' id='1' v-model="leftIllnessList">
+      <label for='1'>正常</label><br>
       <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='2'
         id="2" v-model="leftIllnessList">
       <label for="2">糖尿病</label><br>
