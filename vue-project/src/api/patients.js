@@ -62,13 +62,43 @@ const resultdata = {}
 
 
 
-export function UploadAddPatient(data) {
+
+
+
+/* export function UploadAddPatient(data) {
   return request({
     url: "/homeResult",
     method: "POST",
-    data
+    data :data,
+    headers: {
+      'Content-Type': 'application/json' // 明确指定 JSON 格式
+    }
   })
-}
+} */
+
+  export function UploadAddPatient(data) {
+    return request({
+      url: "/homeResult",  // 修正路径
+      method: "POST",
+      data: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+  
+
+
+// export const UploadAddPatient = (data) => {
+//   return axios.post('/homeResult', data)  // 使用 POST 请求提交数据
+//     .then(response => {
+//       return response.data;
+//     })
+//     .catch(error => {
+//       console.error('提交病例失败:', error);
+//       throw error;
+//     });
+// };
 
 export default {
     AddPatient,

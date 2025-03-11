@@ -6,12 +6,23 @@ import { CheckPatientFir } from '../../api/patients';
 import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
 
+
+defineProps({
+  id: {
+    type: [String, Number], // 根据需要，调整类型
+    required: true
+  }
+});
+
+
 // 接收数据
 const route = useRoute()
 // 保存 id
 const id = route.query.id;
+
 const idint = parseInt(id, 10)
 console.log("当前dddddd ID:", id)
+
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
@@ -65,7 +76,7 @@ watch(rightIllnessList, (newVal) => {
 
 onMounted(async () => {
 
-  console.log("当前 ID:", id)
+  // console.log("当前 ID:", idint)
 
   loading.value = ElLoading.service({
     text: '加载中...',
@@ -85,7 +96,8 @@ onMounted(async () => {
 
       leftIllnessList.value = response.data.leftStatusIllList
       rightIllnessList.value = response.data.rightStatusIllList
-
+      idint.value = response.data.id
+      console.log("当前 ID:", id)
       // if (leftIllnessList.value.includes('8')){
       //   leftinput.value = true
       // } else {
