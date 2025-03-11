@@ -200,7 +200,6 @@ import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import api from '../../api/index' 
-import api from '../../api/index'
 import { useRouter } from 'vue-router'
 const router = useRouter();
 const submitting = ref(false)

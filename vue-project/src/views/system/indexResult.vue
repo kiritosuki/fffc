@@ -3,29 +3,35 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { CheckPatientFir } from '../../api/patients';
-import { ElLoading } from 'element-plus'
+import { ElImage, ElLoading, ElMessage } from 'element-plus'
+import api from '../../api/index'
 
 // 接收数据
 const route = useRoute()
-// 使用 ref 来保存 id
+// 保存 id
 const id = route.query.id;
+console.log("当前dddddd ID:", id)
 const loading = ref(null); // 用于存储加载动画的实例
 
 // 图片初始化
 const leftImg = ref('')
 const rightImg = ref('')
 
+// 图片大图阅览
+const leftImgList = ref([leftImg.value])
+const rightImgList = ref([rightImg.value])
+
 // 检测病症初始化
 const leftIllnessList = ref([])
 const rightIllnessList = ref([])
 
 // 是否是正常的
-const ifLeftNomal = computed(() =>leftIllnessList.value.includes('1'))
+const ifLeftNomal = computed(() => leftIllnessList.value.includes('1'))
 const ifRightNomal = computed(() => rightIllnessList.value.includes('1'))
 
 // 其他异常病症
-const leftOtherIllness= ref('')
-const rightOtherIllness= ref('')
+const leftOtherIllness = ref('')
+const rightOtherIllness = ref('')
 
 // 是否有输入栏
 const leftinput = computed(() => leftIllnessList.value.includes('8'));
@@ -58,9 +64,9 @@ watch(rightIllnessList, (newVal) => {
 
 onMounted(async () => {
 
-console.log("当前 ID:", id)
+  console.log("当前 ID:", id)
 
-loading.value = ElLoading.service({
+  loading.value = ElLoading.service({
     text: '加载中...',
     background: 'rgba(0, 0, 0, 0.7)', // 背景颜色
     spinner: 'el-icon-loading', // 自定义加载图标
@@ -70,7 +76,7 @@ loading.value = ElLoading.service({
   try {
     // 使用 await 等待数据返回
     const response = await CheckPatientFir(id)
-
+    console.log("firresponse:", response)
     // 确保返回的数据结构正确
     if (response.code === 1) {
       leftImg.value = response.data.leftImg
@@ -89,11 +95,11 @@ loading.value = ElLoading.service({
       // } else {
       //   rightinput.value = false
       // }
-      
 
 
-      leftDiag.value = response.data.leftDiag
-      rightDiag.value = response.data.rightDiag
+      // 改为手动赋值
+      // leftDiag.value = response.data.leftDiag
+      // rightDiag.value = response.data.rightDiag
 
       resInfo.value = response.data.resInfo
     } else {
@@ -101,7 +107,7 @@ loading.value = ElLoading.service({
     }
   } catch (error) {
     console.error("请求失败:", error)
-  }finally {
+  } finally {
     loading.value.close();
   }
 })
@@ -256,116 +262,182 @@ loading.value = ElLoading.service({
 
 // 最后提交按钮点击事件
 const handleFinalResult = () => {
-    // 开始加载动画
-    submitting.value = true
+  try{// 开始加载动画
+  submitting.value = true
+  // 请求提交病例改动
+  const resultdata = {
+  id: id,
+  leftStatusIllList: leftIllnessList,
+  rightStatusIllList: rightIllnessList,
+  leftDiag: leftDiag,
+  rightDiag: rightDiag,
+  leftIllInfo: leftOtherIllness,
+  rightIllInfo: rightOtherIllness,
+  resInfo: resInfo,
+}
+  const response = api.UploadAddPatient(resultdata)
+
+  console.log(response)
 
 
-    // 请求提交病例改动
-
-    // 跳转
-
+    ElMessage.success('提交成功')
+    router.push({
+      path: `/homeResult`,
+    })
+  // 跳转
+  } catch (error) {
+    ElMessage.error('服务器繁忙，提交失败')
+    console.error("请求失败:", error)
+  }
+  finally {
+    submitting.value = false
+  }
 }
 </script>
 
 
 <template>
-    <div class="indexResult">
-      <div class="checkbox">
-        <p>左眼：</p>
-        <img :src="leftImg" alt="左眼图片损毁">
-        <p>潜在病症：</p>
-        <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList" @click="handleLeftIllnessList">
-        <label for="1">正常</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='2' id="2" v-model="leftIllnessList">
-        <label for="2">糖尿病</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='3' id="3" v-model="leftIllnessList">
-        <label for="3">青光眼</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='4' id="4" v-model="leftIllnessList">
-        <label for="4">白内障</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='5' id="5" v-model="leftIllnessList">
-        <label for="5">AMD</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='6' id="6" v-model="leftIllnessList">
-        <label for="6">高血压</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='7' id="7" v-model="leftIllnessList">
-        <label for="7">近视</label><br>
-        <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal|| leftIllnessList.includes('1')" value='8' id="8" v-model="leftIllnessList">
-        <label for="8">其他异常</label><br>
-        <p>{{ leftDiag }}</p>
-        <div id="lefInput">
+  <div class="indexResult">
+    <div class="checkbox">
+      <p>左眼：</p>
+      <el-image
+      :src="leftImg"
+      fit="cover"
+      :preview-src-list="leftImgList"
+      class="Elimage"
+      >
+    <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
+    </el-image>
+      <p>潜在病症：</p>
+      <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList">
+      <label for="1">正常</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='2'
+        id="2" v-model="leftIllnessList">
+      <label for="2">糖尿病</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='3'
+        id="3" v-model="leftIllnessList">
+      <label for="3">青光眼</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='4'
+        id="4" v-model="leftIllnessList">
+      <label for="4">白内障</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='5'
+        id="5" v-model="leftIllnessList">
+      <label for="5">AMD</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='6'
+        id="6" v-model="leftIllnessList">
+      <label for="6">高血压</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='7'
+        id="7" v-model="leftIllnessList">
+      <label for="7">近视</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='8'
+        id="8" v-model="leftIllnessList">
+      <label for="8">其他异常</label><br>
+      <div id="lefInput">
+        <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="leftOtherIllness" v-show="leftinput">
         </el-input>
       </div>
-</div>
     </div>
+  </div>
 
-    <div class="indexResult">
-      <div class="checkbox">
-        <p>右眼：</p>
-        <img :src="rightImg" alt="右眼图片损毁">
-        <p>潜在病症：</p>
-        <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList" @click="handleRightIllnessList">
-        <label for="9">正常</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='2' id="10" v-model="rightIllnessList">
-        <label for="10">糖尿病</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='3' id="11" v-model="rightIllnessList">
-        <label for="11">青光眼</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='4' id="12" v-model="rightIllnessList">
-        <label for="12">白内障</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='5' id="13" v-model="rightIllnessList">
-        <label for="13">AMD</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='6' id="14" v-model="rightIllnessList">
-        <label for="14">高血压</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='7' id="15" v-model="rightIllnessList">
-        <label for="15">近视</label><br>
-        <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal|| leftIllnessList.includes('1')" value='8' id="16" v-model="rightIllnessList">
-        <label for="16">其他异常</label><br>
-        <p>{{ rightDiag }}</p>
-        <div id="rigInput">
+  <div class="indexResult">
+    <div class="checkbox">
+      <p>右眼：</p>
+      <el-image
+      class="Elimage"
+      :src="rightImg"
+      fit="cover"
+      :preview-src-list="rightImgList"
+      >
+      <div slot="error" class="image-slot"></div>
+    </el-image>
+      <p>潜在病症：</p>
+      <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList"
+        @click="handleRightIllnessList">
+      <label for="9">正常</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='2'
+        id="10" v-model="rightIllnessList">
+      <label for="10">糖尿病</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='3'
+        id="11" v-model="rightIllnessList">
+      <label for="11">青光眼</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='4'
+        id="12" v-model="rightIllnessList">
+      <label for="12">白内障</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='5'
+        id="13" v-model="rightIllnessList">
+      <label for="13">AMD</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='6'
+        id="14" v-model="rightIllnessList">
+      <label for="14">高血压</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='7'
+        id="15" v-model="rightIllnessList">
+      <label for="15">近视</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='8'
+        id="16" v-model="rightIllnessList">
+      <label for="16">其他异常</label><br>
+
+      <div id="rigInput">
+        <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="rightOtherIllness" v-show="rightinput">
-        </el-input></div>
+        </el-input>
       </div>
     </div>
+  </div>
 
-    <div>
-        <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="resInfo" style="width: 70vw;">
-        </el-input>
-    </div>
+  <div>
+    <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="resInfo" class="result">
+    </el-input>
+  </div>
 
-    <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit"> 
-        {{ submitting ? '提交中...' : '提交病例' }}
-    </el-button>
+  <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit">
+    {{ submitting ? '提交中...' : '提交病例' }}
+  </el-button>
 
 </template>
 
 <style scoped>
-img {
-    width: 150px;
-    height: 150px;
-}
-
-
 .indexResult {
-    position: relative;
-    display: inline-block;
-    width: 25vw;
-    margin: 3vw;
-    padding: 1vw 1vw 3vw 3vw;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+  position: relative;
+  display: inline-block;
+  width: 30vw;
+  margin: 3vw;
+  padding: 1vw 1vw 3vw 3vw;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
+
+.Elimage {
+  width: 12vw;
+  height: 12vw;
+}
+
+
+
+
 .checkbox {
-    display: inline-block;
-    width: 50%;
+  display: inline-block;
+  width: 50%;
 }
-#lefInput, #rigInput {
+
+#lefInput,
+#rigInput {
   display: inline-block;
   width: 15vw;
   position: absolute;
-  top: 70%;
-  left: 40%;
+  top: 30%;
+  left: 50%;
+}
+.input {
+  margin-bottom: 12vw;
+}
+.result {
+  display: inline-block;
+  margin-left: 3vw;
+  width: 64vw;
 }
 #submit {
   margin-top: 1vw;
-  margin-left: 64vw;
+  margin-left: 59vw;
 }
 </style>

@@ -58,7 +58,13 @@ export function CheckPatientFir(id) {
   })
 }
 
-
+export function UploadAddPatient(data) {
+  return request({
+    url: "/honeResult",
+    method: "POST",
+    data
+  })
+}
 
 export default {
     AddPatient,
