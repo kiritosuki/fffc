@@ -3,7 +3,8 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { CheckPatientFir } from '../../api/patients';
-import { ElLoading, ElMessage } from 'element-plus'
+import { ElImage, ElLoading, ElMessage } from 'element-plus'
+import api from '../../api/index'
 
 // 接收数据
 const route = useRoute()
@@ -14,6 +15,10 @@ const loading = ref(null); // 用于存储加载动画的实例
 // 图片初始化
 const leftImg = ref('')
 const rightImg = ref('')
+
+// 图片大图阅览
+const leftImgList = ref([leftImg.value])
+const rightImgList = ref([rightImg.value])
 
 // 检测病症初始化
 const leftIllnessList = ref([])
@@ -269,7 +274,7 @@ const handleFinalResult = () => {
   rightIllInfo: rightOtherIllness,
   resInfo: resInfo,
 }
-  const response = UploadAddPatient(resultdata)
+  const response = api.UploadAddPatient(resultdata)
 
   console.log(response)
 
@@ -283,6 +288,9 @@ const handleFinalResult = () => {
     ElMessage.error('服务器繁忙，提交失败')
     console.error("请求失败:", error)
   }
+  finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -291,10 +299,16 @@ const handleFinalResult = () => {
   <div class="indexResult">
     <div class="checkbox">
       <p>左眼：</p>
-      <img :src="leftImg" alt="左眼图片损毁">
+      <el-image
+      :src="leftImg"
+      fit="cover"
+      :preview-src-list="leftImgList"
+      class="Elimage"
+      >
+    <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
+    </el-image>
       <p>潜在病症：</p>
-      <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList"
-        @click="handleLeftIllnessList">
+      <input type="checkbox" name="leftIllnessList" value='1' id="1" v-model="leftIllnessList">
       <label for="1">正常</label><br>
       <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='2'
         id="2" v-model="leftIllnessList">
@@ -328,7 +342,14 @@ const handleFinalResult = () => {
   <div class="indexResult">
     <div class="checkbox">
       <p>右眼：</p>
-      <img :src="rightImg" alt="右眼图片损毁">
+      <el-image
+      class="Elimage"
+      :src="rightImg"
+      fit="cover"
+      :preview-src-list="rightImgList"
+      >
+      <div slot="error" class="image-slot"></div>
+    </el-image>
       <p>潜在病症：</p>
       <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList"
         @click="handleRightIllnessList">
@@ -375,21 +396,23 @@ const handleFinalResult = () => {
 </template>
 
 <style scoped>
-img {
-  width: 150px;
-  height: 150px;
-}
-
-
 .indexResult {
   position: relative;
   display: inline-block;
-  width: 25vw;
+  width: 30vw;
   margin: 3vw;
   padding: 1vw 1vw 3vw 3vw;
   border: 1px solid #ccc;
   border-radius: 10px;
 }
+
+.Elimage {
+  width: 12vw;
+  height: 12vw;
+}
+
+
+
 
 .checkbox {
   display: inline-block;
@@ -401,11 +424,11 @@ img {
   display: inline-block;
   width: 15vw;
   position: absolute;
-  top: 40%;
-  left: 40%;
+  top: 30%;
+  left: 50%;
 }
 .input {
-  margin-bottom: 1vw;
+  margin-bottom: 12vw;
 }
 .result {
   display: inline-block;
