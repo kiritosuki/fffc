@@ -58,9 +58,13 @@ export function CheckPatientFir(id) {
   })
 }
 
+const resultdata = {}
+
+
+
 export function UploadAddPatient(data) {
   return request({
-    url: "/honeResult",
+    url: "/homeResult",
     method: "POST",
     data
   })
@@ -70,6 +74,7 @@ export default {
     AddPatient,
     uploadImg,
     CheckPatientFir,
+    UploadAddPatient,
 }
 
 

@@ -263,31 +263,30 @@ onMounted(async () => {
 
 // 最后提交按钮点击事件
 const handleFinalResult = () => {
-  try{// 开始加载动画
-  submitting.value = true
-  // 请求提交病例改动
-  console.log(idint)
-  console.log(typeof idint)
-  const resultdata = {
-  id: parseInt(idint, 10),
-  leftStatusIllList: leftIllnessList,
-  rightStatusIllList: rightIllnessList,
-  leftDiag: leftDiag,
-  rightDiag: rightDiag,
-  leftIllInfo: leftOtherIllness,
-  rightIllInfo: rightOtherIllness,
-  resInfo: resInfo,
-}
-  const response = api.UploadAddPatient(resultdata)
-
-  console.log(response)
-
-
+  try {// 开始加载动画
+    submitting.value = true
+    // 请求提交病例改动
+    console.log(idint)
+    console.log(typeof idint)
+    const resultdata = {
+      id: parseInt(idint, 10),
+      leftStatusIllList: leftIllnessList,
+      rightStatusIllList: rightIllnessList,
+      leftDiag: leftDiag,
+      rightDiag: rightDiag,
+      leftIllInfo: leftOtherIllness,
+      rightIllInfo: rightOtherIllness,
+      resInfo: resInfo,
+    }
+    const response = api.UploadAddPatient(resultdata)
+    console.log(response)
     ElMessage.success('提交成功')
+    
+    
     router.push({
       path: `/homeResult`,
     })
-  // 跳转
+    // 跳转
   } catch (error) {
     ElMessage.error('服务器繁忙，提交失败')
     console.error("请求失败:", error)
@@ -303,14 +302,9 @@ const handleFinalResult = () => {
   <div class="indexResult">
     <div class="checkbox">
       <p>左眼：</p>
-      <el-image
-      :src="leftImg"
-      fit="cover"
-      :preview-src-list="leftImgList"
-      class="Elimage"
-      >
-    <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
-    </el-image>
+      <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
+        <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
+      </el-image>
       <p>潜在病症：</p>
       <input type="checkbox" name="leftIllnessList" value='1' id='1' v-model="leftIllnessList">
       <label for='1'>正常</label><br>
@@ -346,38 +340,33 @@ const handleFinalResult = () => {
   <div class="indexResult">
     <div class="checkbox">
       <p>右眼：</p>
-      <el-image
-      class="Elimage"
-      :src="rightImg"
-      fit="cover"
-      :preview-src-list="rightImgList"
-      >
-      <div slot="error" class="image-slot"></div>
-    </el-image>
+      <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
+        <div slot="error" class="image-slot"></div>
+      </el-image>
       <p>潜在病症：</p>
       <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList"
         @click="handleRightIllnessList">
       <label for="9">正常</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='2'
-        id="10" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='2' id="10" v-model="rightIllnessList">
       <label for="10">糖尿病</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='3'
-        id="11" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='3' id="11" v-model="rightIllnessList">
       <label for="11">青光眼</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='4'
-        id="12" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='4' id="12" v-model="rightIllnessList">
       <label for="12">白内障</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='5'
-        id="13" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='5' id="13" v-model="rightIllnessList">
       <label for="13">AMD</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='6'
-        id="14" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='6' id="14" v-model="rightIllnessList">
       <label for="14">高血压</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='7'
-        id="15" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='7' id="15" v-model="rightIllnessList">
       <label for="15">近视</label><br>
-      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')" value='8'
-        id="16" v-model="rightIllnessList">
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='8' id="16" v-model="rightIllnessList">
       <label for="16">其他异常</label><br>
 
       <div id="rigInput">
@@ -431,14 +420,17 @@ const handleFinalResult = () => {
   top: 30%;
   left: 50%;
 }
+
 .input {
   margin-bottom: 12vw;
 }
+
 .result {
   display: inline-block;
   margin-left: 3vw;
   width: 64vw;
 }
+
 #submit {
   margin-top: 1vw;
   margin-left: 59vw;
