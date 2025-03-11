@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { CheckPatientFir } from '../../api/patients';
-import { ElLoading } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 
 // 接收数据
 const route = useRoute()
@@ -70,7 +70,7 @@ onMounted(async () => {
   try {
     // 使用 await 等待数据返回
     const response = await CheckPatientFir(id)
-
+    console.log("firresponse:", response)
     // 确保返回的数据结构正确
     if (response.code === 1) {
       leftImg.value = response.data.leftImg
@@ -256,7 +256,7 @@ onMounted(async () => {
 
 // 最后提交按钮点击事件
 const handleFinalResult = () => {
-  // 开始加载动画
+  try{// 开始加载动画
   submitting.value = true
   // 请求提交病例改动
   const resultdata = {
@@ -265,12 +265,24 @@ const handleFinalResult = () => {
   rightStatusIllList: rightIllnessList,
   leftDiag: leftDiag,
   rightDiag: rightDiag,
-
-  resInfo: resInfo
+  leftIllInfo: leftOtherIllness,
+  rightIllInfo: rightOtherIllness,
+  resInfo: resInfo,
 }
+  const response = UploadAddPatient(resultdata)
 
+  console.log(response)
+
+
+    ElMessage.success('提交成功')
+    router.push({
+      path: `/homeResult`,
+    })
   // 跳转
-
+  } catch (error) {
+    ElMessage.error('服务器繁忙，提交失败')
+    console.error("请求失败:", error)
+  }
 }
 </script>
 
