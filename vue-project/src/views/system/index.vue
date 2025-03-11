@@ -471,11 +471,11 @@ if (res.code === 1) {
       const msgMap = {
         400: '请求参数错误',
         401: '身份验证失败',
-        500: '服务器错误'
+        500: error.msg,
       };
       ElMessage.error(msgMap[error.response.status] || '操作失败');
     } else {
-      ElMessage.error('请求失败，请检查网络');
+      ElMessage.error(error.msg);
     }
   } finally {
     submitting.value = false;
