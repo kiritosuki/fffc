@@ -1,20 +1,302 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { ElLoading, ElMessage } from 'element-plus';
+import { CheckPatients } from '../../api/patients';
+
+// 用于存储加载动画的实例
+const loading = ref(null); 
+
+
+
 
 // 控制 Drawer 显示/隐藏的状态
 const isDrawerOpen = ref(false);
+const size = ref('30%'); // Drawer 的宽度或高度
 
 // 打开抽屉默认为精确查询
 const activeName = ref("first")
 
+// 查询数据
 const checkName = ref('');
 const checkGender = ref('');
 const checkIdCard = ref('');
 const checkPhoneNumber = ref('');
+const checkTime = ref('')
+const checkPage = ref(1)
+const checkPageSize = ref(10)
+
+const tableDataRows = ref([{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+{
+  name: '王小虎',
+  gender: '男',
+  idCard: '123456789012345678',
+  phone: '12345678901',
+  diagTime: '2023-07-01',
+  doctorName: 'Dr. Johnson',
+  updateTime: '2023-07-01'
+},
+
+])
+const selection =ref([])
+//   格式化日期
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，需要加 1
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 
 
-const size = ref('30%'); // Drawer 的宽度或高度
+onMounted( async () => {
+  // 开始加载动画
+  loading.value = ElLoading.service({
+    text: '加载中...',
+    background: 'rgba(0, 0, 0, 0.7)', // 背景颜色
+    spinner: 'el-icon-loading', // 自定义加载图标
+    target: document.body, // 指定加载动画覆盖的区域
+  });
+  try {
+    const response = await CheckPatients('', '', '', '', '', '', checkPage, checkPageSize)
+    
+    // 测试响应数据
+    console.log(response)
+
+    if (response.data.code === 1){
+    tableDataRows.value = response.data.data.rows
+    ElMessage.success('数据加载成功')
+  } 
+  else if (response.data.code === 0) {
+    ElMessage.error('数据加载失败,请再次刷新')
+    // ElMessage.error('数据加载失败,正在刷新中...')
+    // await sleep(1000, signal)
+    // 刷新页面
+    // window.location.reload();
+  }
+
+  } catch (error) {
+    ElMessage.error('服务器丢失，请稍后再试')
+    console.error('Error fetching data:', error);
+  } finally {
+    loading.value.close();
+  }
+
+
+
+})
+
+
+
+// 测试函数
+const Check = () => {
+  console.log(checkName.value);
+  console.log(checkGender.value);
+  console.log(checkIdCard.value);
+  console.log(checkPhoneNumber.value);
+  console.log(checkTime.value);
+  console.log(formatDate(checkTime.value[0]));
+  console.log(formatDate(checkTime.value[1]));
+}
+
+const handleClick = (tab, event) => {
+  console.log(tab, event);
+}
+// 切换 Drawer 显示/隐藏的函数
+const toggleDrawer = () => {
+  isDrawerOpen.value = true;
+};
+
+
+
+
 
 // 日期快捷选项功能
 // const pickerOptions = {
@@ -44,35 +326,34 @@ const size = ref('30%'); // Drawer 的宽度或高度
 //     }
 //   }]
 // }
-const checkTime = ref('')
-
-//   格式化日期
-function formatDate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，需要加 1
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
 
 
 
-const Check = () => {
-  console.log(checkName.value);
-  console.log(checkGender.value);
-  console.log(checkIdCard.value);
-  console.log(checkPhoneNumber.value);
-  console.log(checkTime.value);
-  console.log(formatDate(checkTime.value[0]));
-  console.log(formatDate(checkTime.value[1]));
-}
+  // 这是json格式的请求废稿
+  // try {
+  //   const checkbox ={
+  //     name: checkName.value,
+  //     gender: checkGender.value,
+  //     begin: formatDate(checkTime.value[0]),
+  //     end: formatDate(checkTime.value[1]),
+  //     phone: checkPhoneNumber.value,
+  //     idCard: checkIdCard.value,
+  //     page: checkPage.value,
+  //     pageSize: checkPageSize.value,
+  //   }
+    
+  //   const response = await CheckPatients(checkbox)
+  //   console.log(response)
+  //   tableDataRows.value = response.data
+  //   loading.value.close();
+  // } catch (error) {
+  //   console.error('Error fetching data:', error);
+  // } finally {
+  //   // 停止加载
+  //   loading.value.close();
+  // }
 
-const handleClick = (tab, event) => {
-  console.log(tab, event);
-}
-// 切换 Drawer 显示/隐藏的函数
-const toggleDrawer = () => {
-  isDrawerOpen.value = true;
-};
+
 </script>
 
 
@@ -83,6 +364,57 @@ const toggleDrawer = () => {
     <el-button type="primary" @click="toggleDrawer">
       搜索病例
     </el-button>
+    <div>
+      <span>过滤器:</span>
+    </div>
+
+
+
+
+    <el-table
+    ref="tableRows"  
+    :data="tableDataRows"
+      stripe
+      style="width: 100%" 
+      class="table"
+      height="70vh"
+      highlight-current-row
+      >
+      <el-table-column
+      type="selection"
+      width="50">
+    </el-table-column>
+
+      <el-table-column
+        prop="diagTime"
+        label="诊断日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="gender"
+        label="性别"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="doctorName"
+        label="诊断医师">
+      </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        label="最后更新日期">
+      </el-table-column>
+      <el-table-column
+        prop=""
+        label="">
+      </el-table-column>
+    </el-table>
+
+
 
 
     <!-- Drawer 组件 -->
@@ -113,21 +445,27 @@ const toggleDrawer = () => {
           <el-button type="primary" class="search-btn" @click="Check">搜索</el-button>
         </el-tab-pane>
       </el-tabs>
-
-
-
     </el-drawer>
+    <div class="pageSelector">
     <el-pagination background layout="prev, pager, next" :total="1000">
     </el-pagination>
-
+</div>
 
   </div>
 </template>
 
-<style>
+<style scoped>
 .search-btn {
   margin-top: 2vw;
   margin-left: 83%;
 
+}
+.table{
+  margin-top: 10px;
+}
+.pageSelector {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  margin-top: 20px; /* 可根据需要调整间距 */
 }
 </style>

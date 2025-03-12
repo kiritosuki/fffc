@@ -86,6 +86,23 @@ const resultdata = {}
       }
     });
   }
+
+
+  export function CheckPatients(name, gender, begin, end, phone, idCard, page = 1, pageSize = 10) {
+    let url = `/patients?page=${page}&pagesize=${pageSize}`
+    if(name) url += `&name=${name}`
+    if(gender) url += `&gender=${gender}`
+    if(begin) url += `&begin=${begin}`
+    if(end) url += `&end=${end}`
+    if(phone) url += `&phone=${phone}`
+    if(idCard) url += `&idCard=${idCard}`
+    return request({
+      url: url,
+      method: "GET",
+    })
+  }
+
+
   
 
 
@@ -105,6 +122,7 @@ export default {
     uploadImg,
     CheckPatientFir,
     UploadAddPatient,
+    CheckPatients,
 }
 
 
