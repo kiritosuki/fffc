@@ -463,7 +463,10 @@ if (res.code === 1) {
     leftImageList.value = [];
     rightImageList.value = [];
 
-    ElMessage.success('病例添加成功');
+    if(res.code === 1) {
+      ElMessage.success('病例添加成功');
+    }else{
+      ElMessage.success(res.msg);}
     handleCancel();
   } catch (error) {
     if (error.response) {
