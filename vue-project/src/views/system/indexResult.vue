@@ -7,13 +7,6 @@ import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
 
 
-defineProps({
-  id: {
-    type: [String, Number], // 根据需要，调整类型
-    required: true
-  }
-});
-
 
 // 接收数据
 const route = useRoute()
@@ -59,19 +52,7 @@ const resInfo = ref('')
 // 提交按钮加载控制初始化
 const submitting = ref(false)
 
-/* watch(leftIllnessList, (newVal) => {
-  if (newVal.includes('1')) {
-    // 如果包含正常选项，则过滤掉其他选项
-    leftIllnessList.value = ['1']
-  }
-}, { deep: true })
 
-watch(rightIllnessList, (newVal) => {
-  if (newVal.includes('1')) {
-    // 如果包含正常选项，则过滤掉其他选项
-    rightIllnessList.value = ['1']
-  }
-}, { deep: true }) */
 
 
 onMounted(async () => {
@@ -96,7 +77,7 @@ onMounted(async () => {
 
       leftIllnessList.value = response.data.leftStatusIllList
       rightIllnessList.value = response.data.rightStatusIllList
-      idint.value = response.data.id
+      idint = response.data.id
       console.log("当前 ID:", id)
       // if (leftIllnessList.value.includes('8')){
       //   leftinput.value = true
@@ -116,18 +97,71 @@ onMounted(async () => {
 
       resInfo.value = response.data.resInfo
     } else {
-      console.error("后端返回的 code 不是 1:", response?.data)
+      console.error(res.data.msg)
     }
   } catch (error) {
-    console.error("请求失败:", error)
+    ElMessage.error('服务器繁忙，请稍后再试')
   } finally {
     loading.value.close();
   }
 })
 
 
+// 最后提交按钮点击事件
+const handleFinalResult = async () => {
+  submitting.value = true
+    // 请求提交病例改动
+    console.log("endid:",id)
+    console.log(idint)
+    console.log(typeof idint)
+    const resultdata = {
+      id: id,
+      leftStatusIllList: leftIllnessList.value,
+      rightStatusIllList: rightIllnessList.value,
+      leftDiag: leftDiag.value,
+      rightDiag: rightDiag.value,
+      leftIllInfo: leftOtherIllness.value,
+      rightIllInfo: rightOtherIllness.value,
+      resInfo: resInfo.value,
+    }
+  
+  try {// 开始加载动画
+    const res = await api.UploadAddPatient(resultdata)
+    console.log(res)
+    if (res.code === 1){
+    ElMessage.success('提交成功')
+    console.log(id)
+    // 跳转
+    router.push({
+      path: `/homeResult`,
+    })
+    } else {
+      ElMessage.error(res.msg)
+    }
+  } catch (error) {
+    ElMessage.error('服务器繁忙，提交失败')
+    console.error("请求失败:", error)
+  }
+  finally {
+    submitting.value = false
+  }
+}
 
 
+
+/* watch(leftIllnessList, (newVal) => {
+  if (newVal.includes('1')) {
+    // 如果包含正常选项，则过滤掉其他选项
+    leftIllnessList.value = ['1']
+  }
+}, { deep: true })
+
+watch(rightIllnessList, (newVal) => {
+  if (newVal.includes('1')) {
+    // 如果包含正常选项，则过滤掉其他选项
+    rightIllnessList.value = ['1']
+  }
+}, { deep: true }) */
 
 // const leftinput = computed(() => {
 //   for (let i = 0; i < leftIllnessList.value.length; i++) {
@@ -268,47 +302,6 @@ onMounted(async () => {
 //   }
 // }
 
-
-
-
-
-
-// 最后提交按钮点击事件
-const handleFinalResult = async () => {
-  submitting.value = true
-    // 请求提交病例改动
-    console.log(idint)
-    console.log(typeof idint)
-    const resultdata = {
-      id: idint,
-      leftStatusIllList: leftIllnessList,
-      rightStatusIllList: rightIllnessList,
-      leftDiag: leftDiag,
-      rightDiag: rightDiag,
-      leftIllInfo: leftOtherIllness,
-      rightIllInfo: rightOtherIllness,
-      resInfo: resInfo,
-    }
-  
-  try {// 开始加载动画
-   
-    const response = await api.UploadAddPatient(resultdata)
-    console.log(response)
-    ElMessage.success('提交成功')
-    
-    
-    router.push({
-      path: `/homeResult`,
-    })
-    // 跳转
-  } catch (error) {
-    ElMessage.error('服务器繁忙，提交失败')
-    console.error("请求失败:", error)
-  }
-  finally {
-    submitting.value = false
-  }
-}
 </script>
 
 
