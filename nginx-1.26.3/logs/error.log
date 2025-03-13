@@ -1,0 +1,5 @@
+2025/03/13 14:12:49 [notice] 11476#18496: signal process started
+2025/03/13 14:12:49 [error] 11476#18496: OpenEvent("Global\ngx_reload_28496") failed (2: The system cannot find the file specified)
+2025/03/13 14:13:23 [notice] 29460#27956: signal process started
+2025/03/13 14:20:05 [emerg] 23364#26408: duplicate location "/" in D:\000study\fuchuang\nginx-1.26.3/conf/nginx.conf:34
+2025/03/13 14:22:44 [notice] 27808#26996: signal process started
