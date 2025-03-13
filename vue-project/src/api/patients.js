@@ -111,6 +111,7 @@ const resultdata = {}
   }
 
 
+
 // export const UploadAddPatient = (data) => {
 //   return axios.post('/homeResult', data)  // 使用 POST 请求提交数据
 //     .then(response => {
@@ -128,7 +129,11 @@ export default {
     CheckPatientFir,
     UploadAddPatient,
     CheckPatients,
-    DeletePatient
+    DeletePatient,
+    // 获取病历详情
+  getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
+  // 更新病历
+  updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data)
 }
 
 
