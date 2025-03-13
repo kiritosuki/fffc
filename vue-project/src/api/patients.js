@@ -103,7 +103,12 @@ const resultdata = {}
   }
 
 
-  
+    export function DeletePatient(id) {
+    return request({
+      url: `/patients?ids=${id}`,
+      method: "DELETE",
+    })
+  }
 
 
 // export const UploadAddPatient = (data) => {
@@ -123,6 +128,7 @@ export default {
     CheckPatientFir,
     UploadAddPatient,
     CheckPatients,
+    DeletePatient
 }
 
 
