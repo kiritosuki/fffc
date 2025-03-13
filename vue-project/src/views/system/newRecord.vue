@@ -328,10 +328,12 @@ const diseaseOptions = ref([
     { type:'array',required: true, message: '请选择右眼疾病', trigger: 'change' }
   ],
   leftIllInfo: [
-    // { required: true, message: '请输入左眼其他异常', trigger: 'blur' }
+    // 默认为非必填项，动态更新
+    { required: false, message: '请输入左眼其他异常', trigger: 'blur' }
   ],
   rightIllInfo: [
-    // { required: true, message: '请输入右眼其他异常', trigger: 'blur' } 
+    // 默认为非必填项，动态更新
+    { required: false, message: '请输入右眼其他异常', trigger: 'blur' }
   ],
 })
   
@@ -400,14 +402,32 @@ const handleDiseaseSelection = (type, newVal) => {
 // 监听左眼选择
 watch(
   () => medicalRecord.value.leftStatusIllList,
-  (newVal) => handleDiseaseSelection('left', newVal),
+  (newVal) =>{ handleDiseaseSelection('left', newVal)
+  // 动态更新leftIllInfo的必填规则
+  if (newVal.includes(8)) {
+      // 如果选择了“其他异常”，则leftIllInfo必填
+      rules.leftIllInfo = [{ required: true, message: '请输入左眼其他异常', trigger: 'blur' }]
+    } else {
+      // 否则，leftIllInfo非必填
+      rules.leftIllInfo = [{ required: false, message: '请输入左眼其他异常', trigger: 'blur' }]
+    }
+  },
   { deep: true }
 )
 
 // 监听右眼选择  
 watch(
   () => medicalRecord.value.rightStatusIllList,
-  (newVal) => handleDiseaseSelection('right', newVal),
+  (newVal) => {handleDiseaseSelection('right', newVal)
+  // 动态更新rightIllInfo的必填规则
+  if (newVal.includes(8)) {
+      // 如果选择了“其他异常”，则rightIllInfo必填
+      rules.rightIllInfo = [{ required: true, message: '请输入右眼其他异常', trigger: 'blur' }]
+    } else {
+      // 否则，rightIllInfo非必填
+      rules.rightIllInfo = [{ required: false, message: '请输入右眼其他异常', trigger: 'blur' }]
+    }
+  },
   { deep: true }
 )
 
