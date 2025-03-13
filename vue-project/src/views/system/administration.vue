@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { ElLoading, ElMessage, ElMessageBox } from 'element-plus';
 import { CheckPatients, DeletePatient } from '../../api/patients';
 import { useRouter } from 'vue-router';
@@ -25,7 +25,8 @@ const checkPhoneNumber = ref('');
 const checkTime = ref('')
 const checkPage = ref(1)
 const checkPageSize = ref(10)
-const pageSizeList = [{
+
+const pageSizeList = ref([{
           value: '选项1',
           label: '10'
         }, {
@@ -34,7 +35,14 @@ const pageSizeList = [{
         }, {
           value: '选项3',
           label: '20'
-}]
+}])
+const totalPatient = ref('')
+const maxPage = computed(() => {
+  if (!totalPatient.value)
+    return 2
+  else
+    return Math.ceil(totalPatient.value / checkPageSize.value)
+})
 // 格式化日期
 function formatDate(date) {
   const year = date.getFullYear();
@@ -43,6 +51,37 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+const RefreshPage = async (value) => {
+  try {
+  const response = await CheckPatients(checkName.value, checkGender.value, formatDate(checkTime.value[0]), formatDate(checkTime.value[1]), checkPhoneNumber.value, checkIdCard.value, value, checkPageSize.value)
+  if (response.data.code === 1){
+    tableDataRows.value = response.data.data.rows
+    ElMessage.success('数据加载成功')
+    isDrawerOpen.value = false;
+  } else {
+    ElMessage.error(response.data.msg)
+  }
+} catch (error) {
+  ElMessage.error('服务器丢失，请稍后再试')
+}finally {
+  loading.value.close();
+}}
+
+const RefreshPageSize = async (value) => {
+  try {
+  const response = await CheckPatients(checkName.value, checkGender.value, formatDate(checkTime.value[0]), formatDate(checkTime.value[1]), checkPhoneNumber.value, checkIdCard.value, checkPage.value, value)
+  if (response.data.code === 1){
+    tableDataRows.value = response.data.data.rows
+    ElMessage.success('数据加载成功')
+    isDrawerOpen.value = false;
+  } else {
+    ElMessage.error(response.data.msg)
+  }
+} catch (error) {
+  ElMessage.error('服务器丢失，请稍后再试')
+}finally {
+  loading.value.close();
+}}
 // 数据监听与限制
 watch(checkIdCard, (newValue) => {
  if (newValue.length > 14) {
@@ -315,7 +354,6 @@ const handleEdit = async (index, row) => {
     }
 };
    
-
 // 单独删除操作
 const handleDelete = async (index, row) => {
   await ElMessageBox.confirm('确定要删除该的数据吗？', '提示', {
@@ -363,6 +401,7 @@ onMounted( async () => {
     console.log(response)
 
     if (response.data.code === 1){
+    totalPatient.value = response.data.total
     tableDataRows.value = response.data.data.rows
     ElMessage.success('数据加载成功')
   } 
@@ -383,17 +422,18 @@ onMounted( async () => {
 })
 
 // 测试函数
-const Check = () => {
-  console.log(checkName.value);
-  console.log(checkGender.value);
-  console.log(checkIdCard.value);
-  console.log(checkPhoneNumber.value);
-  console.log(checkTime.value);
-  console.log(formatDate(checkTime.value[0]));
-  console.log(formatDate(checkTime.value[1]));
-}
+// const Check = () => {
+//   console.log(checkName.value);
+//   console.log(checkGender.value);
+//   console.log(checkIdCard.value);
+//   console.log(checkPhoneNumber.value);
+//   console.log(checkTime.value);
+//   console.log(formatDate(checkTime.value[0]));
+//   console.log(formatDate(checkTime.value[1]));
+// }
 
 // 全页面开关抽屉
+
 const handleClick = (tab, event) => {
   console.log(tab, event);
 }
@@ -525,8 +565,9 @@ const VagueCheck = async () => {
     <el-button type="danger" @click="DeleteAllSelected">
     一键删除
 </el-button>
-
-<el-select v-model="checkPageSize" placeholder="请选择" class="pageSizeSelector">
+<span>当前页:</span>
+<el-input-number v-model="checkPage" @change="RefreshPage" :min="1" :max="maxPage" label="描述文字"></el-input-number>
+<el-select v-model="checkPageSize" placeholder="请选择" class="pageSizeSelector" @change="RefreshPageSize">
     <el-option
       v-for="item in pageSizeList"
       :key="item.value"
@@ -545,7 +586,7 @@ const VagueCheck = async () => {
       stripe
       style="width: 100%" 
       class="table"
-      height="70vh"
+      height="72vh"
       highlight-current-row
       @selection-change="handleSelectionChange" 
       >
@@ -619,10 +660,15 @@ const VagueCheck = async () => {
       </el-tabs>
     </el-drawer>
 
-    <div class="pageSelector">
-    <el-pagination background layout="prev, pager, next" :total="1000">
+
+
+
+
+
+    <!-- <div class="pageSelector">
+    <el-pagination background layout="prev, pager, next" :total="totalPatient" :page-size="checkPageSize" hide-on-single-page>
     </el-pagination>
-</div>
+    </div> -->
 
   </div>
 </template>
@@ -644,7 +690,7 @@ const VagueCheck = async () => {
   margin-top: 10px;
 }
 
-.pageSelector {
+.pageSelector { 
   display: flex;
   justify-content: center; /* 水平居中 */
   margin-top: 20px; /* 可根据需要调整间距 */
