@@ -126,7 +126,7 @@ const handleFinalResult = async () => {
     console.log(res);
     if (res.code === 1) {
       ElMessage.success('提交成功');
-      router.push({ path: `/homeResult` });
+      router.push({ path: `/home` });
     } else {
       ElMessage.error(res.msg);
     }
