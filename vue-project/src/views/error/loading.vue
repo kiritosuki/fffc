@@ -32,9 +32,7 @@
     }
   })
 
-  export default{
-    name:'LoadingPage'
-  }
+  defineExpose({ props });
   </script>
   
   <style scoped>
