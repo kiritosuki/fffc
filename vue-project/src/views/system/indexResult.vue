@@ -130,6 +130,9 @@ onMounted(async () => {
       // leftIllnessListStr.value = response.data.leftStatusIllList
       // rightIllnessListStr.value = response.data.rightStatusIllList
       // 改为string类型
+      console.log("leftIllnessListStr:", leftIllnessListStr.value)
+      console.log("rightIllnessListStr:", rightIllnessListStr.value)
+      console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.leftStatusIllList
       rightIllnessListInter.value = response.data.rightStatusIllList
       leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
@@ -398,7 +401,7 @@ watch(rightIllnessListStr, (newVal) => {
     <div class="checkbox">
       <p>左眼：</p>
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
-        <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
+        <div class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
       <el-checkbox-group v-model="leftIllnessListStr" :min="1">
     <el-checkbox value="1" @change="leftIfNomal">正常</el-checkbox><br>
@@ -422,7 +425,7 @@ watch(rightIllnessListStr, (newVal) => {
     <div class="checkbox">
       <p>右眼：</p>
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
-        <div slot="error" class="image-slot"></div>
+        <div class="image-slot"></div>
       </el-image>
       <el-checkbox-group v-model="rightIllnessListStr" :min="1">
     <el-checkbox value="1" @change="rightIfNomal">正常</el-checkbox><br>

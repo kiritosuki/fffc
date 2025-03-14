@@ -14,7 +14,8 @@
 
 | 字段名    | 类型   | 是否必须 |  示例值 | 备注     |
 |----------|--------|---------|--------|----------|
-| image    | string | 是 |"https://web-framework.oss-cn-hangzhou.aliyuncs.com/2022-09-03-07-37-38222.jpg"|图片URL|
+| left_image    | string | 是 |"https://web-framework.oss-cn-hangzhou.aliyuncs.com/2022-09-03-07-37-38222.jpg"|左眼图片URL|
+| right_image    | string | 是 |"https://web-framework.oss-cn-hangzhou.aliyuncs.com/2022-09-03-07-37-38222.jpg"|右眼图片URL|
 | age      | int | 是 | 35 | 0 ≤ age ≤ 120 |
 | gender      | int | 是 | 1 | 0: 女性<br>1: 男性 |
 | symptoms | string | 是 | "视力模糊3个月，伴飞蚊症" | 10-500个字符 |
