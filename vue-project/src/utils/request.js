@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { handleError } from '@/utils/errorHandler'
 // const request = axios.create({
 //   baseURL: 'http://localhost:8080',    // 请求基础URL
 //   timeout: 1000
@@ -44,8 +44,14 @@ service.interceptors.request.use(config => {
 
 // 响应拦截器
 service.interceptors.response.use(
-  response => response.data,
+  response => {
+    if (response.data.code !== 1) {
+      return Promise.reject(res) 
+    }
+    return res
+  },
   error => {
+    handleError(error)
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       window.location.reload()
