@@ -221,8 +221,8 @@ const router = useRouter();
 const submitting = ref(false)
 const formRef = ref(null)
 
-const leftImage =ref( null)
-const rightImage = ref(null)
+const leftImage =ref( new FormData())
+const rightImage = ref(new FormData())
 const leftImageList = ref([])
 const rightImageList = ref([])
 
@@ -348,25 +348,12 @@ const handleSubmit = async () => {
 
     submitting.value = true;
 
-    // 创建独立FormData实例
-    const uploadFile = (file) => {
-      const formData = new FormData() // 每次创建新实例
-      formData.append('file', file)
-      return api.uploadImg(formData)
-    }
-
-    // 并行上传
-    const [leftRes, rightRes] = await Promise.all([
-  uploadImg(leftImage.value),  // 使用实际存储文件的变量
-  uploadImg(rightImage.value)
-])
-
     // 1. 上传左眼图片
-    
+    const leftRes = await api.uploadImg(leftImage.value);
     const leftImgUrl = leftRes.data;
 
     // 2. 上传右眼图片
-    
+    const rightRes = await api.uploadImg(rightImage.value);
     const rightImgUrl = rightRes.data;
 
     // 3. 提交病例数据
@@ -419,7 +406,7 @@ if (res.code === 1) {
     if(res.code === 1) {
       ElMessage.success('病例添加成功');
     }else{
-      ElMessage.error(res.msg);}
+      ElMessage.success(res.msg);}
     handleCancel();
   } catch (error) {
     if (error.response) {
