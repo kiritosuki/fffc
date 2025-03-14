@@ -27,74 +27,20 @@ const leftImgList = ref([leftImg.value])
 const rightImgList = ref([rightImg.value])
 
 // 检测病症初始化
-const leftIllnessListStr = ref([])
-const rightIllnessListStr = ref([])
+const leftIllnessList = ref([])
+const rightIllnessList = ref([])
 
-const leftIllnessListInter = ref([])
-const rightIllnessListInter = ref([])
 // 是否是正常的
-// const ifLeftNomal = computed(() => leftIllnessListStr.value.includes('1'))
-// const ifRightNomal = computed(() => rightIllnessListStr.value.includes('1'))
+const ifLeftNomal = computed(() => leftIllnessList.value.includes('1'))
+const ifRightNomal = computed(() => rightIllnessList.value.includes('1'))
 
 // 其他异常病症
 const leftOtherIllness = ref('')
 const rightOtherIllness = ref('')
 
 // 是否有输入栏
-const leftinput = ref(false);
-const rightinput = ref(false);
-
-
-// const leftinput = computed(() => leftIllnessListStr.value.includes('8'));
-// const rightinput = computed(() => rightIllnessListStr.value.includes('8'));
-
-const leftNoNomal = () => {
-  if (leftIllnessListStr.value.includes('1')) {
-    leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
-  }
-  if (leftIllnessListStr.value.includes('8')) {
-    leftinput.value = true
-  } else {
-    leftinput.value = false
-  }
-}
-
-const rightNoNomal = () => {
-  if (rightIllnessListStr.value.includes('1')) {
-    rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
-  }
-  if (rightIllnessListStr.value.includes('8')) {
-    rightinput.value = true
-  } else {
-    leftinput.value = false
-  }
-}
-
-const leftIfNomal = () => {
-  if (leftIllnessListStr.value.includes('1')) {
-    leftIllnessListStr.value = ['1']
-  }
-  if (leftIllnessListStr.value.includes('8')) {
-    leftinput.value = true
-  } else {
-    leftinput.value = false
-  }
-}
-
-const rightIfNomal = () => {
-  if (rightIllnessListStr.value.includes('1')) {
-    rightIllnessListStr.value = ['1']
-  }
-  if (rightIllnessListStr.value.includes('8')) {
-    rightinput.value = true
-  } else {
-    rightinput.value = false
-  }
-}
-
-
-
-
+const leftinput = computed(() => leftIllnessList.value.includes('8'));
+const rightinput = computed(() => rightIllnessList.value.includes('8'));
 
 // 诊断关键字
 const leftDiag = ref('')
@@ -105,6 +51,10 @@ const resInfo = ref('')
 
 // 提交按钮加载控制初始化
 const submitting = ref(false)
+
+
+
+
 onMounted(async () => {
 
   // console.log("当前 ID:", idint)
@@ -121,28 +71,20 @@ onMounted(async () => {
     const response = await CheckPatientFir(id)
     console.log("firresponse:", response)
     // 确保返回的数据结构正确
-    console.log(response.code)
     if (response.code === 1) {
       leftImg.value = response.data.leftImg
       rightImg.value = response.data.rightImg
 
-      // leftIllnessListStr.value = response.data.leftStatusIllList
-      // rightIllnessListStr.value = response.data.rightStatusIllList
-      // 改为string类型
-      leftIllnessListInter.value = response.data.leftStatusIllList
-      rightIllnessListInter.value = response.data.rightStatusIllList
-      leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
-      rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item));
-      console.log("leftIllnessListStr:", leftIllnessListStr.value)
-      console.log("rightIllnessListStr:", rightIllnessListStr.value)
+      leftIllnessList.value = response.data.leftStatusIllList
+      rightIllnessList.value = response.data.rightStatusIllList
       idint = response.data.id
       console.log("当前 ID:", id)
-      // if (leftIllnessListStr.value.includes('8')){
+      // if (leftIllnessList.value.includes('8')){
       //   leftinput.value = true
       // } else {
       //   leftinput.value = false
       // }
-      // if (rightIllnessListStr.value.includes('8')){
+      // if (rightIllnessList.value.includes('8')){
       //   rightinput.value = true
       // } else {
       //   rightinput.value = false
@@ -163,13 +105,15 @@ onMounted(async () => {
     loading.value.close();
   }
 })
+
+
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
   submitting.value = true;
   const resultData = {
     id: idint,
-    leftStatusIllList: leftIllnessListInter.value,
-    rightStatusIllList: rightIllnessListInter.value,
+    leftStatusIllList: leftIllnessList.value,
+    rightStatusIllList: rightIllnessList.value,
     leftDiag: leftDiag.value,
     rightDiag: rightDiag.value,
     leftIllInfo: leftOtherIllness.value,
@@ -202,8 +146,8 @@ const handleFinalResult = async () => {
 //     console.log(typeof idint)
 //     const resultdata = {
 //       id: id,
-//       leftStatusIllList: leftIllnessListStr.value,
-//       rightStatusIllList: rightIllnessListStr.value,
+//       leftStatusIllList: leftIllnessList.value,
+//       rightStatusIllList: rightIllnessList.value,
 //       leftDiag: leftDiag.value,
 //       rightDiag: rightDiag.value,
 //       leftIllInfo: leftOtherIllness.value,
@@ -236,31 +180,31 @@ const handleFinalResult = async () => {
 
 
 
-/* watch(leftIllnessListStr, (newVal) => {
+/* watch(leftIllnessList, (newVal) => {
   if (newVal.includes('1')) {
     // 如果包含正常选项，则过滤掉其他选项
-    leftIllnessListStr.value = ['1']
+    leftIllnessList.value = ['1']
   }
 }, { deep: true })
 
-watch(rightIllnessListStr, (newVal) => {
+watch(rightIllnessList, (newVal) => {
   if (newVal.includes('1')) {
     // 如果包含正常选项，则过滤掉其他选项
-    rightIllnessListStr.value = ['1']
+    rightIllnessList.value = ['1']
   }
 }, { deep: true }) */
 
 // const leftinput = computed(() => {
-//   for (let i = 0; i < leftIllnessListStr.value.length; i++) {
-//     if (leftIllnessListStr.value[i] === "8") {
+//   for (let i = 0; i < leftIllnessList.value.length; i++) {
+//     if (leftIllnessList.value[i] === "8") {
 //       return true
 //     }
 //   }
 //   return false
 // })
 // const rightinput = computed(() => {
-//     for (let i = 0; i < rightIllnessListStr.value.length; i++) {
-//       if (rightIllnessListStr.value[i] === "8") {
+//     for (let i = 0; i < rightIllnessList.value.length; i++) {
+//       if (rightIllnessList.value[i] === "8") {
 //         return true
 //       }
 //     }
@@ -281,12 +225,12 @@ watch(rightIllnessListStr, (newVal) => {
     rightImg.value = response.data.data.rightImg
 
     // 检测出的典型病症
-    leftIllnessListStr.value = response.data.data.leftStatusIllList
-    rightIllnessListStr.value = response.data.data.rightStatusIllList
+    leftIllnessList.value = response.data.data.leftStatusIllList
+    rightIllnessList.value = response.data.data.rightStatusIllList
 
     // 判断是否需要显示其他异常病症的输入栏
-    // leftinput =ref(leftIllnessListStr.includes('8'))
-    // rightinput =ref(rightIllnessListStr.includes('8'))
+    // leftinput =ref(leftIllnessList.includes('8'))
+    // rightinput =ref(rightIllnessList.includes('8'))
 
     resInfo.value = response.data.data.resInfo
   }
@@ -306,8 +250,8 @@ watch(rightIllnessListStr, (newVal) => {
 //       leftImg.value = response.data.leftImg
 //       rightImg.value = response.data.rightImg
 
-//       leftIllnessListStr.value = response.data.leftStatusIllList
-//       rightIllnessListStr.value = response.data.rightStatusIllList
+//       leftIllnessList.value = response.data.leftStatusIllList
+//       rightIllnessList.value = response.data.rightStatusIllList
 
 //       leftDiag.value = response.data.leftDiag
 //       rightDiag.value = response.data.rightDiag
@@ -327,7 +271,7 @@ watch(rightIllnessListStr, (newVal) => {
 
 
 // 判断是否需要显示其他异常病症的输入栏
-// watch(() => leftIllnessListStr.value, (newValue, oldValue) => {
+// watch(() => leftIllnessList.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
 //     leftinput.value = true
 //   } else {
@@ -336,7 +280,7 @@ watch(rightIllnessListStr, (newVal) => {
 // },
 // { immediate: true , deep:true}
 // )
-// watch(() => rightIllnessListStr.value, (newValue, oldValue) => {
+// watch(() => rightIllnessList.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
 //     rightinput.value = true
 //   } else {
@@ -346,10 +290,10 @@ watch(rightIllnessListStr, (newVal) => {
 // { immediate: true , deep:true}
 // )
 
-// watch(() => leftIllnessListStr.value, (newValue,oldValue) => {
+// watch(() => leftIllnessList.value, (newValue,oldValue) => {
 //   if (newValue.includes('1')) {
 //         // 如果选中了“正常”，则清空其他选项
-//         // leftIllnessListStr.value = ['1'];
+//         // leftIllnessList.value = ['1'];
 //         ifLeftNomal.value = true
 //       } else {
 //         ifLeftNomal.value = false
@@ -358,10 +302,10 @@ watch(rightIllnessListStr, (newVal) => {
 //     { immediate: true , deep:true}
 // );
 
-// watch(() => rightIllnessListStr.value, (newValue,oldValue) => {
+// watch(() => rightIllnessList.value, (newValue,oldValue) => {
 //       if (newValue.includes('1')) {
 //         // 如果选中了“正常”，则清空其他选项
-//         // rightIllnessListStr.value = ['1'];
+//         // rightIllnessList.value = ['1'];
 //         ifRightNomal.value = true
 //       } else {
 //         ifRightNomal.value = false
@@ -371,18 +315,18 @@ watch(rightIllnessListStr, (newVal) => {
 // );
 
 // const handleLeftIllnessList = () => {
-//   if (leftIllnessListStr.value.includes('1')) {
+//   if (leftIllnessList.value.includes('1')) {
 //     // 如果选中了“正常”，则清空其他选项
-//     // leftIllnessListStr.value = ['1'];
+//     // leftIllnessList.value = ['1'];
 //     ifLeftNomal.value = true
 //   } else {
 //     ifLeftNomal.value = false
 //   }
 // }
 // const handleRightIllnessList = (e) => {
-//   if (rightIllnessListStr.value.includes('1')) {
+//   if (rightIllnessList.value.includes('1')) {
 //     // 如果选中了“正常”，则清空其他选项
-//     // rightIllnessListStr.value = ['1'];
+//     // rightIllnessList.value = ['1'];
 //     ifRightNomal.value = true
 //   } else {
 //     ifRightNomal.value = false
@@ -399,16 +343,30 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
         <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
-      <el-checkbox-group v-model="leftIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="leftIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="leftNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="leftNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="leftNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="leftNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="leftNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="leftNoNomal">其他异常</el-checkbox>
-  </el-checkbox-group>
+      <p>潜在病症：</p>
+      <input type="checkbox" name="leftIllnessList" value='1' id='1' v-model="leftIllnessList">
+      <label for='1'>正常</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='2'
+        id="2" v-model="leftIllnessList">
+      <label for="2">糖尿病</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='3'
+        id="3" v-model="leftIllnessList">
+      <label for="3">青光眼</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='4'
+        id="4" v-model="leftIllnessList">
+      <label for="4">白内障</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='5'
+        id="5" v-model="leftIllnessList">
+      <label for="5">AMD</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='6'
+        id="6" v-model="leftIllnessList">
+      <label for="6">高血压</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='7'
+        id="7" v-model="leftIllnessList">
+      <label for="7">近视</label><br>
+      <input type="checkbox" name="leftIllnessList" :disabled="ifLeftNomal || leftIllnessList.includes('1')" value='8'
+        id="8" v-model="leftIllnessList">
+      <label for="8">其他异常</label><br>
       <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="leftOtherIllness" v-show="leftinput">
@@ -423,16 +381,31 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
         <div slot="error" class="image-slot"></div>
       </el-image>
-      <el-checkbox-group v-model="rightIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="rightIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="rightNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="rightNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="rightNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="rightNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="rightNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="rightNoNomal">其他异常</el-checkbox>
-  </el-checkbox-group>
+      <p>潜在病症：</p>
+      <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList">
+      <label for="9">正常</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='2' id="10" v-model="rightIllnessList">
+      <label for="10">糖尿病</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='3' id="11" v-model="rightIllnessList">
+      <label for="11">青光眼</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='4' id="12" v-model="rightIllnessList">
+      <label for="12">白内障</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='5' id="13" v-model="rightIllnessList">
+      <label for="13">AMD</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='6' id="14" v-model="rightIllnessList">
+      <label for="14">高血压</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='7' id="15" v-model="rightIllnessList">
+      <label for="15">近视</label><br>
+      <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
+        value='8' id="16" v-model="rightIllnessList">
+      <label for="16">其他异常</label><br>
+
       <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="rightOtherIllness" v-show="rightinput">
