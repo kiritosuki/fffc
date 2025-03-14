@@ -2,10 +2,8 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
-import { CheckPatientFir } from '../../api/patients';
 import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
-
 
 
 // 接收数据
@@ -13,7 +11,7 @@ const route = useRoute()
 // 保存 id
 const id = route.query.id;
 
-const idint = parseInt(id, 10)
+const idInt = parseInt(id, 10)
 console.log("当前dddddd ID:", id)
 
 const loading = ref(null); // 用于存储加载动画的实例
@@ -49,10 +47,10 @@ const rightinput = ref(false);
 // const rightinput = computed(() => rightIllnessListStr.value.includes('8'));
 
 const leftNoNomal = () => {
-  if (leftIllnessListStr.value.includes('1')) {
-    leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
+  if (leftIllnessListStr.value.includes("1")) {
+    leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf("1"), 1)
   }
-  if (leftIllnessListStr.value.includes('8')) {
+  if (leftIllnessListStr.value.includes("8")) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -60,10 +58,10 @@ const leftNoNomal = () => {
 }
 
 const rightNoNomal = () => {
-  if (rightIllnessListStr.value.includes('1')) {
-    rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
+  if (rightIllnessListStr.value.includes("1")) {
+    rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf("1"), 1)
   }
-  if (rightIllnessListStr.value.includes('8')) {
+  if (rightIllnessListStr.value.includes("8")) {
     rightinput.value = true
   } else {
     leftinput.value = false
@@ -71,10 +69,10 @@ const rightNoNomal = () => {
 }
 
 const leftIfNomal = () => {
-  if (leftIllnessListStr.value.includes('1')) {
-    leftIllnessListStr.value = ['1']
+  if (leftIllnessListStr.value.includes("1")) {
+    leftIllnessListStr.value = ["1"]
   }
-  if (leftIllnessListStr.value.includes('8')) {
+  if (leftIllnessListStr.value.includes("8")) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -82,10 +80,10 @@ const leftIfNomal = () => {
 }
 
 const rightIfNomal = () => {
-  if (rightIllnessListStr.value.includes('1')) {
-    rightIllnessListStr.value = ['1']
+  if (rightIllnessListStr.value.includes("1")) {
+    rightIllnessListStr.value = ["1"]
   }
-  if (rightIllnessListStr.value.includes('8')) {
+  if (rightIllnessListStr.value.includes("8")) {
     rightinput.value = true
   } else {
     rightinput.value = false
@@ -106,8 +104,8 @@ const resInfo = ref('')
 // 提交按钮加载控制初始化
 const submitting = ref(false)
 onMounted(async () => {
-
-  // console.log("当前 ID:", idint)
+  console.log("当前 ID1:", id)
+  // console.log("当前 ID:", idInt)
 
   loading.value = ElLoading.service({
     text: '加载中...',
@@ -115,10 +113,13 @@ onMounted(async () => {
     spinner: 'el-icon-loading', // 自定义加载图标
     target: document.body, // 指定加载动画覆盖的区域
   });
-
+  console.log("当前 ID2:", id)
   try {
     // 使用 await 等待数据返回
-    const response = await CheckPatientFir(id)
+    console.log("当前 ID3:", id)
+    const response = await api.CheckPatientFir(idInt);
+    console.log("Response:", response);
+    console.log("当前 ID4:", id)
     console.log("firresponse:", response)
     // 确保返回的数据结构正确
     console.log(response.code)
@@ -135,8 +136,8 @@ onMounted(async () => {
       rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item));
       console.log("leftIllnessListStr:", leftIllnessListStr.value)
       console.log("rightIllnessListStr:", rightIllnessListStr.value)
-      idint = response.data.id
       console.log("当前 ID:", id)
+      await Vue.nextTick();
       // if (leftIllnessListStr.value.includes('8')){
       //   leftinput.value = true
       // } else {
@@ -155,7 +156,7 @@ onMounted(async () => {
 
       resInfo.value = response.data.resInfo
     } else {
-      console.error(res.data.msg)
+      console.error(res.msg)
     }
   } catch (error) {
     ElMessage.error('服务器繁忙，请稍后再试')
@@ -167,7 +168,7 @@ onMounted(async () => {
 const handleFinalResult = async () => {
   submitting.value = true;
   const resultData = {
-    id: idint,
+    id: idInt,
     leftStatusIllList: leftIllnessListInter.value,
     rightStatusIllList: rightIllnessListInter.value,
     leftDiag: leftDiag.value,
@@ -198,8 +199,8 @@ const handleFinalResult = async () => {
 //   submitting.value = true
 //     // 请求提交病例改动
 //     console.log("endid:",id)
-//     console.log(idint)
-//     console.log(typeof idint)
+//     console.log(idInt)
+//     console.log(typeof idInt)
 //     const resultdata = {
 //       id: id,
 //       leftStatusIllList: leftIllnessListStr.value,
@@ -400,14 +401,14 @@ watch(rightIllnessListStr, (newVal) => {
         <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
       <el-checkbox-group v-model="leftIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="leftIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="leftNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="leftNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="leftNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="leftNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="leftNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="leftNoNomal">其他异常</el-checkbox>
+    <el-checkbox value="1" @change="leftIfNomal">正常</el-checkbox><br>
+    <el-checkbox value="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox value="3" @change="leftNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox value="4" @change="leftNoNomal">白内障</el-checkbox>
+    <el-checkbox value="5" @change="leftNoNomal">AMD</el-checkbox>
+    <el-checkbox value="6" @change="leftNoNomal">高血压</el-checkbox>
+    <el-checkbox value="7" @change="leftNoNomal">近视</el-checkbox>
+    <el-checkbox value="8" @change="leftNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
@@ -424,14 +425,14 @@ watch(rightIllnessListStr, (newVal) => {
         <div slot="error" class="image-slot"></div>
       </el-image>
       <el-checkbox-group v-model="rightIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="rightIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="rightNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="rightNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="rightNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="rightNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="rightNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="rightNoNomal">其他异常</el-checkbox>
+    <el-checkbox value="1" @change="rightIfNomal">正常</el-checkbox><br>
+    <el-checkbox value="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox value="3" @change="rightNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox value="4" @change="rightNoNomal">白内障</el-checkbox>
+    <el-checkbox value="5" @change="rightNoNomal">AMD</el-checkbox>
+    <el-checkbox value="6" @change="rightNoNomal">高血压</el-checkbox>
+    <el-checkbox value="7" @change="rightNoNomal">近视</el-checkbox>
+    <el-checkbox value="8" @change="rightNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
