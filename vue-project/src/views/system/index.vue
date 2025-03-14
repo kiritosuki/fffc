@@ -62,7 +62,14 @@
                   @click="handleQueryPatient"
                   :loading="queryLoading"
                   icon="Search"
-                >查询</el-button>
+                >
+                <template #loading>
+                    <span class="custom-loading">
+                      <el-icon class="is-loading"><Loading /></el-icon>
+                      查询中...
+                    </span>
+                  </template>
+                查询</el-button>
               </template>
             </el-input>
           </el-form-item>
@@ -468,6 +475,12 @@ const handleQueryPatient = async () => {
 
 // 一键清除方法
 const handleClearForm = () => {
+  try {
+    await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
   formRef.value.resetFields()
   leftImage.value = null
   rightImage.value = null
@@ -491,6 +504,9 @@ const handleClearForm = () => {
   form.negFeature = ''
   
   ElMessage.success('表单已重置')
+} catch {
+    // 用户取消
+  }
 }
 
 const handleCancel = () => {
@@ -634,5 +650,11 @@ const handleCancel = () => {
 
 .el-input-group__append {
   padding: 0 12px;
+}
+
+.custom-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>
