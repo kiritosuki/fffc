@@ -109,43 +109,74 @@ onMounted(async () => {
 
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
-  submitting.value = true
-    // 请求提交病例改动
-    console.log("endid:",id)
-    console.log(idint)
-    console.log(typeof idint)
-    const resultdata = {
-      id: id,
-      leftStatusIllList: leftIllnessList.value,
-      rightStatusIllList: rightIllnessList.value,
-      leftDiag: leftDiag.value,
-      rightDiag: rightDiag.value,
-      leftIllInfo: leftOtherIllness.value,
-      rightIllInfo: rightOtherIllness.value,
-      resInfo: resInfo.value,
-    }
-  
-  try {// 开始加载动画
-    const res = await api.UploadAddPatient(resultdata)
-    console.log(res)
-    if (res.code === 1){
-    ElMessage.success('提交成功')
-    console.log(id)
-    // 跳转
-    router.push({
-      path: `/homeResult`,
-    })
+  submitting.value = true;
+  const resultData = {
+    id: idint,
+    leftStatusIllList: leftIllnessList.value,
+    rightStatusIllList: rightIllnessList.value,
+    leftDiag: leftDiag.value,
+    rightDiag: rightDiag.value,
+    leftIllInfo: leftOtherIllness.value,
+    rightIllInfo: rightOtherIllness.value,
+    resInfo: resInfo.value,
+  };
+
+  try {
+    const res = await api.UploadAddPatient(resultData);
+    console.log(res);
+    if (res.code === 1) {
+      ElMessage.success('提交成功');
+      router.push({ path: `/home` });
     } else {
-      ElMessage.error(res.msg)
+      ElMessage.error(res.msg);
     }
   } catch (error) {
-    ElMessage.error('服务器繁忙，提交失败')
-    console.error("请求失败:", error)
+    ElMessage.error('服务器繁忙，提交失败');
+    console.error("请求失败:", error);
+  } finally {
+    submitting.value = false;
   }
-  finally {
-    submitting.value = false
-  }
-}
+};
+
+// const handleFinalResult = async () => {
+//   submitting.value = true
+//     // 请求提交病例改动
+//     console.log("endid:",id)
+//     console.log(idint)
+//     console.log(typeof idint)
+//     const resultdata = {
+//       id: id,
+//       leftStatusIllList: leftIllnessList.value,
+//       rightStatusIllList: rightIllnessList.value,
+//       leftDiag: leftDiag.value,
+//       rightDiag: rightDiag.value,
+//       leftIllInfo: leftOtherIllness.value,
+//       rightIllInfo: rightOtherIllness.value,
+//       resInfo: resInfo.value,
+//     }
+  
+//   try {
+//     // 开始加载动画
+//     const res = await api.UploadAddPatient(resultdata)
+//     console.log(res)
+//     if (res.code === 1){
+//     ElMessage.success('提交成功')
+//     console.log(id)
+//     // 跳转
+//     router.push({
+//       path: `/homeResult`,
+//     })
+//     } else {
+//       ElMessage.error(res.msg)
+//     }
+//   } catch (error) {
+//     ElMessage.error('服务器繁忙，提交失败')
+//     console.error("请求失败:", error)
+//   }
+//   finally {
+//     submitting.value = false
+//   }
+// }
 
 
 
@@ -351,8 +382,7 @@ watch(rightIllnessList, (newVal) => {
         <div slot="error" class="image-slot"></div>
       </el-image>
       <p>潜在病症：</p>
-      <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList"
-        @click="handleRightIllnessList">
+      <input type="checkbox" name="rightIllnessList" value='1' id="9" v-model="rightIllnessList">
       <label for="9">正常</label><br>
       <input type="checkbox" name="rightIllnessList" :disabled="ifRightNomal || rightIllnessList.includes('1')"
         value='2' id="10" v-model="rightIllnessList">
