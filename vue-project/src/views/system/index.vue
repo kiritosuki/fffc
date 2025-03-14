@@ -357,16 +357,16 @@ const handleSubmit = async () => {
 
     // 并行上传
     const [leftRes, rightRes] = await Promise.all([
-  uploadFile(leftImage.value),  // 使用实际存储文件的变量
-  uploadFile(rightImage.value)
+  uploadImg(leftImage.value),  // 使用实际存储文件的变量
+  uploadImg(rightImage.value)
 ])
 
     // 1. 上传左眼图片
-    leftRes = await api.uploadImg(leftImage.value);
+    
     const leftImgUrl = leftRes.data;
 
     // 2. 上传右眼图片
-    rightRes = await api.uploadImg(rightImage.value);
+    
     const rightImgUrl = rightRes.data;
 
     // 3. 提交病例数据
@@ -419,7 +419,7 @@ if (res.code === 1) {
     if(res.code === 1) {
       ElMessage.success('病例添加成功');
     }else{
-      ElMessage.success(res.msg);}
+      ElMessage.error(res.msg);}
     handleCancel();
   } catch (error) {
     if (error.response) {
