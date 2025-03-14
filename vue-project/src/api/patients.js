@@ -110,6 +110,7 @@ const resultdata = {}
     })
   }
 
+  
 
 
 // export const UploadAddPatient = (data) => {
@@ -133,7 +134,8 @@ export default {
     // 获取病历详情
   getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
   // 更新病历
-  updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data)
+  updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data),
+  getPatientInfo: (idCard) => axios.get('/patient/idCard', { params: { idCard } }),
 }
 
 
