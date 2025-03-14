@@ -5,6 +5,7 @@ import router from './router'
 import api from './api/index.js'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import './styles/message.scss'
 
 // import './assets/main.css'
 

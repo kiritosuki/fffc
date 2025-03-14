@@ -56,7 +56,22 @@
               v-model="form.idCard"
               placeholder="请输入身份证号"
               clearable
-            />
+            >
+            <template #append>
+                <el-button 
+                  @click="handleQueryPatient"
+                  :loading="queryLoading"
+                  icon="Search"
+                >
+                <template #loading>
+                    <span class="custom-loading">
+                      <el-icon class="is-loading"><Loading /></el-icon>
+                      查询中...
+                    </span>
+                  </template>
+                查询</el-button>
+              </template>
+            </el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -182,6 +197,7 @@
       <!-- 提交按钮 -->
       <div class="form-actions">
         <el-button @click="handleCancel">取消</el-button>
+        <el-button @click="handleClearForm">清除</el-button>
         <el-button
           type="primary"
           :loading="submitting"
@@ -209,6 +225,8 @@ const leftImage =ref( new FormData())
 const rightImage = ref(new FormData())
 const leftImageList = ref([])
 const rightImageList = ref([])
+
+const queryLoading = ref(false)
 
 const form = reactive({
   name: '',
@@ -260,7 +278,7 @@ const rules = reactive({
   ],
   idCard: [
     { required: true, message: '请输入身份证号', trigger: 'blur' },
-    { pattern: /^\d{17}(\d|X|x)$/, message: '身份证号格式不正确', trigger: 'blur' } 
+    { pattern: /^[1-9]\d{5}(18|19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])\d{3}[\dXx]$/, message: '身份证号格式不正确', trigger: 'blur' } 
   ],
   leftImage: [
     { required: true, validator: validateImage('left'), trigger: 'change' }
@@ -321,84 +339,6 @@ const handleUpload = (file, type) => {
   
   return false
 }
-
-/* const handleSubmit = async () => {
-  try {
-    // // 验证表单
-    await formRef.value.validateField(['leftImage', 'rightImage'])
-    await formRef.value.validate()
-
-    submitting.value = true
-
-    // // 1. 上传左眼图片
-    const leftRes = await api.uploadImg(leftImage.value)
-    const leftImgUrl = leftRes.data
-    
-    // // 2. 上传右眼图片
-    const rightRes = await api.uploadImg(rightImage.value)
-    const rightImgUrl = rightRes.data
-
-    // 3. 提交病例数据
-    const res = await api.AddPatient({
-      name: form.name,
-      age: form.age,
-      gender: form.gender,
-      phone: form.phone,
-      idCard: form.idCard,
-      doctorId:"1",
-      leftImg: leftImgUrl,
-      rightImg: rightImgUrl,
-      allergy: form.allergy,
-      complaint: form.complaint,
-      visit: form.visit,
-      presHistory: form.presHistory,
-      pastHistory: form.pastHistory,
-      posFeature: form.posFeature,
-      negFeature: form.negFeature
-    })
-
-
-    
-    console.log('提交响应:', res)
-if (res.code === 1) {
-  console.log('跳转参数:', {
-    path: '/homeResult',
-    query: { id: res.data.data.id }
-  })
-  router.push({
-    path: '/homeResult',
-    query: { id: res.data.data.id }
-  }).then(() => {
-    console.log('跳转成功')
-  }).catch((err) => {
-    console.error('跳转失败:', err)
-  })
-}
-
-    // 4. 重置表单
-    formRef.value.resetFields()
-    leftImage.value = null
-    rightImage.value = null
-    leftImageList.value = []
-    rightImageList.value = []
-
-    ElMessage.success('病例添加成功')
-    handleCancel()
-  } catch (error) {
-    if (error.response) {
-      const msgMap = {
-        400: '请求参数错误',
-        401: '身份验证失败',
-        500: '服务器错误'
-      }
-      ElMessage.error(msgMap[error.response.status] || '操作失败')
-    } else {
-      ElMessage.error('请求失败，请检查网络')
-    }
-  } finally {
-    submitting.value = false
-  }
-} */
 
 const handleSubmit = async () => {
   try {
@@ -494,6 +434,78 @@ const handleRemove = (type) => {
   } else {
     rightImage.value = null
     rightImageList.value = []  // 清空右眼图片列表
+  }
+}
+
+const handleQueryPatient = async () => {
+  if (!form.idCard) {
+    ElMessage.warning('请输入身份证号')
+    return
+  }
+
+  try {
+    queryLoading.value = true
+    const res = await api.getPatientInfo(form.idCard)
+    
+    // 填充表单（示例字段，需根据实际接口调整）
+    if (res.code === 1) {
+      const data = res.data
+      Object.assign(form, {
+        name: data.name || '',
+        age: data.age || null,
+        gender: data.gender || 1,
+        phone: data.phone || '',
+        allergy: data.allergy || '',
+        complaint: data.complaint || '',
+        visit: data.visit || 1,
+        presHistory: data.presHistory || '',
+        pastHistory: data.pastHistory || '',
+        posFeature: data.posFeature || '',
+        negFeature: data.negFeature || ''
+        
+      })
+      ElMessage.success('患者信息加载成功')
+    }
+  } catch (error) {
+    ElMessage.error(error.message || '查询失败')
+  } finally {
+    queryLoading.value = false
+  }
+}
+
+// 一键清除方法
+const handleClearForm = () => {
+  try {
+    await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+  formRef.value.resetFields()
+  leftImage.value = null
+  rightImage.value = null
+  leftImageList.value = []
+  rightImageList.value = []
+  
+  // 手动重置非表单绑定的字段（如果有）
+  form.name = ''
+  form.age = null
+  form.gender = 1
+  form.phone = ''
+  form.idCard = ''
+  form.leftImg = ''
+  form.rightImg = ''
+  form.visit = 1
+  form.allergy = ''
+  form.complaint = ''
+  form.presHistory = ''
+  form.pastHistory = ''
+  form.posFeature = ''
+  form.negFeature = ''
+  
+  ElMessage.success('表单已重置')
+} catch {
+    // 用户取消
   }
 }
 
@@ -634,5 +646,15 @@ const handleCancel = () => {
       width: 40vw;
       height: 40vw;
     }
+}
+
+.el-input-group__append {
+  padding: 0 12px;
+}
+
+.custom-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>
