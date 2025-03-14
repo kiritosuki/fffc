@@ -445,11 +445,11 @@ const handleQueryPatient = async () => {
 
   try {
     queryLoading.value = true
-    const res = await api.getPatientInfo(form.idCard)
+    const response = await api.getPatientInfo(form.idCard)
     
     // 填充表单（示例字段，需根据实际接口调整）
-    if (res.code === 1) {
-      const data = res.data
+    if (response.code === 1) {
+      const data = response.data
       Object.assign(form, {
         name: data.name || '',
         age: data.age || null,
