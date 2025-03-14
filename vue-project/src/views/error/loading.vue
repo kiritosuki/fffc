@@ -31,6 +31,10 @@
       default: 'rgba(255, 255, 255, 0.9)'
     }
   })
+
+  export default{
+    name:'LoadingPage'
+  }
   </script>
   
   <style scoped>
