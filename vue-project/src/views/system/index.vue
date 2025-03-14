@@ -474,7 +474,7 @@ const handleQueryPatient = async () => {
 }
 
 // 一键清除方法
-const handleClearForm = () => {
+const handleClearForm = async() => {
   try {
     await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
       confirmButtonText: '确定',

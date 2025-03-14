@@ -118,7 +118,7 @@ onMounted(async () => {
 
   try {
     // 使用 await 等待数据返回
-    const response = await CheckPatientFir(id)
+    const response = await CheckPatientFir(idint)
     console.log("firresponse:", response)
     // 确保返回的数据结构正确
     console.log(response.code)
@@ -129,14 +129,14 @@ onMounted(async () => {
       // leftIllnessListStr.value = response.data.leftStatusIllList
       // rightIllnessListStr.value = response.data.rightStatusIllList
       // 改为string类型
+      console.log("leftIllnessListStr:", leftIllnessListStr.value)
+      console.log("rightIllnessListStr:", rightIllnessListStr.value)
+      console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.leftStatusIllList
       rightIllnessListInter.value = response.data.rightStatusIllList
       leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
       rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item));
-      console.log("leftIllnessListStr:", leftIllnessListStr.value)
-      console.log("rightIllnessListStr:", rightIllnessListStr.value)
-      idint = response.data.id
-      console.log("当前 ID:", id)
+
       // if (leftIllnessListStr.value.includes('8')){
       //   leftinput.value = true
       // } else {
@@ -397,7 +397,7 @@ watch(rightIllnessListStr, (newVal) => {
     <div class="checkbox">
       <p>左眼：</p>
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
-        <div slot="error" class="image-slot"><i class="el-icon-picture-outline"></i></div>
+        <div class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
       <el-checkbox-group v-model="leftIllnessListStr" :min="1">
     <el-checkbox label="1" @change="leftIfNomal">正常</el-checkbox><br>
@@ -421,7 +421,7 @@ watch(rightIllnessListStr, (newVal) => {
     <div class="checkbox">
       <p>右眼：</p>
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
-        <div slot="error" class="image-slot"></div>
+        <div class="image-slot"></div>
       </el-image>
       <el-checkbox-group v-model="rightIllnessListStr" :min="1">
     <el-checkbox label="1" @change="rightIfNomal">正常</el-checkbox><br>
