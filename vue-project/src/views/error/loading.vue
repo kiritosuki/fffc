@@ -31,6 +31,8 @@
       default: 'rgba(255, 255, 255, 0.9)'
     }
   })
+
+  defineExpose({ props });
   </script>
   
   <style scoped>

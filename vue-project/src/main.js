@@ -6,6 +6,7 @@ import api from './api/index.js'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import './styles/message.scss'
+import Loading from './views/error/loading.vue'
 
 // import './assets/main.css'
 
@@ -20,6 +21,8 @@ app.config.globalProperties.$api = api
 app.use(ElementPlus)
 
 app.use(createPinia())
+
+app.component('Loading',Loading)
 
 
 

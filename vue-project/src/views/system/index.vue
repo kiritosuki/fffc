@@ -217,12 +217,13 @@ import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import api from '../../api/index' 
 import { useRouter } from 'vue-router'
+import { Loading } from '../error/loading.vue'
 const router = useRouter();
 const submitting = ref(false)
 const formRef = ref(null)
 
-const leftImage =ref( null)
-const rightImage = ref(null)
+const leftImage =ref( new FormData())
+const rightImage = ref(new FormData())
 const leftImageList = ref([])
 const rightImageList = ref([])
 
@@ -348,25 +349,12 @@ const handleSubmit = async () => {
 
     submitting.value = true;
 
-    // 创建独立FormData实例
-    const uploadFile = (file) => {
-      const formData = new FormData() // 每次创建新实例
-      formData.append('file', file)
-      return api.uploadImg(formData)
-    }
-
-    // 并行上传
-    const [leftRes, rightRes] = await Promise.all([
-  uploadFile(leftImage.value),  // 使用实际存储文件的变量
-  uploadFile(rightImage.value)
-])
-
     // 1. 上传左眼图片
-    leftRes = await api.uploadImg(leftImage.value);
+    const leftRes = await api.uploadImg(leftImage.value);
     const leftImgUrl = leftRes.data;
 
     // 2. 上传右眼图片
-    rightRes = await api.uploadImg(rightImage.value);
+    const rightRes = await api.uploadImg(rightImage.value);
     const rightImgUrl = rightRes.data;
 
     // 3. 提交病例数据
