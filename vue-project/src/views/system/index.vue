@@ -221,8 +221,8 @@ const router = useRouter();
 const submitting = ref(false)
 const formRef = ref(null)
 
-const leftImage =ref( new FormData())
-const rightImage = ref(new FormData())
+const leftImage =ref( null)
+const rightImage = ref(null)
 const leftImageList = ref([])
 const rightImageList = ref([])
 
@@ -348,12 +348,25 @@ const handleSubmit = async () => {
 
     submitting.value = true;
 
+    // 创建独立FormData实例
+    const uploadFile = (file) => {
+      const formData = new FormData() // 每次创建新实例
+      formData.append('file', file)
+      return api.uploadImg(formData)
+    }
+
+    // 并行上传
+    const [leftRes, rightRes] = await Promise.all([
+  uploadFile(leftImage.value),  // 使用实际存储文件的变量
+  uploadFile(rightImage.value)
+])
+
     // 1. 上传左眼图片
-    const leftRes = await api.uploadImg(leftImage.value);
+    leftRes = await api.uploadImg(leftImage.value);
     const leftImgUrl = leftRes.data;
 
     // 2. 上传右眼图片
-    const rightRes = await api.uploadImg(rightImage.value);
+    rightRes = await api.uploadImg(rightImage.value);
     const rightImgUrl = rightRes.data;
 
     // 3. 提交病例数据
@@ -445,11 +458,11 @@ const handleQueryPatient = async () => {
 
   try {
     queryLoading.value = true
-    const res = await api.getPatientInfo(form.idCard)
+    const response = await api.getPatientInfo(form.idCard)
     
     // 填充表单（示例字段，需根据实际接口调整）
-    if (res.code === 1) {
-      const data = res.data
+    if (response.code === 1) {
+      const data = response.data
       Object.assign(form, {
         name: data.name || '',
         age: data.age || null,
