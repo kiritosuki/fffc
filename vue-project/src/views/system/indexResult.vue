@@ -7,7 +7,9 @@ import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
 
 
-
+defineProps({
+  id: String
+})
 // 接收数据
 const route = useRoute()
 // 保存 id
@@ -23,8 +25,19 @@ const leftImg = ref('')
 const rightImg = ref('')
 
 // 图片大图阅览
-const leftImgList = ref([leftImg.value])
-const rightImgList = ref([rightImg.value])
+// const leftImgList = ref([leftImg.value])
+// const rightImgList = ref([rightImg.value])
+
+const leftImgList = computed(() => [leftImg.value]);
+const rightImgList = computed(() => [rightImg.value]);
+
+
+watch(leftImg, (newVal) => {
+  leftImgList.value = [newVal];
+});
+watch(rightImg, (newVal) => {
+  rightImgList.value = [newVal];
+});
 
 // 检测病症初始化
 const leftIllnessListStr = ref([])
@@ -48,27 +61,43 @@ const rightinput = ref(false);
 // const leftinput = computed(() => leftIllnessListStr.value.includes('8'));
 // const rightinput = computed(() => rightIllnessListStr.value.includes('8'));
 
+// const leftNoNomal = () => {
+//   if (leftIllnessListStr.value.includes('1')) {
+//     leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
+//   }
+//   if (leftIllnessListStr.value.includes('8')) {
+//     leftinput.value = true
+//   } else {
+//     leftinput.value = false
+//   }
+// }
+
+// const rightNoNomal = () => {
+//   if (rightIllnessListStr.value.includes('1')) {
+//     rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
+//   }
+//   if (rightIllnessListStr.value.includes('8')) {
+//     rightinput.value = true
+//   } else {
+//     rightinput.value = false
+//   }
+// }
+
 const leftNoNomal = () => {
-  if (leftIllnessListStr.value.includes('1')) {
-    leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
+  const index = leftIllnessListStr.value.indexOf('1');
+  if (index !== -1) {
+    leftIllnessListStr.value.splice(index, 1);
   }
-  if (leftIllnessListStr.value.includes('8')) {
-    leftinput.value = true
-  } else {
-    leftinput.value = false
-  }
-}
+  leftinput.value = leftIllnessListStr.value.includes('8');
+};
 
 const rightNoNomal = () => {
-  if (rightIllnessListStr.value.includes('1')) {
-    rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
+  const index = rightIllnessListStr.value.indexOf('1');
+  if (index !== -1) {
+    rightIllnessListStr.value.splice(index, 1);
   }
-  if (rightIllnessListStr.value.includes('8')) {
-    rightinput.value = true
-  } else {
-    leftinput.value = false
-  }
-}
+  rightinput.value = rightIllnessListStr.value.includes('8');
+};
 
 const leftIfNomal = () => {
   if (leftIllnessListStr.value.includes('1')) {
@@ -134,8 +163,11 @@ onMounted(async () => {
       console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.leftStatusIllList
       rightIllnessListInter.value = response.data.rightStatusIllList
+/*       leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
+      rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item)); */
       leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
       rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item));
+
 
       // if (leftIllnessListStr.value.includes('8')){
       //   leftinput.value = true
@@ -167,15 +199,16 @@ onMounted(async () => {
 const handleFinalResult = async () => {
   submitting.value = true;
   const resultData = {
-    id: idint,
-    leftStatusIllList: leftIllnessListInter.value,
-    rightStatusIllList: rightIllnessListInter.value,
+  id: idint,
+  leftStatusIllList: leftIllnessListStr.value,
+    rightStatusIllList: rightIllnessListStr.value,
     leftDiag: leftDiag.value,
     rightDiag: rightDiag.value,
     leftIllInfo: leftOtherIllness.value,
     rightIllInfo: rightOtherIllness.value,
     resInfo: resInfo.value,
   };
+
 
   try {
     const res = await api.UploadAddPatient(resultData);
@@ -399,15 +432,15 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
         <div class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
-      <el-checkbox-group v-model="leftIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="leftIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="leftNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="leftNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="leftNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="leftNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="leftNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="leftNoNomal">其他异常</el-checkbox>
+      <el-checkbox-group v-model="leftIllnessListStr">
+    <el-checkbox value="1" @change="leftIfNomal">正常</el-checkbox><br>
+    <el-checkbox value="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox value="3" @change="leftNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox value="4" @change="leftNoNomal">白内障</el-checkbox>
+    <el-checkbox value="5" @change="leftNoNomal">AMD</el-checkbox>
+    <el-checkbox value="6" @change="leftNoNomal">高血压</el-checkbox>
+    <el-checkbox value="7" @change="leftNoNomal">近视</el-checkbox>
+    <el-checkbox value="8" @change="leftNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
@@ -423,15 +456,15 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
         <div class="image-slot"></div>
       </el-image>
-      <el-checkbox-group v-model="rightIllnessListStr" :min="1">
-    <el-checkbox label="1" @change="rightIfNomal">正常</el-checkbox><br>
-    <el-checkbox label="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox label="3" @change="rightNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox label="4" @change="rightNoNomal">白内障</el-checkbox>
-    <el-checkbox label="5" @change="rightNoNomal">AMD</el-checkbox>
-    <el-checkbox label="6" @change="rightNoNomal">高血压</el-checkbox>
-    <el-checkbox label="7" @change="rightNoNomal">近视</el-checkbox>
-    <el-checkbox label="8" @change="rightNoNomal">其他异常</el-checkbox>
+      <el-checkbox-group v-model="rightIllnessListStr">
+    <el-checkbox value="1" @change="rightIfNomal">正常</el-checkbox><br>
+    <el-checkbox value="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox value="3" @change="rightNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox value="4" @change="rightNoNomal">白内障</el-checkbox>
+    <el-checkbox value="5" @change="rightNoNomal">AMD</el-checkbox>
+    <el-checkbox value="6" @change="rightNoNomal">高血压</el-checkbox>
+    <el-checkbox value="7" @change="rightNoNomal">近视</el-checkbox>
+    <el-checkbox value="8" @change="rightNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
@@ -500,3 +533,7 @@ watch(rightIllnessListStr, (newVal) => {
   margin-left: 59vw;
 }
 </style>
+
+
+
+
