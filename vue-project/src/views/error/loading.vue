@@ -3,7 +3,7 @@
     <div class="loading-container" :style="{ background }">
       <div class="loading-content">
         <el-icon class="loading-icon" :style="{ color, fontSize: size }">
-          <Loading />
+          <LoadingIcon />
         </el-icon>
         <div class="loading-text" :style="{ color }">{{ text }}</div>
       </div>
@@ -11,7 +11,7 @@
   </template>
   
   <script setup>
-  import { Loading } from '@element-plus/icons-vue'
+  import { Loading as LoadingIcon} from '@element-plus/icons-vue'
   
   const props = defineProps({
     text: {
@@ -32,7 +32,7 @@
     }
   })
 
-  defineExpose({ props });
+
   </script>
   
   <style scoped>

@@ -24,8 +24,19 @@ const leftImg = ref('')
 const rightImg = ref('')
 
 // 图片大图阅览
-const leftImgList = ref([leftImg.value])
-const rightImgList = ref([rightImg.value])
+// const leftImgList = ref([leftImg.value])
+// const rightImgList = ref([rightImg.value])
+
+const leftImgList = computed(() => [leftImg.value]);
+const rightImgList = computed(() => [rightImg.value]);
+
+
+watch(leftImg, (newVal) => {
+  leftImgList.value = [newVal];
+});
+watch(rightImg, (newVal) => {
+  rightImgList.value = [newVal];
+});
 
 // 检测病症初始化
 const leftIllnessListStr = ref([])
@@ -48,6 +59,28 @@ const rightinput = ref(false);
 
 // const leftinput = computed(() => leftIllnessListStr.value.includes('8'));
 // const rightinput = computed(() => rightIllnessListStr.value.includes('8'));
+
+// const leftNoNomal = () => {
+//   if (leftIllnessListStr.value.includes('1')) {
+//     leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
+//   }
+//   if (leftIllnessListStr.value.includes('8')) {
+//     leftinput.value = true
+//   } else {
+//     leftinput.value = false
+//   }
+// }
+
+// const rightNoNomal = () => {
+//   if (rightIllnessListStr.value.includes('1')) {
+//     rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
+//   }
+//   if (rightIllnessListStr.value.includes('8')) {
+//     rightinput.value = true
+//   } else {
+//     rightinput.value = false
+//   }
+// }
 
 const leftNoNomal = () => {
   if (leftIllnessListStr.value.includes("1")) {
@@ -187,6 +220,7 @@ const handleFinalResult = async () => {
     rightIllInfo: rightOtherIllness.value,
     resInfo: resInfo.value,
   };
+
 
   try {
     const res = await api.UploadAddPatient(resultData);
@@ -511,3 +545,7 @@ watch(rightIllnessListStr, (newVal) => {
   margin-left: 59vw;
 }
 </style>
+
+
+
+
