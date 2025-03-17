@@ -124,6 +124,17 @@ const resultdata = {}
 //     });
 // };
 
+export function getPatientInfo(idCard){
+  return request({
+      url:`/home?idCard=${idCard}`,
+      method:"GET",
+      idCard:idCard, // 确保这是普通对象格式
+      // headers: {
+      //   'Content-Type': 'application/json' // 明确指定 JSON 格式
+      // }
+  })
+}
+
 export default {
     AddPatient,
     uploadImg,
@@ -135,7 +146,7 @@ export default {
   getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
   // 更新病历
   updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data),
-  getPatientInfo: (idCard) => axios.get(`/home/${idCard}` ),
+  getPatientInfo
 }
 
 
