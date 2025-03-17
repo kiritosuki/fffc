@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router';
 import router from '../../router';
 import { ElImage, ElLoading, ElMessage } from 'element-plus'
 import api from '../../api/index'
+import { nextTick } from 'vue';
+// 删除不必要的 `await nextTick();`
+
 
 
 // 接收数据
@@ -64,7 +67,7 @@ const rightNoNomal = () => {
   if (rightIllnessListStr.value.includes("8")) {
     rightinput.value = true
   } else {
-    leftinput.value = false
+    rightinput.value = false
   }
 }
 
@@ -103,6 +106,7 @@ const resInfo = ref('')
 
 // 提交按钮加载控制初始化
 const submitting = ref(false)
+
 onMounted(async () => {
   console.log("当前 ID1:", id)
   // console.log("当前 ID:", idInt)
@@ -117,15 +121,17 @@ onMounted(async () => {
   try {
     // 使用 await 等待数据返回
     console.log("当前 ID3:", id)
+    console.log(typeof idInt)
+    console.log("当前 IDint:", idInt )
     const response = await api.CheckPatientFir(idInt);
     console.log("Response:", response);
     console.log("当前 ID4:", id)
     console.log("firresponse:", response)
     // 确保返回的数据结构正确
-    console.log(response.code)
-    if (response.code === 1) {
-      leftImg.value = response.data.leftImg
-      rightImg.value = response.data.rightImg
+    console.log(response.data?.code)
+    if (response.data?.code === 1) {
+      leftImg.value = response.data.data?.leftImg
+      rightImg.value = response.data.data?.rightImg
 
       // leftIllnessListStr.value = response.data.leftStatusIllList
       // rightIllnessListStr.value = response.data.rightStatusIllList
@@ -133,10 +139,10 @@ onMounted(async () => {
       console.log("leftIllnessListStr:", leftIllnessListStr.value)
       console.log("rightIllnessListStr:", rightIllnessListStr.value)
       console.log("当前 ID:", id)
-      leftIllnessListInter.value = response.data.leftStatusIllList
-      rightIllnessListInter.value = response.data.rightStatusIllList
-      leftIllnessListStr.value = (response.data.leftStatusIllList || []).map(item => String(item));
-      rightIllnessListStr.value = (response.data.rightStatusIllList || []).map(item => String(item));
+      leftIllnessListInter.value = response.data.data?.leftStatusIllList
+      rightIllnessListInter.value = response.data.data?.rightStatusIllList
+      leftIllnessListStr.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
+      rightIllnessListStr.value = (response.data.data?.rightStatusIllList || []).map(item => String(item));
       console.log("leftIllnessListStr:", leftIllnessListStr.value)
       console.log("rightIllnessListStr:", rightIllnessListStr.value)
       console.log("当前 ID:", id)
@@ -157,12 +163,13 @@ onMounted(async () => {
       // leftDiag.value = response.data.leftDiag
       // rightDiag.value = response.data.rightDiag
 
-      resInfo.value = response.data.resInfo
+      resInfo.value = response.data.data?.resInfo
     } else {
-      console.error(res.msg)
+      console.error(response.msg)
     }
   } catch (error) {
-    ElMessage.error('服务器繁忙，请稍后再试')
+    console.error("请求失败:", error);
+    ElMessage.error("请求失败",error)
   } finally {
     loading.value.close();
   }
@@ -184,7 +191,7 @@ const handleFinalResult = async () => {
   try {
     const res = await api.UploadAddPatient(resultData);
     console.log(res);
-    if (res.code === 1) {
+    if (res.data?.code === 1) {
       ElMessage.success('提交成功');
       router.push({ path: `/home` });
     } else {

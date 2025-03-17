@@ -4,6 +4,7 @@ import { ElLoading, ElMessage, ElMessageBox } from 'element-plus';
 import { CheckPatients, DeletePatient } from '../../api/patients';
 import { useRouter } from 'vue-router';
 import { watch } from 'vue';
+import router from '../../router';
 
 // 用于存储加载动画的实例
 const loading = ref(null); 
@@ -345,15 +346,20 @@ const handleEdit = async (index, row) => {
     background: 'rgba(0, 0, 0, 0.7)', // 背景颜色
     spinner: 'el-icon-loading', // 自定义加载图标
     target: document.body, // 指定加载动画覆盖的区域
-  }); try {
-     // 页面跳转和参数传递
-  }catch (error) {
-      ElMessage.error(error.message);
-    }finally {
-      loading.value.close();
-    }
-};
-   
+  });  
+  console.log('跳转参数:', {
+    path: '/patients/info',
+    query: { id: row.id }
+  })
+  router.push({
+    path: '/patients/info',
+    query: { id: row.id }
+  }).then(() => {
+    console.log('跳转成功')
+  }).catch((err) => {
+    console.error('跳转失败:', err)
+  })
+}
 // 单独删除操作
 const handleDelete = async (index, row) => {
   await ElMessageBox.confirm('确定要删除该的数据吗？', '提示', {
