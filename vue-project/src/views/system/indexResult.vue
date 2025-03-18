@@ -174,8 +174,8 @@ onMounted(async () => {
       console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.data?.leftStatusIllList
       rightIllnessListInter.value = response.data.data?.rightStatusIllList
-      leftIllnessListStr.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
-      rightIllnessListStr.value = (response.data.data?.rightStatusIllList || []).map(item => String(item));
+/*       leftIllnessListStr.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
+      rightIllnessListStr.value = (response.data.data?.rightStatusIllList || []).map(item => String(item)); */
       console.log("leftIllnessListStr:", leftIllnessListStr.value)
       console.log("rightIllnessListStr:", rightIllnessListStr.value)
       console.log("当前 ID:", id)
@@ -210,10 +210,10 @@ onMounted(async () => {
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
   submitting.value = true;
-  leftIllnessListInter.value = (response.data.data?.leftStatusIllList || [])
+/*   leftIllnessListInter.value = (leftIllnessListStr || [])
   .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item
-  rightIllnessListInter.value = (response.data.data?.rightStatusIllList || [])
-  .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item
+  rightIllnessListInter.value = (rightIllnessListStr || [])
+  .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item */
   const resultData = {
     id: idInt,
     leftStatusIllList: leftIllnessListInter.value,
@@ -448,15 +448,15 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
         <div class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
-      <el-checkbox-group v-model="leftIllnessListStr" :min="1">
-    <el-checkbox value="1" @change="leftIfNomal">正常</el-checkbox><br>
-    <el-checkbox value="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox value="3" @change="leftNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox value="4" @change="leftNoNomal">白内障</el-checkbox>
-    <el-checkbox value="5" @change="leftNoNomal">AMD</el-checkbox>
-    <el-checkbox value="6" @change="leftNoNomal">高血压</el-checkbox>
-    <el-checkbox value="7" @change="leftNoNomal">近视</el-checkbox>
-    <el-checkbox value="8" @change="leftNoNomal">其他异常</el-checkbox>
+      <el-checkbox-group v-model="leftIllnessListInter" :min="1">
+    <el-checkbox :value="1" @change="leftIfNomal">正常</el-checkbox><br>
+    <el-checkbox :value="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox :value="3" @change="leftNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox :value="4" @change="leftNoNomal">白内障</el-checkbox>
+    <el-checkbox :value="5" @change="leftNoNomal">AMD</el-checkbox>
+    <el-checkbox :value="6" @change="leftNoNomal">高血压</el-checkbox>
+    <el-checkbox :value="7" @change="leftNoNomal">近视</el-checkbox>
+    <el-checkbox :value="8" @change="leftNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
@@ -472,15 +472,15 @@ watch(rightIllnessListStr, (newVal) => {
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
         <div class="image-slot"></div>
       </el-image>
-      <el-checkbox-group v-model="rightIllnessListStr" :min="1">
-    <el-checkbox value="1" @change="rightIfNomal">正常</el-checkbox><br>
-    <el-checkbox value="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
-    <el-checkbox value="3" @change="rightNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox value="4" @change="rightNoNomal">白内障</el-checkbox>
-    <el-checkbox value="5" @change="rightNoNomal">AMD</el-checkbox>
-    <el-checkbox value="6" @change="rightNoNomal">高血压</el-checkbox>
-    <el-checkbox value="7" @change="rightNoNomal">近视</el-checkbox>
-    <el-checkbox value="8" @change="rightNoNomal">其他异常</el-checkbox>
+      <el-checkbox-group v-model="rightIllnessListInter" :min="1">
+    <el-checkbox :value="1" @change="rightIfNomal">正常</el-checkbox><br>
+    <el-checkbox :value="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
+    <el-checkbox :value="3" @change="rightNoNomal">青光眼</el-checkbox><br>
+    <el-checkbox :value="4" @change="rightNoNomal">白内障</el-checkbox>
+    <el-checkbox :value="5" @change="rightNoNomal">AMD</el-checkbox>
+    <el-checkbox :value="6" @change="rightNoNomal">高血压</el-checkbox>
+    <el-checkbox :value="7" @change="rightNoNomal">近视</el-checkbox>
+    <el-checkbox :value="8" @change="rightNoNomal">其他异常</el-checkbox>
   </el-checkbox-group>
       <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
