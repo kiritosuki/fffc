@@ -39,14 +39,12 @@ watch(rightImg, (newVal) => {
 });
 
 // 检测病症初始化
-const leftIllnessListStr = ref([])
-const rightIllnessListStr = ref([])
-
 const leftIllnessListInter = ref([])
 const rightIllnessListInter = ref([])
+
 // 是否是正常的
-// const ifLeftNomal = computed(() => leftIllnessListStr.value.includes('1'))
-// const ifRightNomal = computed(() => rightIllnessListStr.value.includes('1'))
+// const ifLeftNomal = computed(() => leftIllnessListInter.value.includes('1'))
+// const ifRightNomal = computed(() => rightIllnessListInter.value.includes('1'))
 
 // 其他异常病症
 const leftOtherIllness = ref('')
@@ -57,14 +55,14 @@ const leftinput = ref(false);
 const rightinput = ref(false);
 
 
-// const leftinput = computed(() => leftIllnessListStr.value.includes('8'));
-// const rightinput = computed(() => rightIllnessListStr.value.includes('8'));
+// const leftinput = computed(() => leftIllnessListInter.value.includes('8'));
+// const rightinput = computed(() => rightIllnessListInter.value.includes('8'));
 
 // const leftNoNomal = () => {
-//   if (leftIllnessListStr.value.includes('1')) {
-//     leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf('1'), 1)
+//   if (leftIllnessListInter.value.includes('1')) {
+//     leftIllnessListInter.value.splice(leftIllnessListInter.value.indexOf('1'), 1)
 //   }
-//   if (leftIllnessListStr.value.includes('8')) {
+//   if (leftIllnessListInter.value.includes('8')) {
 //     leftinput.value = true
 //   } else {
 //     leftinput.value = false
@@ -72,10 +70,10 @@ const rightinput = ref(false);
 // }
 
 // const rightNoNomal = () => {
-//   if (rightIllnessListStr.value.includes('1')) {
-//     rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf('1'), 1)
+//   if (rightIllnessListInter.value.includes('1')) {
+//     rightIllnessListInter.value.splice(rightIllnessListInter.value.indexOf('1'), 1)
 //   }
-//   if (rightIllnessListStr.value.includes('8')) {
+//   if (rightIllnessListInter.value.includes('8')) {
 //     rightinput.value = true
 //   } else {
 //     rightinput.value = false
@@ -83,10 +81,10 @@ const rightinput = ref(false);
 // }
 
 const leftNoNomal = () => {
-  if (leftIllnessListStr.value.includes("1")) {
-    leftIllnessListStr.value.splice(leftIllnessListStr.value.indexOf("1"), 1)
+  if (leftIllnessListInter.value.includes('1')) {
+    leftIllnessListInter.value.splice(leftIllnessListInter.value.indexOf('1'), 1)
   }
-  if (leftIllnessListStr.value.includes("8")) {
+  if (leftIllnessListInter.value.includes('8')) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -94,10 +92,10 @@ const leftNoNomal = () => {
 }
 
 const rightNoNomal = () => {
-  if (rightIllnessListStr.value.includes("1")) {
-    rightIllnessListStr.value.splice(rightIllnessListStr.value.indexOf("1"), 1)
+  if (rightIllnessListInter.value.includes('1')) {
+    rightIllnessListInter.value.splice(rightIllnessListInter.value.indexOf('1'), 1)
   }
-  if (rightIllnessListStr.value.includes("8")) {
+  if (rightIllnessListInter.value.includes('8')) {
     rightinput.value = true
   } else {
     rightinput.value = false
@@ -105,10 +103,10 @@ const rightNoNomal = () => {
 }
 
 const leftIfNomal = () => {
-  if (leftIllnessListStr.value.includes("1")) {
-    leftIllnessListStr.value = ["1"]
+  if (leftIllnessListInter.value.includes('1')) {
+    leftIllnessListInter.value = ['1']
   }
-  if (leftIllnessListStr.value.includes("8")) {
+  if (leftIllnessListInter.value.includes('8')) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -116,10 +114,10 @@ const leftIfNomal = () => {
 }
 
 const rightIfNomal = () => {
-  if (rightIllnessListStr.value.includes("1")) {
-    rightIllnessListStr.value = ["1"]
+  if (rightIllnessListInter.value.includes('1')) {
+    rightIllnessListInter.value = ['1']
   }
-  if (rightIllnessListStr.value.includes("8")) {
+  if (rightIllnessListInter.value.includes('8')) {
     rightinput.value = true
   } else {
     rightinput.value = false
@@ -166,26 +164,26 @@ onMounted(async () => {
       leftImg.value = response.data.data?.leftImg
       rightImg.value = response.data.data?.rightImg
 
-      // leftIllnessListStr.value = response.data.leftStatusIllList
-      // rightIllnessListStr.value = response.data.rightStatusIllList
+      // leftIllnessListInter.value = response.data.leftStatusIllList
+      // rightIllnessListInter.value = response.data.rightStatusIllList
       // 改为string类型
-      console.log("leftIllnessListStr:", leftIllnessListStr.value)
-      console.log("rightIllnessListStr:", rightIllnessListStr.value)
+      console.log("leftIllnessListInter:", leftIllnessListInter.value)
+      console.log("rightIllnessListInter:", rightIllnessListInter.value)
       console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.data?.leftStatusIllList
       rightIllnessListInter.value = response.data.data?.rightStatusIllList
-/*       leftIllnessListStr.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
-      rightIllnessListStr.value = (response.data.data?.rightStatusIllList || []).map(item => String(item)); */
-      console.log("leftIllnessListStr:", leftIllnessListStr.value)
-      console.log("rightIllnessListStr:", rightIllnessListStr.value)
+/*       leftIllnessListInter.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
+      rightIllnessListInter.value = (response.data.data?.rightStatusIllList || []).map(item => String(item)); */
+      console.log("leftIllnessListInter:", leftIllnessListInter.value)
+      console.log("rightIllnessListInter:", rightIllnessListInter.value)
       console.log("当前 ID:", id)
       await Vue.nextTick();
-      // if (leftIllnessListStr.value.includes('8')){
+      // if (leftIllnessListInter.value.includes('8')){
       //   leftinput.value = true
       // } else {
       //   leftinput.value = false
       // }
-      // if (rightIllnessListStr.value.includes('8')){
+      // if (rightIllnessListInter.value.includes('8')){
       //   rightinput.value = true
       // } else {
       //   rightinput.value = false
@@ -210,9 +208,9 @@ onMounted(async () => {
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
   submitting.value = true;
-/*   leftIllnessListInter.value = (leftIllnessListStr || [])
+/*   leftIllnessListInter.value = (leftIllnessListInter || [])
   .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item
-  rightIllnessListInter.value = (rightIllnessListStr || [])
+  rightIllnessListInter.value = (rightIllnessListInter || [])
   .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item */
   const resultData = {
     id: idInt,
@@ -251,8 +249,8 @@ const handleFinalResult = async () => {
 //     console.log(typeof idInt)
 //     const resultdata = {
 //       id: id,
-//       leftStatusIllList: leftIllnessListStr.value,
-//       rightStatusIllList: rightIllnessListStr.value,
+//       leftStatusIllList: leftIllnessListInter.value,
+//       rightStatusIllList: rightIllnessListInter.value,
 //       leftDiag: leftDiag.value,
 //       rightDiag: rightDiag.value,
 //       leftIllInfo: leftOtherIllness.value,
@@ -285,31 +283,31 @@ const handleFinalResult = async () => {
 
 
 
-/* watch(leftIllnessListStr, (newVal) => {
+/* watch(leftIllnessListInter, (newVal) => {
   if (newVal.includes('1')) {
     // 如果包含正常选项，则过滤掉其他选项
-    leftIllnessListStr.value = ['1']
+    leftIllnessListInter.value = ['1']
   }
 }, { deep: true })
 
-watch(rightIllnessListStr, (newVal) => {
+watch(rightIllnessListInter, (newVal) => {
   if (newVal.includes('1')) {
     // 如果包含正常选项，则过滤掉其他选项
-    rightIllnessListStr.value = ['1']
+    rightIllnessListInter.value = ['1']
   }
 }, { deep: true }) */
 
 // const leftinput = computed(() => {
-//   for (let i = 0; i < leftIllnessListStr.value.length; i++) {
-//     if (leftIllnessListStr.value[i] === "8") {
+//   for (let i = 0; i < leftIllnessListInter.value.length; i++) {
+//     if (leftIllnessListInter.value[i] === "8") {
 //       return true
 //     }
 //   }
 //   return false
 // })
 // const rightinput = computed(() => {
-//     for (let i = 0; i < rightIllnessListStr.value.length; i++) {
-//       if (rightIllnessListStr.value[i] === "8") {
+//     for (let i = 0; i < rightIllnessListInter.value.length; i++) {
+//       if (rightIllnessListInter.value[i] === "8") {
 //         return true
 //       }
 //     }
@@ -330,12 +328,12 @@ watch(rightIllnessListStr, (newVal) => {
     rightImg.value = response.data.data.rightImg
 
     // 检测出的典型病症
-    leftIllnessListStr.value = response.data.data.leftStatusIllList
-    rightIllnessListStr.value = response.data.data.rightStatusIllList
+    leftIllnessListInter.value = response.data.data.leftStatusIllList
+    rightIllnessListInter.value = response.data.data.rightStatusIllList
 
     // 判断是否需要显示其他异常病症的输入栏
-    // leftinput =ref(leftIllnessListStr.includes('8'))
-    // rightinput =ref(rightIllnessListStr.includes('8'))
+    // leftinput =ref(leftIllnessListInter.includes('8'))
+    // rightinput =ref(rightIllnessListInter.includes('8'))
 
     resInfo.value = response.data.data.resInfo
   }
@@ -355,8 +353,8 @@ watch(rightIllnessListStr, (newVal) => {
 //       leftImg.value = response.data.leftImg
 //       rightImg.value = response.data.rightImg
 
-//       leftIllnessListStr.value = response.data.leftStatusIllList
-//       rightIllnessListStr.value = response.data.rightStatusIllList
+//       leftIllnessListInter.value = response.data.leftStatusIllList
+//       rightIllnessListInter.value = response.data.rightStatusIllList
 
 //       leftDiag.value = response.data.leftDiag
 //       rightDiag.value = response.data.rightDiag
@@ -376,7 +374,7 @@ watch(rightIllnessListStr, (newVal) => {
 
 
 // 判断是否需要显示其他异常病症的输入栏
-// watch(() => leftIllnessListStr.value, (newValue, oldValue) => {
+// watch(() => leftIllnessListInter.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
 //     leftinput.value = true
 //   } else {
@@ -385,7 +383,7 @@ watch(rightIllnessListStr, (newVal) => {
 // },
 // { immediate: true , deep:true}
 // )
-// watch(() => rightIllnessListStr.value, (newValue, oldValue) => {
+// watch(() => rightIllnessListInter.value, (newValue, oldValue) => {
 //   if (newValue.includes('8')) {
 //     rightinput.value = true
 //   } else {
@@ -395,10 +393,10 @@ watch(rightIllnessListStr, (newVal) => {
 // { immediate: true , deep:true}
 // )
 
-// watch(() => leftIllnessListStr.value, (newValue,oldValue) => {
+// watch(() => leftIllnessListInter.value, (newValue,oldValue) => {
 //   if (newValue.includes('1')) {
 //         // 如果选中了“正常”，则清空其他选项
-//         // leftIllnessListStr.value = ['1'];
+//         // leftIllnessListInter.value = ['1'];
 //         ifLeftNomal.value = true
 //       } else {
 //         ifLeftNomal.value = false
@@ -407,10 +405,10 @@ watch(rightIllnessListStr, (newVal) => {
 //     { immediate: true , deep:true}
 // );
 
-// watch(() => rightIllnessListStr.value, (newValue,oldValue) => {
+// watch(() => rightIllnessListInter.value, (newValue,oldValue) => {
 //       if (newValue.includes('1')) {
 //         // 如果选中了“正常”，则清空其他选项
-//         // rightIllnessListStr.value = ['1'];
+//         // rightIllnessListInter.value = ['1'];
 //         ifRightNomal.value = true
 //       } else {
 //         ifRightNomal.value = false
@@ -420,18 +418,18 @@ watch(rightIllnessListStr, (newVal) => {
 // );
 
 // const handleLeftIllnessList = () => {
-//   if (leftIllnessListStr.value.includes('1')) {
+//   if (leftIllnessListInter.value.includes('1')) {
 //     // 如果选中了“正常”，则清空其他选项
-//     // leftIllnessListStr.value = ['1'];
+//     // leftIllnessListInter.value = ['1'];
 //     ifLeftNomal.value = true
 //   } else {
 //     ifLeftNomal.value = false
 //   }
 // }
 // const handleRightIllnessList = (e) => {
-//   if (rightIllnessListStr.value.includes('1')) {
+//   if (rightIllnessListInter.value.includes('1')) {
 //     // 如果选中了“正常”，则清空其他选项
-//     // rightIllnessListStr.value = ['1'];
+//     // rightIllnessListInter.value = ['1'];
 //     ifRightNomal.value = true
 //   } else {
 //     ifRightNomal.value = false
