@@ -81,10 +81,10 @@ const rightinput = ref(false);
 // }
 
 const leftNoNomal = () => {
-  if (leftIllnessListInter.value.includes('1')) {
-    leftIllnessListInter.value.splice(leftIllnessListInter.value.indexOf('1'), 1)
+  if (leftIllnessListInter.value.includes(1)) {
+    leftIllnessListInter.value.splice(leftIllnessListInter.value.indexOf(1), 1)
   }
-  if (leftIllnessListInter.value.includes('8')) {
+  if (leftIllnessListInter.value.includes(1)) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -92,10 +92,10 @@ const leftNoNomal = () => {
 }
 
 const rightNoNomal = () => {
-  if (rightIllnessListInter.value.includes('1')) {
-    rightIllnessListInter.value.splice(rightIllnessListInter.value.indexOf('1'), 1)
+  if (rightIllnessListInter.value.includes(1)) {
+    rightIllnessListInter.value.splice(rightIllnessListInter.value.indexOf(1), 1)
   }
-  if (rightIllnessListInter.value.includes('8')) {
+  if (rightIllnessListInter.value.includes(8)) {
     rightinput.value = true
   } else {
     rightinput.value = false
@@ -103,10 +103,10 @@ const rightNoNomal = () => {
 }
 
 const leftIfNomal = () => {
-  if (leftIllnessListInter.value.includes('1')) {
-    leftIllnessListInter.value = ['1']
+  if (leftIllnessListInter.value.includes(1)) {
+    leftIllnessListInter.value = [1]
   }
-  if (leftIllnessListInter.value.includes('8')) {
+  if (leftIllnessListInter.value.includes(8)) {
     leftinput.value = true
   } else {
     leftinput.value = false
@@ -114,10 +114,10 @@ const leftIfNomal = () => {
 }
 
 const rightIfNomal = () => {
-  if (rightIllnessListInter.value.includes('1')) {
-    rightIllnessListInter.value = ['1']
+  if (rightIllnessListInter.value.includes(1)) {
+    rightIllnessListInter.value = [1]
   }
-  if (rightIllnessListInter.value.includes('8')) {
+  if (rightIllnessListInter.value.includes(8)) {
     rightinput.value = true
   } else {
     rightinput.value = false
