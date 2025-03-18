@@ -459,7 +459,7 @@ const ExactCheck = async () => {
   });  
   checkName.value = ''
   checkGender.value = ''
-  checkPage ='1'
+  checkPage.value ='1'
   checkTime.value = []
   try {
   const response = await CheckPatients(checkName.value, checkGender.value, formatDate(checkTime.value[0]), formatDate(checkTime.value[1]), checkPhoneNumber.value, checkIdCard.value, checkPage.value, checkPageSize.value)
@@ -486,9 +486,9 @@ const VagueCheck = async () => {
     spinner: 'el-icon-loading', // 自定义加载图标
     target: document.body, // 指定加载动画覆盖的区域
   });  
-  checkPage ='1'
-  checkIdCard = ''
-  checkPhoneNumber = ''
+  checkPage.value ='1'
+  checkIdCard.value = ''
+  checkPhoneNumber.value = ''
   try {
   const response = await CheckPatients(checkName.value, checkGender.value, formatDate(checkTime.value[0]), formatDate(checkTime.value[1]), checkPhoneNumber.value, checkIdCard.value, checkPage.value, checkPageSize.value)
   if (response.data.code === 1){
