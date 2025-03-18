@@ -210,6 +210,10 @@ onMounted(async () => {
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
   submitting.value = true;
+  leftIllnessListInter.value = (response.data.data?.leftStatusIllList || [])
+  .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item
+  rightIllnessListInter.value = (response.data.data?.rightStatusIllList || [])
+  .map(item => parseInt(item)); // 或者使用 Number(item) 或 +item
   const resultData = {
     id: idInt,
     leftStatusIllList: leftIllnessListInter.value,
