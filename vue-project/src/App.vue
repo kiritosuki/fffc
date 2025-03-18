@@ -1,4 +1,28 @@
+<script setup>
+import { onMounted, onUnmounted } from "vue";
 
+const preventZoom = (event) => {
+  if (event.ctrlKey || event.metaKey) {
+    event.preventDefault();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("wheel", preventZoom, { passive: false });
+  document.addEventListener("keydown", (event) => {
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      ["+", "-", "=", "0"].includes(event.key)
+    ) {
+      event.preventDefault();
+    }
+  });
+});
+
+onUnmounted(() => {
+  document.removeEventListener("wheel", preventZoom);
+});
+</script>
 
 <template>
 
