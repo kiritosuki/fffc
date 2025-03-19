@@ -1,33 +1,123 @@
 <script setup>
-// import * as echarts from 'echarts';
+import * as echarts from 'echarts';
+import { onMounted } from 'vue';
+onMounted(() => {
+var barChart1 = echarts.init(document.getElementById('barChart1'));
+// 绘制图表
+var barOption1 = {
+        title: {
+          text: '患者年龄分布'
+        },
+        tooltip: {},
+        legend: {
+          data: ['年龄']
+        },
+        xAxis: {
+          data: ['0-20', '21-40', '41-60', '61-80', '80+']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '年龄',
+            type: 'bar',
+            data: [30, 180, 1260, 1360, 80]
+          }
+        ]
+      };
 
-// // 基于准备好的dom，初始化echarts实例
-// var myChart = echarts.init(document.getElementById('chart'));
-// // 绘制图表
-// myChart.setOption({
-//   title: {
-//     text: 'ECharts 入门示例'
-//   },
-//   tooltip: {},
-//   xAxis: {
-//     data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-//   },
-//   yAxis: {},
-//   series: [
-//     {
-//       name: '销量',
-//       type: 'bar',
-//       data: [5, 20, 36, 10, 10, 20]
-//     }
-//   ]
-// });
+barChart1.setOption(barOption1)
 
-// myChart.setOption(option);
+
+
+var binChart1 = echarts.init(document.getElementById('binChart1'));
+
+var binOption1 = {
+    title: {
+      text: '患者性别分布'
+    },
+    tooltip: {},
+  series: [
+    {
+    name: '性别',
+    type: 'pie',
+    data: [
+        {
+          value: 0.529,
+          name: '男性'
+        },
+        {
+          value: 0.471,
+          name: '女性'
+        }
+      ]
+    }
+  ]
+};
+
+binChart1.setOption(binOption1)
+
+
+var barChart2 = echarts.init(document.getElementById('barChart2'));
+// 绘制图表
+var barOption2 = {
+        title: {
+          text: '疾病分布'
+        },
+        tooltip: {},
+
+        xAxis: {
+          data: ['N', 'D', 'G', 'C', 'A', 'H', 'M', 'O']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '患病人数',
+            type: 'bar',
+            data: [1130, 510, 210, 210, 180, 80, 190, 980]
+          }
+        ]
+      };
+
+barChart2.setOption(barOption2)
+
+
+
+var barChart3 = echarts.init(document.getElementById('barChart3'));
+// 绘制图表
+var barOption3 = {
+        title: {
+          text: '左右眼诊断一致性'
+        },
+        tooltip: {},
+
+        xAxis: {
+          data: ['N', 'D']
+        },
+        yAxis: {
+            name: '百分比 (%)'
+        },
+        series: [
+          {
+            name: '年龄',
+            type: 'bar',
+            data: [0.35, 0.65]
+          }
+        ]
+      };
+
+barChart3.setOption(barOption3)
+
+})
+
+
 
 </script>
 
 
 <template>
     分析
-    <!-- <div id="chart" style="width: 600px;height:400px;"></div> -->
+    <div id="barChart1" style="width: 600px;height:400px;"></div>
+    <div id="barChart2" style="width: 600px;height:400px;"></div>
+    <div id="barChart3" style="width: 600px;height:400px;"></div>
+    <div id="binChart1" style="width: 600px;height:400px;"></div>
 </template>
