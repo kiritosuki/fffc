@@ -223,7 +223,7 @@ var hitOption2 = {
     }
   },
   visualMap: {
-    min: -0.5,
+    min: -1,
     max: 1,
     calculable: true,
     orient: 'horizontal',
