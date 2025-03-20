@@ -159,7 +159,8 @@ export default {
   getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
   // 更新病历
   updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data),
-  getPatientInfo
+  getPatientInfo,
+  login
 }
 
 
