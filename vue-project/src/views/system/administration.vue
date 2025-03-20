@@ -196,7 +196,7 @@ const DeleteAndRefresh = async (ids) => {
 
 // 数据监听与限制
 watch(checkIdCard, (newValue) => {
-  if (newValue.length > 14) {
+  if (newValue.length > 19) {
     checkIdCard.value = checkIdCard.value.slice(0, 14);
   }
 });
