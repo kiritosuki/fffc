@@ -30,7 +30,7 @@ import { handleError } from '@/utils/errorHandler'
 
 const service = axios.create({
   baseURL: 'http://localhost:8080', // 请求基础URL
-  timeout: 10000
+  timeout: 2000
 })
 
 // 请求拦截器

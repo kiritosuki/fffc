@@ -199,7 +199,6 @@ onMounted(async () => {
       console.error(response.msg)
     }
   } catch (error) {
-    console.error("请求失败:", error);
     ElMessage.error("请求失败",error)
   } finally {
     loading.value.close();
@@ -235,7 +234,6 @@ const handleFinalResult = async () => {
     }
   } catch (error) {
     ElMessage.error('服务器繁忙，提交失败');
-    console.error("请求失败:", error);
   } finally {
     submitting.value = false;
   }
