@@ -35,73 +35,47 @@
   </div>
 </template>
 
-<script>
-import { ref, reactive } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
-import api from '../../api/index'
-import { useRouter } from 'vue-router'
-import Loading from '../error/loading.vue'
-const router = useRouter();
-const submitting = ref(false)
-const formRef = ref(null)
-const token = ref('')
+<script setup>
+import { ref, reactive } from 'vue';
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import api from '../../api/index';
+import Loading from '../error/loading.vue';
 
+const router = useRouter();
+const submitting = ref(false);
+const formRef = ref(null);
 const form = reactive({
-    username: '',
-    password: '' 
-})
+  username: '',
+  password: '',
+});
 const rules = reactive({
-    username: [
-        { required: true, message: '请输入昵称', trigger: 'blur' },
-    ],
-    password: [
-        { required: true, message: '请输入密码', trigger: 'blur' }, 
-    ] 
-})
-const submitForm = async() => {
-    try{
+  username: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+});
+
+const submitForm = async () => {
+  submitting.value = true;
+  try {
     const res = await api.login({
-        username: form.username,
-        password: form.password
+      username: form.username,
+      password: form.password,
     });
-    console.log(res.data.data)
-    if (res.data.code == 1) {
-        ElMessage.success('登录成功');
-        router.push('/home') .then(() => {
-           console.log('登录成功') 
-        }).catch(() => {
-            console.log('登录失败')
-        })
-    }
 
     if (res.data.code === 1) {
       ElMessage.success('登录成功');
+      router.push('/home');
     } else {
-      ElMessage.success(res.data.msg);
+      ElMessage.error(res.data.msg);
     }
   } catch (error) {
-    if (error.data.response) {
-      const msgMap = {
-        400: '请求参数错误',
-        401: '身份验证失败',
-        500: error.data.msg,
-      };
-      ElMessage.error(msgMap[error.data.response.status] || '操作失败');
-    } else {
-      ElMessage.error(error.data.msg);
-    }
+    ElMessage.error('登录失败');
   } finally {
     submitting.value = false;
   }
-    token.value = res.data.data.token;
 };
-export default {
-    components: {
-        Loading
-    }, 
-}
 </script>
+
 
 <style scoped>
 body{
