@@ -438,6 +438,7 @@ watch(rightIllnessListInter, (newVal) => {
 
 
 <template>
+  <div>
   <div class="indexResult">
     <div class="checkbox">
       <p>左眼：</p>
@@ -494,7 +495,7 @@ watch(rightIllnessListInter, (newVal) => {
   <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit">
     {{ submitting ? '提交中...' : '提交病例' }}
   </el-button>
-
+</div>
 </template>
 
 <style scoped>
