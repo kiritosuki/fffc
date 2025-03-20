@@ -48,7 +48,7 @@ const totalPatient = ref("");
 
 // 最大页数
 const maxPage = computed(() => {
-  if (!totalPatient.value) return 2;
+  if (!totalPatient.value) return 1;
   else return Math.ceil(totalPatient.value / checkPageSize.value);
 });
 
@@ -173,6 +173,7 @@ watch(checkIdCard, (newValue) => {
     checkIdCard.value = checkIdCard.value.slice(0, 14);
   }
 });
+
 watch(checkPhoneNumber, (newValue) => {
   if (newValue.length > 11) {
     checkIdCard.value = checkIdCard.value.slice(0, 11);
