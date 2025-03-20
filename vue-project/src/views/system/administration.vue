@@ -54,17 +54,15 @@ const maxPage = computed(() => {
 
 // 格式化日期
 function formatDate(date) {
-    // 检查 date 是否为有效的 Date 对象
-    if (!(date instanceof Date) || isNaN(date.getTime())) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份从 0 开始，需要加 1
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  // 检查 date 是否为有效的 Date 对象
+  if (!(date instanceof Date) || isNaN(date.getTime())) {
+    return "";
+  } else {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 月份从 0 开始，需要加 1
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
-  else{
-    return ""
-  }
-
 }
 
 // 默认的异步更新函数
@@ -98,6 +96,7 @@ const RefreshRows = async (
       if (res.data?.code === 1) {
         // 数据接收
         tableDataRows.value = res.data.data?.rows;
+        console.log(res.data.data.rows);
         totalPatient.value = res.data.data?.total;
       } else {
         ElMessage.error(res.data?.msg);
@@ -163,6 +162,34 @@ const DeleteAndRefresh = async (ids) => {
   } catch (error) {
     ElMessage.error("服务器丢失，请稍后再试");
   } finally {
+    loading.value.close();
+  }
+  try {
+    // 发送异步更新请求
+    await CheckPatients(
+      (name = checkName.value),
+      (gender = checkGender.value),
+      (begin = formatDate(checkTime.value[0])),
+      (end = formatDate(checkTime.value[1])),
+      (phone = checkPhoneNumber.value),
+      (idCard = checkIdCard.value),
+      (page = checkPage.value),
+      (pageSize = checkPageSize.value)
+    ).then((res) => {
+      if (res.data?.code === 1) {
+        // 数据接收
+        tableDataRows.value = res.data.data?.rows;
+        console.log(res.data.data.rows);
+        totalPatient.value = res.data.data?.total;
+      } else {
+        ElMessage.error(res.data?.msg);
+      }
+    });
+    ElMessage.success("数据加载成功");
+  } catch (error) {
+    ElMessage.error("服务器丢失，请稍后再试");
+  } finally {
+    // 关闭加载动画
     loading.value.close();
   }
 };
@@ -406,6 +433,16 @@ const DeleteAllSelected = async () => {
   DeleteAndRefresh(ids);
 };
 
+// 单独删除操作
+const handleDelete = async (index, row) => {
+  await ElMessageBox.confirm("确定要删除该的数据吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  });
+  DeleteAndRefresh([row.id]);
+};
+
 // 编辑操作
 const handleEdit = async (index, row) => {
   loading.value = ElLoading.service({
@@ -430,16 +467,6 @@ const handleEdit = async (index, row) => {
     .catch((err) => {
       console.error("跳转失败:", err);
     });
-};
-
-// 单独删除操作
-const handleDelete = async (index, row) => {
-  await ElMessageBox.confirm("确定要删除该的数据吗？", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  });
-   DeleteAndRefresh([row.id]);
 };
 
 // 初始化表格数据
@@ -508,7 +535,7 @@ const ExactCheck = async () => {
 
 // 模糊查询
 const VagueCheck = async () => {
-  checkPage.value = "1";
+  checkPage.value = 1;
   checkIdCard.value = "";
   checkPhoneNumber.value = "";
   RefreshRows();
@@ -527,33 +554,33 @@ const VagueCheck = async () => {
 // }
 
 // 日期快捷选项功能
-// const pickerOptions = {
-//   shortcuts: [{
-//     text: '最近一周',
-//     onClick(picker) {
-//       const end = new Date();
-//       const start = new Date();
-//       start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-//       picker.$emit('pick', [start, end]);
-//     }
-//   }, {
-//     text: '最近一个月',
-//     onClick(picker) {
-//       const end = new Date();
-//       const start = new Date();
-//       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-//       picker.$emit('pick', [start, end]);
-//     }
-//   }, {
-//     text: '最近三个月',
-//     onClick(picker) {
-//       const end = new Date();
-//       const start = new Date();
-//       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-//       picker.$emit('pick', [start, end]);
-//     }
-//   }]
-// }
+const pickerOptions = {
+  shortcuts: [{
+    text: '最近一周',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+      picker.$emit('pick', [start, end]);
+    }
+  }, {
+    text: '最近一个月',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+      picker.$emit('pick', [start, end]);
+    }
+  }, {
+    text: '最近三个月',
+    onClick(picker) {
+      const end = new Date();
+      const start = new Date();
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+      picker.$emit('pick', [start, end]);
+    }
+  }]
+}
 
 // 这是json格式的请求废稿
 // try {
