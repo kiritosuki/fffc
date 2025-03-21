@@ -342,7 +342,7 @@ const diseaseOptions = ref([
   const fetchData = async () => {
     try {
       const res = await api.getMedicalRecord(route.query.id)
-      medicalRecord.value = res.data
+      medicalRecord.value = res.data.data
     } catch (error) {
       ElMessage.error('获取病历失败')
     } finally {
