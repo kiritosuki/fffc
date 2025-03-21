@@ -12,7 +12,7 @@ import Admin from '../views/system/administration.vue'
 import Analyze from '../views/system/analyze.vue'
 import personal from '../views/system/personalCenter.vue'
 import newRecord from '../views/system/newRecord.vue'
-
+import history from '../views/system/history.vue'
 
 const routes = [
   {
@@ -25,7 +25,8 @@ const routes = [
       { path: '/analyze', component: Analyze },
       { path: '/introduce', component: introduce },
       { path: '/personal', component: personal},
-      { path: '/patients/info', component: newRecord,props: (route) => ({ id: route.query.id })}
+      { path: '/patients/info', component: newRecord,props: (route) => ({ id: route.query.id })},
+      { path: '/patients/history', component: history, props: (route) => ({ id: route.query.id })}
     ]
   }
 ]
