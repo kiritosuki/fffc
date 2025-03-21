@@ -87,7 +87,7 @@ const RefreshRows = async (
       name,
       gender,
       begin,
-      end,
+      end, 
       phone,
       idCard,
       page,
