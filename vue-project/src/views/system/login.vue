@@ -77,7 +77,7 @@ const submitForm = async () => {
 </script>
 
 
-<style scoped>
+<!-- <style scoped>
 body{
     width: 100%;
     float:left;
@@ -375,4 +375,4 @@ ico{
 p.header{
     float: left;
 }
-</style>
+</style> -->
