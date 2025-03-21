@@ -283,7 +283,7 @@ onMounted(() => {
             /* 设置背景颜色为透明 */
             box-shadow: inset 0 0 0 2px black, inset 6px 6px 0 rgba(30, 144, 255, 0.2), 3px 3px 0 rgba(30, 144, 255, 0.2);
             /* 设置阴影效果 */
-            -webkit-appearance: none;
+            appearance: none;
             /* 去掉Webkit浏览器的默认样式 */
         }
 
