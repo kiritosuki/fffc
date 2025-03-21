@@ -244,13 +244,5 @@ onMounted(() => {
 </script>
 
 <template>
-<div>
-  <div>分析</div>
-  <div id="barChart1" style="width: 600px; height: 400px"></div>
-  <div id="barChart2" style="width: 600px; height: 400px"></div>
-  <div id="barChart3" style="width: 600px; height: 400px"></div>
-  <div id="binChart1" style="width: 600px; height: 400px"></div>
-  <div id="hitChart1" style="width: 600px; height: 400px"></div>
-  <div id="hitChart2" style="width: 600px; height: 400px"></div>
-</div>
+    分析
 </template>

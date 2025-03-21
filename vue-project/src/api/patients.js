@@ -112,6 +112,8 @@ const resultdata = {}
 
   
 
+  
+
 
 // export const UploadAddPatient = (data) => {
 //   return axios.post('/homeResult', data)  // 使用 POST 请求提交数据
@@ -135,6 +137,17 @@ export function getPatientInfo(idCard){
   })
 }
 
+export function login(data) {
+  return request({
+    url: "/login",  // 修正路径
+    method: "POST",
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
 export default {
     AddPatient,
     uploadImg,
@@ -146,7 +159,8 @@ export default {
   getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
   // 更新病历
   updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data),
-  getPatientInfo
+  getPatientInfo,
+  login
 }
 
 

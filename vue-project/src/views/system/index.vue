@@ -352,7 +352,7 @@ const handleSubmit = async () => {
       const msgMap = {
         400: '请求参数错误',
         401: '身份验证失败',
-        500: error.msg,
+        500: error.data.msg,
       };
       ElMessage.error(msgMap[error.data.response.status] || '操作失败');
     } else {
