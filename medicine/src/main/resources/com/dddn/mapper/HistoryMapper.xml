@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dddn.mapper.HistoryMapper">
+
+<!--    根据病人id查询病人历史记录列表-->
+    <select id="getHistoryList" resultType="com.dddn.pojo.History">
+        select h.* from history h where h.patient_id = #{patientId} order by diag_time desc
+    </select>
+
+<!--    根据历史记录id查询对应的疾病编号-->
+    <select id="getLeftStatusIllList" resultType="java.lang.Integer">
+        select p.ill from past_status p where p.history_id = #{id} and p.position = 1
+    </select>
+    <select id="getRightStatusIllList" resultType="java.lang.Integer">
+        select p.ill from past_status p where p.history_id = #{id} and p.position = 2
+    </select>
+
+<!--    根据历史记录id查询对应的异常信息-->
+    <select id="getLeftIllInfo" resultType="java.lang.String">
+        select p.info from past_status p where p.history_id = #{id} and p.position = 1 and ill = 8
+    </select>
+    <select id="getRightIllInfo" resultType="java.lang.String">
+        select p.info from past_status p where p.history_id = #{id} and p.position = 2 and ill = 8
+    </select>
+
+</mapper>

@@ -7,7 +7,9 @@ import com.dddn.pojo.PatientQueryParam;
 import java.util.List;
 
 public interface PatientService {
-    PageResult<Patient> listPage(PatientQueryParam patientQueryParam);
+    PageResult<Patient> getListPage(PatientQueryParam patientQueryParam);
 
-    void delete(List<Integer> ids) throws Exception;
+    void deleteByIds(List<Integer> ids);
+
+    Patient getInfoById(Integer id);
 }

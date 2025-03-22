@@ -1,22 +1,53 @@
 package com.dddn.mapper;
 
-import com.dddn.pojo.Patient;
-import com.dddn.pojo.PatientQueryParam;
+import com.dddn.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface PatientMapper {
 
-    //根据条件查询 返回病例列表
-    List<Patient> getPatientList(PatientQueryParam patientQueryParam);
+    Patient selectById(Integer id);
 
-    //根据ids删除/批量删除病例 并且删除病例患病情况
+    List<Integer> selectLeftStatusById(Integer id);
+
+    List<Integer> selectRightStatusById(Integer id);
+
+    void updateDiagPatient(Patient patient);
+
+    void addPatient(Patient patient);
+
+    void addStatus(Status status);
+
+    void deleteStatus(Integer id);
+
+    void addHistory(History history);
+
+    List<Patient> getListPage(PatientQueryParam patientQueryParam);
+
     void deleteByIds(List<Integer> ids);
-    void deleteStatusName(List<Integer> ids);
 
-    //根据ids获取病人上传的图片
-    List<String> getleftImagsByIds(List<Integer> ids);
-    List<String> getrightImagsByIds(List<Integer> ids);
+    void deleteHistoryByIds(List<Integer> ids);
+
+    Integer selectIdByIdCard(String idCard);
+
+    void addPastStatus(PastStatus pastStatus);
+
+    void updatePatient(Patient patient);
+
+    void updateStatus(Status status);
+
+    String selectNameByIdCard(String idCard);
+
+    void deletePastStatus(Integer id);
+
+    Patient getPatientByPhoneAndIdCard(@Param("idCard") String idCard);
+
+    List<History> selectHistoryById(Integer id);
+
+    String getLeftIllInfo(Integer id);
+
+    String getRightIllInfo(Integer id);
 }
