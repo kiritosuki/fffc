@@ -14,6 +14,7 @@ import personal from '../views/system/personalCenter.vue'
 import newRecord from '../views/system/newRecord.vue'
 import login from '../views/system/login.vue'
 import history from '../views/system/history.vue'
+import aLotOfPictures from '../views/system/aLotOfPictures.vue'
 
 const routes = [
   {
@@ -28,7 +29,8 @@ const routes = [
       { path: '/personal', component: personal},
       { path: '/patients/info', component: newRecord,props: (route) => ({ id: route.query.id })},
       { path: '/patients/history', component: history, props: (route) => ({ id: route.query.id })},
-      { path: '/login', component: login}
+      { path: '/login', component: login},
+      { path: '/aLotOfPictures', component: aLotOfPictures},
     ]
   }
 ]
