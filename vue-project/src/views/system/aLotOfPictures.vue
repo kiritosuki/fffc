@@ -48,9 +48,9 @@
         <el-table-column label="图片序号" width="100">
           <template #default="{ $index }">图{{ $index + 1 }}</template>
         </el-table-column>
-        <el-table-column prop="leftEye" label="左眼关键词" />
-        <el-table-column prop="rightEye" label="右眼关键词" />
-        <el-table-column prop="diagnosis" label="诊断结果" />
+        <el-table-column prop="eye" label="诊断关键字" />
+        <el-table-column prop="info" label="诊断结果" />
+        <el-table-column prop="time" label="时间" />
       </el-table>
   
       <div class="form-actions">
@@ -141,7 +141,7 @@ const uploadFile = async (file) => {
     formData.append('image', file.raw)
     formData.append('index', getImageIndex(file))
 
-    const res = await api.uploadImage(formData, {
+    const res = await api.uploadLotImage(formData, {
       onUploadProgress: e => {
         file.percent = Math.round((e.loaded * 100) / e.total)
       }
@@ -176,10 +176,9 @@ const handleSubmit = async () => {
 
     // 更新表格数据
     tableData.value = successResults.map(res => ({
-      imageIndex: res.data.index,
-      leftEye: res.data.leftKeywords.join(', '),
-      rightEye: res.data.rightKeywords.join(', '),
-      diagnosis: res.data.diagnosis
+      eye: res.data.diag,
+      info: res.data.resInfo,
+      time: res.data.createTime
     }))
 
     // 错误处理

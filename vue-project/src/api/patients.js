@@ -166,6 +166,18 @@ export function updateMedicalRecord(id,data) {
   });
 }
 
+export function uploadLotImage(file) {
+  const formData = new FormData()
+  formData.append('file', file) 
+  return request({
+    url: "/quickdiag",
+    method: "POST",
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
 
 export default {
     AddPatient,
@@ -179,7 +191,8 @@ export default {
   // 更新病历
   updateMedicalRecord,
   getPatientInfo,
-  login
+  login,
+  uploadLotImage
 }
 
 
