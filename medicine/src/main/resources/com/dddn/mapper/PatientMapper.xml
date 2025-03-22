@@ -3,69 +3,123 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dddn.mapper.PatientMapper">
-
-    <!--    根据条件查询 返回病例列表-->
-    <select id="getPatientList" resultType="com.dddn.pojo.Patient">
-        select p.*, group_concat(
-        (case when s.ill = 1 then '正常'
-        when s.ill = 2 then '糖尿病'
-        when s.ill = 3 then '青光眼'
-        when s.ill = 4 then '白内障'
-        when s.ill = 5 then 'AMD'
-        when s.ill = 6 then '高血压'
-        when s.ill = 7 then '近视'
-        else '其他疾病' end
-        )
-        ) statusName
-        from patient p left outer join status s on p.id = s.patient_id
-        <where>
-            <if test="name != null and name != ''">
-                p.name like concat('%', #{name}, '%')
-            </if>
-            <if test="gender != null">
-                and p.gender = #{gender}
-            </if>
-            <if test="begin != null">
-                and p.diag_time &gt; #{begin}
-            </if>
-            <if test="end != null">
-                and p.diag_time &lt; #{end}
-            </if>
-        </where>
-        group by p.id, p.name, p.age, p.gender, p.phone, p.left_img, p.right_img, p.left_diag, p.right_diag,
-        p.create_time, p.update_time, p.diag_time, p.res_info
-        order by p.update_time desc
-    </select>
-
-<!--    根据ids查询病人的左眼图片-->
-    <select id="getleftImagsByIds" resultType="java.lang.String">
-        select p.left_img from patient p where p.id in
-        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
-            #{patientId}
-        </foreach>
-    </select>
-
-<!--    根据ids查询病人的右眼图片-->
-    <select id="getrightImagsByIds" resultType="java.lang.String">
-        select p.right_img from patient p where p.id in
-        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
-            #{patientId}
-        </foreach>
-    </select>
-
-    <!--    根据ids删除/批量删除病例-->
+    <!--    诊断结果 更新患者信息-->
+    <update id="updateDiagPatient">
+        update patient p
+        <set>
+            <if test="leftDiag != null and leftDiag != ''">p.left_diag = #{leftDiag}, </if>
+            <if test="rightDiag != null and rightDiag != ''">p.right_diag = #{rightDiag}, </if>
+            <if test="resInfo != null and resInfo != ''">p.res_info = #{resInfo}</if>
+        </set>
+        where p.id = #{id}
+    </update>
+    <!--    更新病人信息-->
+    <update id="updatePatient">
+        update patient p set p.name = #{name}, p.age = #{age}, p.gender = #{gender}, p.phone = #{phone}, p.id_card = #{idCard},
+                             p.doctor_id = #{doctorId}, p.left_img = #{leftImg}, p.right_img = #{rightImg}, p.left_diag = #{leftDiag},
+                             p.right_diag = #{rightDiag}, p.res_info = #{resInfo}, p.diag_time = #{diagTime}, p.update_time = #{updateTime},
+                             p.allergy = #{allergy}, p.complaint = #{complaint}, p.visit = #{visit}, p.pres_history = #{presHistory},
+                             p.past_history = #{pastHistory}, p.pos_feature = #{posFeature}, p.neg_feature = #{negFeature}
+        where p.id = #{id}
+    </update>
+    <!--    更新病人眼部信息-->
+    <update id="updateStatus">
+        update status s set s.ill = #{ill}, s.info = #{info} where s.patient_id = #{patientId} and s.position = #{position}
+    </update>
+    <!--    删除诊断结果疾病代号-->
+    <delete id="deleteStatus">
+        delete from status s where s.patient_id = #{id}
+    </delete>
+    <!--    批量删除病人的信息-->
     <delete id="deleteByIds">
         delete from patient p where p.id in
-        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
-            #{patientId}
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
         </foreach>
     </delete>
-
-    <delete id="deleteStatusName">
-        delete from status s where s.patient_id in
-        <foreach collection="ids" item="patientId" separator="," open="(" close=")">
-            #{patientId}
+    <!--    批量查询患者历史信息-->
+    <delete id="deleteHistoryByIds">
+        delete from history h where h.patient_id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
         </foreach>
     </delete>
+    <!--    删除历史诊断结果疾病代号-->
+    <delete id="deletePastStatus">
+        delete from past_status s where s.history_id = #{id}
+    </delete>
 
+    <!--    查询患者基本信息-->
+    <select id="selectById" resultType="com.dddn.pojo.Patient">
+        select p.* from patient p where p.id = #{id}
+    </select>
+    <!--    查询左眼疾病代号-->
+    <select id="selectLeftStatusById" resultType="java.lang.Integer">
+        select s.ill from patient p left join medicine.status s on p.id = s.patient_id where p.id = #{id} and s.position = 1
+    </select>
+    <!--    查询右眼疾病代号-->
+    <select id="selectRightStatusById" resultType="java.lang.Integer">
+        select s.ill from patient p left join medicine.status s on p.id = s.patient_id where p.id = #{id} and s.position = 2
+    </select>
+    <!--    查询病例列表-->
+    <select id="getListPage" resultType="com.dddn.pojo.Patient">
+        select p.* from patient p
+        <where>
+            <if test="name != null and name != ''">p.name = #{name}</if>
+            <if test="gender != null">and p.gender = #{gender}</if>
+            <if test="begin != null">and p.diag_time &gt;= #{begin}</if>
+            <if test="end != null">and p.diag_time &lt;= #{end}</if>
+            <if test="phone != null and phone != ''">and p.phone = #{phone}</if>
+            <if test="idCard != null and idCard != ''">and p.id_card = #{idCard}</if>
+        </where>
+        order by p.update_time desc
+    </select>
+    <!--    根据身份证号查询病人的id-->
+    <select id="selectIdByIdCard" resultType="java.lang.Integer">
+        select p.id from patient p where p.id_card = #{idCard}
+    </select>
+    <!--    根据姓名绑定身份证-->
+    <select id="selectNameByIdCard" resultType="java.lang.String">
+        select p.name from patient p where p.id_card = #{idCard}
+    </select>
+    <!--    根据手机号和身份证号查询病人信息-->
+    <select id="getPatientByPhoneAndIdCard" resultType="com.dddn.pojo.Patient">
+        select p.* from patient p
+        <where>
+            <if test="idCard != null and idCard != ''">p.id_card = #{idCard}</if>
+        </where>
+    </select>
+    <!--    查询病人的历史信息-->
+    <select id="selectHistoryById" resultType="com.dddn.pojo.History">
+        select h.* from history h where h.patient_id = #{id}
+    </select>
+
+<!--    查询病人左眼异常信息-->
+    <select id="getLeftIllInfo" resultType="java.lang.String">
+        select s.info from status s where s.patient_id = #{id} and s.ill = 8 and s.position = 1
+    </select>
+    <select id="getRightIllInfo" resultType="java.lang.String">
+        select s.info from status s where s.patient_id = #{id} and s.ill = 8 and s.position = 2
+    </select>
+
+    <!--    添加患者信息-->
+    <insert id="addPatient" useGeneratedKeys="true" keyProperty="id">
+        insert into patient (name, age, gender, phone, id_card, doctor_id, left_img, right_img, left_diag, right_diag, res_info, diag_time, create_time, update_time, allergy, complaint, visit, pres_history, past_history, pos_feature, neg_feature)
+        values (#{name}, #{age}, #{gender}, #{phone}, #{idCard}, #{doctorId}, #{leftImg}, #{rightImg}, #{leftDiag}, #{rightDiag}, #{resInfo}, #{diagTime}, #{createTime}, #{updateTime}, #{allergy}, #{complaint}, #{visit}, #{presHistory}, #{pastHistory}, #{posFeature}, #{negFeature})
+    </insert>
+    <!--    添加疾病代号信息-->
+    <insert id="addStatus">
+        insert into status (ill, patient_id, info, position)
+        values (#{ill}, #{patientId}, #{info}, #{position})
+    </insert>
+    <!--    添加病人历史信息-->
+    <insert id="addHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into history (patient_id, name, age, gender, phone, id_card, doctor_name, left_img, right_img, left_diag, right_diag, res_info, diag_time, create_time, allergy, complaint, visit, pres_history, past_history, pos_feature, neg_feature)
+        values (#{patientId}, #{name}, #{age}, #{gender}, #{phone}, #{idCard}, #{doctorName}, #{leftImg}, #{rightImg}, #{leftDiag}, #{rightDiag}, #{resInfo}, #{diagTime}, #{createTime}, #{allergy}, #{complaint}, #{visit}, #{presHistory}, #{pastHistory}, #{posFeature}, #{negFeature})
+    </insert>
+    <!--    添加疾病代号历史信息-->
+    <insert id="addPastStatus">
+        insert into past_status (ill, history_id, info, position)
+        values (#{ill}, #{historyId}, #{info}, #{position})
+    </insert>
 </mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dddn.mapper.DoctorMapper">
+
+    <select id="getByUsernameAndPassword" resultType="com.dddn.pojo.Doctor">
+        select d.* from doctor d where d.username = #{username} and d.password = #{password}
+    </select>
+</mapper>

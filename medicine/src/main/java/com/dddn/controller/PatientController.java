@@ -15,26 +15,37 @@ import java.util.List;
 @RestController
 @RequestMapping("/patients")
 public class PatientController {
-    private final PatientService patientService;
     private static final Logger log = LoggerFactory.getLogger(PatientController.class);
+    private final PatientService patientService;
 
     public PatientController(@Qualifier("patientServiceImpl") PatientService patientService) {
         this.patientService = patientService;
     }
 
-    // 分页/条件查询病例列表
+    //查询病例列表
     @GetMapping
-    public Result listPage(@ModelAttribute PatientQueryParam patientQueryParam) {
-        log.info("分页/条件查询-请求数据: {}", patientQueryParam);
-        PageResult<Patient> pageResult = patientService.listPage(patientQueryParam);
+    public Result getListPage(@ModelAttribute PatientQueryParam patientQueryParam){
+        PageResult<Patient> pageResult = patientService.getListPage(patientQueryParam);
+        log.info("查询病例列表: {}", pageResult);
         return Result.success(pageResult);
     }
 
-    // 删除病例
+    //删除病例
     @DeleteMapping
-    public Result delete(@RequestParam("ids") List<Integer> ids) throws Exception {
-        log.info("删除病例-病例id: {}", ids);
-        patientService.delete(ids);
+    public Result deletePatient(@RequestParam("ids") List<Integer> ids){
+        patientService.deleteByIds(ids);
+        log.info("删除病例-根据ids: {}", ids);
         return Result.success();
     }
+
+    //查询回显
+    @GetMapping("/info")
+    public Result getInfoById(@RequestParam("id") Integer id){
+        log.info("查询病人信息-id: {}", id);
+        Patient patient = patientService.getInfoById(id);
+        return Result.success(patient);
+    }
+
+
+
 }
