@@ -1,75 +1,83 @@
 package com.dddn.service.impl;
 
 import com.dddn.mapper.PatientMapper;
+import com.dddn.pojo.History;
 import com.dddn.pojo.PageResult;
 import com.dddn.pojo.Patient;
 import com.dddn.pojo.PatientQueryParam;
 import com.dddn.service.PatientService;
-import com.dddn.utils.AliyunOSSOperator;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class PatientServiceImpl implements PatientService {
     private final PatientMapper patientMapper;
-    private final AliyunOSSOperator aliyunOSSOperator;
 
-    public PatientServiceImpl(@Qualifier("patientMapper") PatientMapper patientMapper,
-                              @Qualifier("aliyunOSSOperator") AliyunOSSOperator aliyunOSSOperator) {
+    public PatientServiceImpl(@Qualifier("patientMapper") PatientMapper patientMapper) {
         this.patientMapper = patientMapper;
-        this.aliyunOSSOperator = aliyunOSSOperator;
     }
 
-    // 分页/条件查询病例列表
+    //病人列表查询 分页查询与条件查询
     @Override
-    public PageResult<Patient> listPage(PatientQueryParam patientQueryParam) {
-        //准备对下一次获取的列表分页
+    public PageResult<Patient> getListPage(PatientQueryParam patientQueryParam) {
+        //准备分页工作
         PageHelper.startPage(patientQueryParam.getPage(), patientQueryParam.getPageSize());
-        //获取病例列表
-        List<Patient> patientList = patientMapper.getPatientList(patientQueryParam);
-        //将病人的患病情况由一个String转为List<String>
-        patientList.forEach(patient -> {
-            String statusName = patient.getStatusName();
-            if (statusName.contains(",")) {
-                List<String> queryStatusName = Arrays.asList(statusName.split(","));
-                patient.setQueryStatusName(queryStatusName);
-            } else {
-                List<String> singleStatusName = new ArrayList<>();
-                singleStatusName.add(statusName);
-                patient.setQueryStatusName(singleStatusName);
+        //查询病例
+        List<Patient> patientList = patientMapper.getListPage(patientQueryParam);
+        Page<Patient> p = (Page<Patient>) patientList;
+        p.forEach(patient -> {
+            patient.setDoctorName("我是一个医生姓名");
+        });
+        return new PageResult<>(p.getTotal(), p.getResult());
+    }
+
+    //根据id删除病人信息和历史信息 支持批量删除
+    @Override
+    @Transactional(rollbackFor = {Exception.class})
+    public void deleteByIds(List<Integer> ids) {
+        //删除病人的历史疾病编号
+        ids.forEach(id -> {
+            //查询每个病人的历史记录
+            List<History> historyList = patientMapper.selectHistoryById(id);
+            if(historyList != null && !historyList.isEmpty()){
+                historyList.forEach(history -> {
+                    //删掉每个历史记录里面病人的眼部疾病编号
+                    patientMapper.deletePastStatus(history.getId());
+                });
             }
         });
-        //将分页后的列表向下造型为Page
-        Page<Patient> p = (Page<Patient>) patientList;
-        return new PageResult<Patient>(p.getTotal(), p.getResult());
+        //批量删除病人历史信息
+        patientMapper.deleteHistoryByIds(ids);
+        //删除病人的眼部疾病编号
+        ids.forEach(id -> {
+            patientMapper.deleteStatus(id);
+        });
+        //批量删除病人的基本信息
+        patientMapper.deleteByIds(ids);
     }
 
-    //根据ids删除/批量删除病例 并且删除病人的患病信息
-    @Transactional(rollbackFor = {Exception.class})
+    //病人信息查询回显
     @Override
-    public void delete(List<Integer> ids) throws Exception {
-        if(ids.isEmpty() || ids == null){
-            throw new IllegalArgumentException("请先选择你要删除的员工~");
-        }
-        //先根据id获取员工的图片名称
-        List<String> leftImgList = patientMapper.getleftImagsByIds(ids);
-        List<String> rightImgList = patientMapper.getrightImagsByIds(ids);
-        //用阿里云工具类在云端删除图片
-        if(leftImgList != null && !leftImgList.isEmpty()){
-            aliyunOSSOperator.deleteFile(leftImgList);
-        }
-        if(rightImgList != null && !rightImgList.isEmpty()){
-            aliyunOSSOperator.deleteFile(rightImgList);
-        }
-        //先删除云端图片数据 再删除员工数据 否则员工数据删除后无法删除图片数据
-        patientMapper.deleteByIds(ids);
-        patientMapper.deleteStatusName(ids);
+    public Patient getInfoById(Integer id) {
+        //查询基础信息
+        Patient patient = patientMapper.selectById(id);
+        //查询疾病代号
+        List<Integer> leftStatusIllList = patientMapper.selectLeftStatusById(patient.getId());
+        List<Integer> rightStatusIllList = patientMapper.selectRightStatusById(patient.getId());
+        patient.setLeftStatusIllList(leftStatusIllList);
+        patient.setRightStatusIllList(rightStatusIllList);
+        //查询异常信息
+        String leftIllInfo = patientMapper.getLeftIllInfo(patient.getId());
+        String rightIllInfo = patientMapper.getRightIllInfo(patient.getId());
+        patient.setLeftIllInfo(leftIllInfo);
+        patient.setRightIllInfo(rightIllInfo);
+        //查询医生姓名
+        patient.setDoctorName("随便先写一个");
+        return patient;
     }
 }
