@@ -167,6 +167,21 @@ export function updateMedicalRecord(id,data) {
 }
 
 
+export function CheckHistory(id){
+  return request({
+    url: `/patients/history?id=${id}`,
+    method: "GET"
+  })
+}
+
+
+
+
+
+
+
+
+
 export default {
     AddPatient,
     uploadImg,
@@ -175,11 +190,12 @@ export default {
     CheckPatients,
     DeletePatient,
     // 获取病历详情
-  getMedicalRecord,
-  // 更新病历
-  updateMedicalRecord,
-  getPatientInfo,
-  login
+    getMedicalRecord,
+    // 更新病历
+    updateMedicalRecord,
+    getPatientInfo,
+    login,
+    CheckHistory
 }
 
 
