@@ -148,6 +148,25 @@ export function login(data) {
   });
 }
 
+export function getMedicalRecord(id) {
+  return request({
+    url: `/patients/info?id=${id}`,
+    method: "GET"
+  })
+}
+
+export function updateMedicalRecord(id,data) {
+  return request({
+    url: `/patients/info?id=${id}`,  // 修正路径
+    method: "PUT",
+    data: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
+
 export default {
     AddPatient,
     uploadImg,
@@ -156,9 +175,9 @@ export default {
     CheckPatients,
     DeletePatient,
     // 获取病历详情
-  getMedicalRecord: (id) => axios.get(`/medical-records/${id}`),
+  getMedicalRecord,
   // 更新病历
-  updateMedicalRecord: (id, data) => axios.put(`/medical-records/${id}`, data),
+  updateMedicalRecord,
   getPatientInfo,
   login
 }
