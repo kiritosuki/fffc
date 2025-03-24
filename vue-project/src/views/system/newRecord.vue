@@ -223,7 +223,7 @@
   const loadData = async () => {
     try {
       const res = await api.getMedicalRecord(route.params.id)
-      medicalRecord.value = res.data
+      medicalRecord.value = res.data.data
     } catch (error) {
       ElMessage.error('数据加载失败')
     } finally {
