@@ -96,6 +96,7 @@ const RefreshRows = async (
       if (res.data?.code === 1) {
         // 数据接收
         tableDataRows.value = res.data.data?.rows;
+        FixGender();
         console.log(res.data.data.rows);
         totalPatient.value = res.data.data?.total;
       } else {
@@ -212,7 +213,7 @@ const tableDataRows = ref([
   {
     id: 1,
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -222,7 +223,7 @@ const tableDataRows = ref([
   {
     id: 2,
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -231,7 +232,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -240,7 +241,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -249,7 +250,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -258,7 +259,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -267,7 +268,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -276,7 +277,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -285,7 +286,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -294,7 +295,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -303,7 +304,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -312,7 +313,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -321,7 +322,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -330,7 +331,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -339,7 +340,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -348,7 +349,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -357,7 +358,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -366,7 +367,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -375,7 +376,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -384,7 +385,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -393,7 +394,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -402,7 +403,7 @@ const tableDataRows = ref([
   },
   {
     name: "王小虎",
-    gender: "男",
+    gender: 1,
     idCard: "123456789012345678",
     phone: "12345678901",
     diagTime: "2023-07-01",
@@ -413,9 +414,14 @@ const tableDataRows = ref([
 
 const tableDataRowsFix =ref([])
 
-const FixGender = (() => {
-  
-})
+const FixGender = () => {
+  tableDataRowsFix.value = tableDataRows.value.map((item) => {
+    return {
+      ...item, // 保留原有属性
+      gender: item.gender === 1 ? "男" : "女", // 转换 gender 属性
+    };
+  });
+};
 
 // 勾选的数据库
 const selectedData = ref([]);
@@ -505,6 +511,7 @@ onMounted(async () => {
     if (response.data?.code === 1) {
       totalPatient.value = response.data.data?.total;
       tableDataRows.value = response.data.data?.rows;
+      FixGender();
       ElMessage.success("数据加载成功");
     } else if (response.data?.code === 0) {
       ElMessage.error("数据加载失败,请再次刷新");
@@ -673,7 +680,7 @@ const pickerOptions = {
 
     <el-table
       ref="tableRows"
-      :data="tableDataRows"
+      :data="tableDataRowsFix"
       stripe
       style="width: 100%"
       class="table"
