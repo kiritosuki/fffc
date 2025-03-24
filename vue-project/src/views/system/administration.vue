@@ -411,6 +411,12 @@ const tableDataRows = ref([
   },
 ]);
 
+const tableDataRowsFix =ref([])
+
+const FixGender = (() => {
+  
+})
+
 // 勾选的数据库
 const selectedData = ref([]);
 
@@ -467,6 +473,7 @@ const handleEdit = async (index, row) => {
     .catch((err) => {
       console.error("跳转失败:", err);
     });
+    loading.value.close()
 };
 
 // 初始化表格数据
