@@ -1,17 +1,18 @@
 <template>
-    <div class="page-container">
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" class="patient-form">
-        <el-form-item label="病例图片" prop="images">
-            <el-upload
+  <div class="page-container">
+    <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" class="patient-form">
+      <el-form-item label="病例图片" prop="images">
+        <el-upload
           action="#"
           list-type="picture-card"
-          :class="['custom-upload', { 'hide-border': leftImageList.length > 0 }]"
+          :class="['custom-upload', { 'hide-border': imageList.length > 0 }]"
           :auto-upload="false"
           :limit="10"
           :file-list="imageList"
-          :on-change="handleAddFile"
-          :on-remove="handleRemove"
+          :on-change="(file) => handleAddFile(file)"
+          :on-remove="(file) => handleRemove(file)"
           multiple
+          drag
         >
           <template #default>
             <div class="drag-area">
@@ -42,10 +43,10 @@
             </div>
           </template>
         </el-upload>
-        </el-form-item>
-  
-        <!-- 诊断结果表格 -->
-        <el-table :data="tableData" v-loading="submitting">
+      </el-form-item>
+
+      <!-- 诊断结果表格 -->
+      <el-table :data="tableData" v-loading="submitting">
         <el-table-column label="图片序号" width="100">
           <template #default="{ $index }">图{{ $index + 1 }}</template>
         </el-table-column>
@@ -53,7 +54,7 @@
         <el-table-column prop="info" label="诊断结果" />
         <el-table-column prop="time" label="时间" />
       </el-table>
-  
+
       <div class="form-actions">
         <el-button @click="handleClearForm">重置</el-button>
         <el-button 
@@ -65,44 +66,43 @@
           {{ submitText }}
         </el-button>
       </div>
-      </el-form>
-    </div>
-  </template>
-  
-  <script setup>
-  import { ref, reactive,computed } from 'vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
-  import { Plus, CircleCheck, CircleClose } from '@element-plus/icons-vue'
+    </el-form>
+  </div>
+</template>
 
-  
-  const imageList = ref([])
-  const tableData = ref([])
-  const submitting = ref(false)
-  const formRef = ref(null)
-  
-  // 验证规则
-  const validateImages = (rule, value, callback) => {
-    if (imageList.value.length < 1) {
-      callback(new Error('至少需要上传1张图片'))
-    } else if (imageList.value.length > 10) {
-      callback(new Error('最多只能上传10张图片'))
-    } else {
-      callback()
-    }
+<script setup>
+import { ref, reactive, computed } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { Plus, CircleCheck, CircleClose } from '@element-plus/icons-vue'
+
+const imageList = ref([])
+const tableData = ref([])
+const submitting = ref(false)
+const formRef = ref(null)
+
+// 验证规则
+const validateImages = (rule, value, callback) => {
+  if (imageList.value.length < 1) {
+    callback(new Error('至少需要上传1张图片'))
+  } else if (imageList.value.length > 10) {
+    callback(new Error('最多只能上传10张图片'))
+  } else {
+    callback()
   }
-  
-  const rules = reactive({
-    images: [{ required: true, validator: validateImages, trigger: 'change' }]
-  })
-  
-  // 获取图片序号
-  const getImageIndex = (file) => {
-    return imageList.value.findIndex(f => f.uid === file.uid) + 1
-  }
-  
-  // 计算属性
+}
+
+const rules = reactive({
+  images: [{ required: true, validator: validateImages, trigger: 'change' }]
+})
+
+// 获取图片序号
+const getImageIndex = (file) => {
+  return imageList.value.indexOf(file) + 1
+}
+
+// 计算属性
 const canSubmit = computed(() => {
-  return imageList.value.length > 0 && 
+  return imageList.value.length > 0 &&
     !imageList.value.some(file => file.status === 'uploading')
 })
 
@@ -114,7 +114,6 @@ const submitText = computed(() => {
 
 // 文件管理逻辑
 const handleAddFile = (file) => {
-  // 初始化文件状态
   file.status = 'pending'
   file.percent = 0
   file.url = URL.createObjectURL(file.raw)
@@ -122,22 +121,14 @@ const handleAddFile = (file) => {
 }
 
 const handleRemove = async (file) => {
-  if (file.serverId) {
-    try {
-      await api.deleteImage(file.serverId)
-      ElMessage.success(`已删除图${getImageIndex(file)}`)
-    } catch {
-      ElMessage.error('删除失败')
-    }
-  }
   imageList.value = imageList.value.filter(f => f.uid !== file.uid)
 }
 
-// 核心上传逻辑
+// 核心上传逻辑（逐一上传）
 const uploadFile = async (file) => {
   try {
     file.status = 'uploading'
-    
+
     const formData = new FormData()
     formData.append('image', file.raw)
     formData.append('index', getImageIndex(file))
@@ -151,7 +142,7 @@ const uploadFile = async (file) => {
     file.status = 'success'
     file.serverId = res.data.id
     return res.data
-    
+
   } catch (err) {
     file.status = 'error'
     file.error = err.msg
@@ -159,59 +150,60 @@ const uploadFile = async (file) => {
   }
 }
 
+// 提交按钮逻辑：逐张上传
 const handleSubmit = async () => {
   submitting.value = true
-  
+  const results = []
+
   try {
-    // 并行上传所有文件
-    const results = await Promise.allSettled(
-      imageList.value
-        .filter(file => file.status !== 'success') // 跳过已成功的
-        .map(file => uploadFile(file))
-    )
+    for (let i = 0; i < imageList.value.length; i++) {
+      const file = imageList.value[i]
 
-    // 处理结果
-    const successResults = results
-      .filter(r => r.status === 'fulfilled')
-      .map(r => r.value)
+      // 跳过已经上传成功的图片
+      if (file.status === 'success') continue
 
-    // 更新表格数据
-    tableData.value = successResults.map(res => ({
-      eye: res.data.diag,
-      info: res.data.resInfo,
-      time: res.data.createTime
-    }))
+      const result = await uploadFile(file)
 
-    // 错误处理
-    const errorCount = results.filter(r => r.status === 'rejected').length
-    if (errorCount > 0) {
-      ElMessage.warning(`${errorCount}个文件上传失败`)
+      // 填充表格数据
+      results.push({
+        eye: result.data.diag,
+        info: result.data.resInfo,
+        time: result.data.createTime
+      })
     }
 
+    // 更新表格数据
+    tableData.value = results
+
+    // 提示上传成功
+    ElMessage.success('所有图片上传完成，诊断信息已更新')
+  } catch (error) {
+    ElMessage.error('上传过程中出现错误，请稍后重试')
   } finally {
     submitting.value = false
   }
 }
-  
-  // 清除表单
-  const handleClearForm = async () => {
-    try {
-      await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-      
-      imageList.value = []
-      tableData.value = []
-      formRef.value.resetFields()
-      ElMessage.success('已重置')
-      
-    } catch (error) {
-      // 取消操作
-    }
+
+// 清除表单
+const handleClearForm = async () => {
+  try {
+    await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    imageList.value = []
+    tableData.value = []
+    formRef.value.resetFields()
+    ElMessage.success('已重置')
+
+  } catch (error) {
+    // 取消操作
   }
-  </script>
+}
+</script>
+
   
   <style scoped>
   /* 新增图片标签样式 */
