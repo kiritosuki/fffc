@@ -69,7 +69,7 @@
   </template>
   
   <script setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive,computed } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import { Plus, CircleCheck, CircleClose } from '@element-plus/icons-vue'
 
