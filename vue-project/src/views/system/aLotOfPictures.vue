@@ -5,7 +5,7 @@
         <el-upload
           action="#"
           list-type="picture-card"
-          :class="['custom-upload', { 'hide-border': leftImageList.length > 0 }]"
+          :class="['custom-upload', { 'hide-border': imageList.length > 0 }]"
           :auto-upload="false"
           :limit="10"
           :file-list="imageList"
