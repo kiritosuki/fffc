@@ -411,6 +411,12 @@ const tableDataRows = ref([
   },
 ]);
 
+const tableDataRowsFix =ref([])
+
+const FixGender = (() => {
+  
+})
+
 // 勾选的数据库
 const selectedData = ref([]);
 
@@ -680,7 +686,7 @@ const pickerOptions = {
       <el-table-column prop="diagTime" label="诊断日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column :prop="gender ? 男 :女  " label="性别" width="100">
+      <el-table-column prop="gender" label="性别" width="100">
       </el-table-column>
       <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
       <el-table-column prop="updateTime" label="最后更新日期">
