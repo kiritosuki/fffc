@@ -1,5 +1,5 @@
 <!-- src/components/common/LoadingPage.vue -->
-<!-- <template>
+<template>
     <div class="loading-container" :style="{ background }">
       <div class="loading-content">
         <el-icon class="loading-icon" :style="{ color, fontSize: size }">
@@ -65,4 +65,4 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
-  </style> -->
+  </style>

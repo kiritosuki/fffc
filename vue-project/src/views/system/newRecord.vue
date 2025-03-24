@@ -222,8 +222,8 @@
 
   const loadData = async () => {
     try {
-      const res = await api.getMedicalRecord(route.params.id)
-      medicalRecord.value = res.data.data
+      // const res = await api.getMedicalRecord(route.params.id)
+      // medicalRecord.value = res.data.data
     } catch (error) {
       ElMessage.error('数据加载失败')
     } finally {
@@ -406,7 +406,7 @@ console.log('Right image URL:', medicalRecord.value.rightImg);
 medicalRecord.value = processedData
 } catch (error) {
 ElMessage.error('数据加载失败')
-console.error('加载错误详情:', error.response?.data || error.message)
+console.error('加载错误详情:', error.response?.data || error.msg)
 } finally {
 loading.value = false
 }
@@ -418,7 +418,7 @@ onMounted(() => {
     ElMessage.error('无效的患者ID')
     return router.back()  // 添加return防止继续执行
   }
-  loadData()
+  // loadData()
   fetchData()
   
 })

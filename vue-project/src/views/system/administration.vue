@@ -467,6 +467,7 @@ const handleEdit = async (index, row) => {
     .catch((err) => {
       console.error("跳转失败:", err);
     });
+    loading.value.close()
 };
 
 // 初始化表格数据
@@ -679,7 +680,7 @@ const pickerOptions = {
       <el-table-column prop="diagTime" label="诊断日期" width="180">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="gender" label="性别" width="100">
+      <el-table-column :prop="gender ? 男 :女  " label="性别" width="100">
       </el-table-column>
       <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
       <el-table-column prop="updateTime" label="最后更新日期">
