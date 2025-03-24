@@ -120,7 +120,7 @@
         </el-form-item>
 
         <el-form-item label="现病史">
-          <el-input v-model="medicalRecord.preshistory" disabled/>
+          <el-input v-model="medicalRecord.presHistory" disabled/>
         </el-form-item>
 
         <el-form-item label="既往史">
@@ -142,7 +142,7 @@
     placeholder="请选择左眼疾病"
     clearable
     filterable
-    collapse-tags
+   
     @change="handleDiseaseSelection('left', $event)"
     disabled
   >
@@ -162,7 +162,7 @@
     placeholder="请选择右眼疾病"
     clearable
     filterable
-    collapse-tags
+    
     @change="handleDiseaseSelection('right', $event)"
     disabled
   >
@@ -273,7 +273,7 @@ const diseaseMap = computed(() => {
     updateTime: '',
     allergy: '',
     complaint: '',
-    preshistory: '',
+    presHistory: '',
     pastHistory: '',
     posFeature: '',
     negFeature: '',
@@ -338,7 +338,7 @@ const diseaseMap = computed(() => {
   complaint: [
     // { required: true, message: '请输入患者主诉', trigger: 'blur' }
   ],
-  preshistory: [
+  presHistory: [
     // { required: true, message: '请输入现病史', trigger: 'blur' } 
   ],
   pastHistory: [
@@ -502,7 +502,7 @@ watch(() => medicalRecord.value, (newVal) => {
 
 const handleHistory = () => {
   router.push({
-    path: '/administration/history',
+    path: '/patients/history',
     query: {
       id: route.query.id
     }
