@@ -508,7 +508,6 @@ onMounted(async () => {
     }
   } catch (error) {
     ElMessage.error("服务器丢失，请稍后再试");
-    console.error("Error fetching data:", error);
   } finally {
     loading.value.close();
   }

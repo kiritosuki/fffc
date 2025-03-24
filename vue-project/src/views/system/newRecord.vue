@@ -3,7 +3,7 @@
     <div class="record-container">
       <!-- 加载状态 -->
       <el-skeleton v-if="loading" :rows="6" animated />
-  
+      
       <!-- 病历表单 -->
       <el-form 
         v-else 
@@ -13,11 +13,11 @@
         :rules="rules"
       >
         <el-form-item label="患者姓名">
-          <el-input v-model="medicalRecord.name" disabled />
+          <el-input v-model="medicalRecord.name" disabled/>
         </el-form-item>
 
         <el-form-item label="年龄">
-          <el-input v-model="medicalRecord.age" disabled />
+          <el-input v-model="medicalRecord.age" disabled/>
         </el-form-item>
 
         <el-form-item label="性别" prop="gender">
@@ -26,6 +26,7 @@
         placeholder="请选择性别"
         clearable
         filterable
+        disabled
       >
         <el-option
           v-for="item in genderOptions"
@@ -37,7 +38,7 @@
     </el-form-item>
 
         <el-form-item label="手机号">
-          <el-input v-model="medicalRecord.phone" disabled />
+          <el-input v-model="medicalRecord.phone" disabled/>
         </el-form-item>
 
         <el-form-item label="身份证号">
@@ -45,58 +46,43 @@
         </el-form-item>
 
         <el-form-item label="诊断医师">
-          <el-input v-model="medicalRecord.DoctorID" disabled />
+          <el-input v-model="medicalRecord.DoctorID" disabled/>
         </el-form-item>
 
-        <el-form-item label="左眼照片">
-      <el-Img
-        v-if="form.leftImg"
-        :src="form.leftImg"
-        :preview-src-list="[form.leftImg]"
-        fit="contain"
-        class="eye-img"
-        :zoom-rate="1.2"
-        :max-scale="7"
-        :min-scale="0.2"
-      >
-        <!-- 加载状态 -->
-        <template #placeholder>
-          <div class="Img-loading">
-            <el-icon class="loading-icon"><Loading /></el-icon>
-          </div>
-        </template>
+        <!-- 左眼照片 -->
+<el-form-item label="左眼照片">
+  <el-image
+    v-if="medicalRecord.leftImg"
+    :src="medicalRecord.leftImg"
+    :preview-src-list="[medicalRecord.leftImg]"
+    fit="contain"
+    class="eye-img"
+  >
+    <!-- 其他模板内容 -->
+  </el-image>
+  <div v-else class="no-Img">暂无照片</div>
+</el-form-item>
 
-        <!-- 错误状态 -->
-        <template #error>
-          <div class="Img-error">
-            <el-icon><Picture /></el-icon>
-            <div>图片加载失败</div>
-          </div>
-        </template>
-      </el-Img>
-      <div v-else class="no-Img">暂无照片</div>
-    </el-form-item>
-
-    <!-- 右眼照片 -->
-    <el-form-item label="右眼照片">
-      <el-Img
-        v-if="form.rightImg"
-        :src="form.rightImg"
-        :preview-src-list="[form.rightImg]"
-        fit="contain"
-        class="eye-Img"
-      >
-        <!-- 复用相同的加载和错误模板 -->
-      </el-Img>
-      <div v-else class="no-Img">暂无照片</div>
-    </el-form-item>
+<!-- 右眼照片 -->
+<el-form-item label="右眼照片">
+  <el-image
+    v-if="medicalRecord.rightImg"
+    :src="medicalRecord.rightImg"
+    :preview-src-list="[medicalRecord.rightImg]"
+    fit="contain"
+    class="eye-Img"
+  >
+    <!-- 其他模板内容 -->
+  </el-image>
+  <div v-else class="no-Img">暂无照片</div>
+</el-form-item>
 
     <el-form-item label="左眼诊断信息关键字">
-        <el-input v-model="medicalRecord.leftDiag" disabled />
+        <el-input v-model="medicalRecord.leftDiag" disabled/>
     </el-form-item>
 
     <el-form-item label="右眼诊断信息关键字">
-        <el-input v-model="medicalRecord.rightDiag" disabled />
+        <el-input v-model="medicalRecord.rightDiag" disabled/>
     </el-form-item>
 
     <el-form-item label="诊断结果">
@@ -104,6 +90,7 @@
             v-model="medicalRecord.diagnosis" 
             type="textarea" 
             :rows="4"
+            disabled
           />
         </el-form-item>
   
@@ -112,6 +99,7 @@
             v-model="medicalRecord.diagDate" 
             type="date"
             value-format="YYYY-MM-DD"
+            disabled
           />
         </el-form-item>
   
@@ -124,19 +112,19 @@
         </el-form-item>
 
         <el-form-item label="过敏药物">
-          <el-input v-model="medicalRecord.allergy" disabled />
+          <el-input v-model="medicalRecord.allergy" disabled/>
         </el-form-item>
 
         <el-form-item label="患者主诉">
-          <el-input v-model="medicalRecord.complaint" disabled />
+          <el-input v-model="medicalRecord.complaint" disabled/>
         </el-form-item>
 
         <el-form-item label="现病史">
-          <el-input v-model="medicalRecord.preshistory" disabled />
+          <el-input v-model="medicalRecord.preshistory" disabled/>
         </el-form-item>
 
         <el-form-item label="既往史">
-          <el-input v-model="medicalRecord.pastHistory" disabled />
+          <el-input v-model="medicalRecord.pastHistory"  disabled/>
         </el-form-item>
 
         <el-form-item label="阳体特征">
@@ -144,63 +132,73 @@
         </el-form-item>
 
         <el-form-item label="阴体特征">
-          <el-input v-model="medicalRecord.negFeature" disabled />
+          <el-input v-model="medicalRecord.negFeature"  disabled/>
         </el-form-item>
 
         <el-form-item label="左眼疾病" prop="leftStatusIllList">
-      <el-select 
-        v-model="medicalRecord.leftStatusIllList"
-        multiple
-        placeholder="请选择左眼疾病"
-        clearable
-        filterable
-        collapse-tags
-      >
-        <el-option
-        v-for="disease in diseaseOptions"
-          :key="disease.id"
-          :label="disease.name"
-          :value="disease.id"
-        />
-      </el-select>
-        </el-form-item>
+  <el-select 
+    v-model="medicalRecord.leftStatusIllList"
+    multiple
+    placeholder="请选择左眼疾病"
+    clearable
+    filterable
+    collapse-tags
+    @change="handleDiseaseSelection('left', $event)"
+    disabled
+  >
+    <el-option
+      v-for="disease in diseaseOptions"
+      :key="disease.value"
+      :label="disease.label"
+      :value="disease.value"
+    />
+  </el-select>
+</el-form-item>
 
-      <el-form-item label="右眼疾病" prop="rightStatusIllList">
-      <el-select 
-        v-model="medicalRecord.rightStatusIllList"
-        multiple
-        placeholder="请选择右眼疾病"
-        clearable
-        filterable
-        collapse-tags
-      >
-        <el-option
-        v-for="disease in diseaseOptions"
-          :key="disease.id"
-          :label="disease.name"
-          :value="disease.id"
-        />
-      </el-select>
-    </el-form-item>
+<el-form-item label="右眼疾病" prop="rightStatusIllList">
+  <el-select 
+    v-model="medicalRecord.rightStatusIllList"
+    multiple
+    placeholder="请选择右眼疾病"
+    clearable
+    filterable
+    collapse-tags
+    @change="handleDiseaseSelection('right', $event)"
+    disabled
+  >
+    <el-option
+      v-for="disease in diseaseOptions"
+      :key="disease.value"
+      :label="disease.label"
+      :value="disease.value"
+    />
+  </el-select>
+</el-form-item>
 
-    <el-form-item label="左眼其他异常" v-if="showLeftIllInfo">
-          <el-input v-model="medicalRecord.leftIllInfo" disabled />
-        </el-form-item>
 
-        <el-form-item label="右眼其他异常" v-if="showRightIllInfo">
-          <el-input v-model="medicalRecord.rightIllInfo" disabled />
-        </el-form-item>
+      <el-form-item label="左眼其他异常" v-if="showLeftIllInfo">
+        <el-input v-model="medicalRecord.leftIllInfo" :rules="leftIllRule" disabled/>
+      </el-form-item>
+
+      <el-form-item label="右眼其他异常" v-if="showRightIllInfo">
+        <el-input v-model="medicalRecord.rightIllInfo" :rules="rightIllRule" disabled/>
+      </el-form-item>
   
     
   
         <div class="form-actions">
           <el-button @click="handleCancel">返回</el-button>
-          <el-button 
+          <!-- <el-button 
             type="primary" 
             :loading="submitting" 
             @click="handleSubmit"
           >
             保存修改
+          </el-button> -->
+          <el-button 
+            @click="handleHistory"
+          >
+            历史记录
           </el-button>
         </div>
       </el-form>
@@ -213,6 +211,7 @@
   import { ElMessage } from 'element-plus'
   import api from '@/api'
   import { reactive } from 'vue'
+  import { debounce } from 'lodash-es'
   
   const route = useRoute()
   const router = useRouter()
@@ -220,6 +219,18 @@
   // 数据定义
   const loading = ref(true)
   const submitting = ref(false)
+
+  const loadData = async () => {
+    try {
+      const res = await api.getMedicalRecord(route.params.id)
+      medicalRecord.value = res.data
+    } catch (error) {
+      ElMessage.error('数据加载失败')
+    } finally {
+      // 在数据加载完成后设置 loading 为 false
+      loading.value = false
+    }
+  }
 
   const genderOptions = ref([
   { value: 1, label: '男性' },
@@ -236,6 +247,14 @@ const diseaseOptions = ref([
   { value: 7, label: '近视' },
   { value: 8, label: '其他异常' },
 ])
+
+// 创建疾病ID到名称的映射
+const diseaseMap = computed(() => {
+    return diseaseOptions.value.reduce((map, disease) => {
+      map[disease.value] = disease.label
+      return map
+    }, {})
+  })
 
   const medicalRecord = ref({
     name: '',
@@ -262,6 +281,15 @@ const diseaseOptions = ref([
     rightStatusIllList: [],
     leftIllInfo: '',
     rightIllInfo: ''
+  })
+
+  // 计算属性，映射疾病ID为名称
+  const selectedLeftDiseases = computed(() => {
+    return medicalRecord.value.leftStatusIllList.map(id => diseaseMap.value[id] || '')
+  })
+
+  const selectedRightDiseases = computed(() => {
+    return medicalRecord.value.rightStatusIllList.map(id => diseaseMap.value[id] || '')
   })
 
   const rules = reactive({
@@ -328,117 +356,158 @@ const diseaseOptions = ref([
   rightStatusIllList: [
     { type:'array',required: true, message: '请选择右眼疾病', trigger: 'change' }
   ],
-  leftIllInfo: [
-    // 默认为非必填项，动态更新
-    { required: false, message: '请输入左眼其他异常', trigger: 'blur' }
-  ],
-  rightIllInfo: [
-    // 默认为非必填项，动态更新
-    { required: false, message: '请输入右眼其他异常', trigger: 'blur' }
-  ],
+  leftIllInfo: {
+      get() { return leftIllRule.value },
+      set() {} // 防止直接修改
+    },
+    rightIllInfo: {
+      get() { return rightIllRule.value },
+      set() {}
+    }
 })
   
   // 获取病历数据
-  const fetchData = async () => {
-    try {
-      const res = await api.getMedicalRecord(route.query.id)
-      medicalRecord.value = res.data.data
-    } catch (error) {
-      ElMessage.error('获取病历失败')
-    } finally {
+  // 修改后的fetchData函数
+  const fetchData = async (force = false) => {
+  try {
+    loading.value = true
+    const res = await api.getMedicalRecord(route.query.id)
+    
+    
+    // 调试输出
+    console.log('API响应状态:', res.status)
+    console.log('原始图片路径:', {
+      left: res.data.data.leftImg,
+      right: res.data.data.rightImg
+    })
+
+    // URL处理函数
+    const formatImageUrl = (path) => {
+      if (!path) return ''
+      return path.startsWith('http') 
+        ? path 
+        : `${api.defaults.baseURL}/${path.replace(/^\//, '')}`
+    }
+
+    const processedData = {
+      ...res.data.data,
+      leftImg: formatImageUrl(res.data.data.leftImg),
+      rightImg: formatImageUrl(res.data.data.rightImg),
+     
+    }
+
+console.log('处理后的图片URL:', {
+  left: processedData.leftImg,
+  right: processedData.rightImg
+})
+console.log('Left image URL:', medicalRecord.value.leftImg);
+console.log('Right image URL:', medicalRecord.value.rightImg);
+
+medicalRecord.value = processedData
+} catch (error) {
+ElMessage.error('数据加载失败')
+console.error('加载错误详情:', error.response?.data || error.message)
+} finally {
+loading.value = false
+}
+
+}
+// 修改onMounted
+onMounted(() => {
+  if (!route.query.id) {
+    ElMessage.error('无效的患者ID')
+    return router.back()  // 添加return防止继续执行
+  }
+  loadData()
+  fetchData()
+  
+})
+
+// 用于 watch 数据更新时，关闭加载
+watch(() => medicalRecord.value, (newVal) => {
+    if (newVal && newVal.name) {
       loading.value = false
     }
-  }
+  })
   
   // 提交修改
   const handleSubmit = async () => {
-    submitting.value = true
-    try {
-      await api.updateMedicalRecord(route.query.id, medicalRecord.value)
-      ElMessage.success('修改成功')
-    } catch (error) {
-      ElMessage.error('修改失败')
-    } finally {
-      submitting.value = false
-    }
+  try {
+    // 使用深拷贝避免响应式污染
+    const submitData = JSON.parse(JSON.stringify(medicalRecord.value))
+    
+    // 转换疾病数组为字符串
+    submitData.leftStatusIllList = submitData.leftStatusIllList.join(',')
+    submitData.rightStatusIllList = submitData.rightStatusIllList.join(',')
+    
+    await api.updateMedicalRecord(route.query.id, submitData)
+    ElMessage.success('修改成功')
+    
+    // 强制刷新数据
+    await fetchData(true) // 传入强制刷新参数
+  } catch (error) {
+    // 错误处理...
   }
+}
   
   // 返回列表页
   const handleCancel = () => {
-    router.push('/administration')
+    router.push('/admin')
   }
-  
-  onMounted(() => {
-    if (!route.query.id) {
-      ElMessage.error('无效的患者ID')
-      router.back()
-    } else {
-      fetchData()
+ 
+  const handleDiseaseSelection = (type, newVal) => {
+    const field = `${type}StatusIllList`
+    const otherField = `${type}IllInfo`
+    const cloneVal = [...newVal]
+
+    if (cloneVal.includes(1)) {
+      medicalRecord.value[field] = Object.freeze([1]) // 冻结数组防止修改
+      medicalRecord.value[otherField] = ''
+      return
     }
-  })
+
+    requestAnimationFrame(() => {
+      medicalRecord.value[field] = cloneVal.filter(v => v !== 1)
+      if (!cloneVal.includes(8)) {
+        medicalRecord.value[otherField] = ''
+      }
+    })
+  }
 
   // 左右眼疾病选择监控
-const handleDiseaseSelection = (type, newVal) => {
-  const field = type === 'left' ? 'leftStatusIllList' : 'rightStatusIllList'
-  const otherField = type === 'left' ? 'leftIllInfo' : 'rightIllInfo'
-  
-  // 选中"正常"时清除其他选项
-  if (newVal.includes(1)) {
-    medicalRecord.value[field] = [1]
-    medicalRecord.value[otherField] = '' // 清空其他异常信息
-    return
-  }
+  watch(
+    () => [...medicalRecord.value.leftStatusIllList],
+    debounce((newVal, oldVal) => {
+      if (JSON.stringify(newVal) === JSON.stringify(oldVal)) return
+      handleDiseaseSelection('left', newVal)
+    }, 300)
+  )
 
-  // 选中其他选项时清除"正常"
-  if (newVal.some(v => v >= 2 && v <= 8)) {
-    medicalRecord.value[field] = newVal.filter(v => v !== 1)
-  }
+  watch(
+    () => [...medicalRecord.value.rightStatusIllList],
+    debounce((newVal, oldVal) => {
+      if (JSON.stringify(newVal) === JSON.stringify(oldVal)) return
+      handleDiseaseSelection('right', newVal)
+    }, 300)
+  )
 
-  // 取消选择"其他异常"时清空输入
-  if (!newVal.includes(8)) {
-    medicalRecord.value[otherField] = ''
-  }
+  // 控制显示其他异常输入框
+  const showLeftIllInfo = computed(() =>
+    medicalRecord.value.leftStatusIllList && medicalRecord.value.leftStatusIllList.includes(8)
+  )
+
+  const showRightIllInfo = computed(() => 
+    medicalRecord.value.rightStatusIllList && medicalRecord.value.rightStatusIllList.includes(8)
+  )
+
+const handleHistory = () => {
+  router.push({
+    path: '/administration/history',
+    query: {
+      id: route.query.id
+    }
+  })
 }
-
-// 监听左眼选择
-watch(
-  () => medicalRecord.value.leftStatusIllList,
-  (newVal) =>{ handleDiseaseSelection('left', newVal)
-  // 动态更新leftIllInfo的必填规则
-  if (newVal.includes(8)) {
-      // 如果选择了“其他异常”，则leftIllInfo必填
-      rules.leftIllInfo = [{ required: true, message: '请输入左眼其他异常', trigger: 'blur' }]
-    } else {
-      // 否则，leftIllInfo非必填
-      rules.leftIllInfo = [{ required: false, message: '请输入左眼其他异常', trigger: 'blur' }]
-    }
-  },
-  { deep: true }
-)
-
-// 监听右眼选择  
-watch(
-  () => medicalRecord.value.rightStatusIllList,
-  (newVal) => {handleDiseaseSelection('right', newVal)
-  // 动态更新rightIllInfo的必填规则
-  if (newVal.includes(8)) {
-      // 如果选择了“其他异常”，则rightIllInfo必填
-      rules.rightIllInfo = [{ required: true, message: '请输入右眼其他异常', trigger: 'blur' }]
-    } else {
-      // 否则，rightIllInfo非必填
-      rules.rightIllInfo = [{ required: false, message: '请输入右眼其他异常', trigger: 'blur' }]
-    }
-  },
-  { deep: true }
-)
-
-// 控制显示其他异常输入框
-const showLeftIllInfo = computed(() => 
-  medicalRecord.value.leftStatusIllList?.includes(8)
-)
-const showRightIllInfo = computed(() => 
-  medicalRecord.value.rightStatusIllList?.includes(8)
-)
   </script>
   
   <style scoped>
@@ -464,5 +533,29 @@ const showRightIllInfo = computed(() =>
   content: "*";
   color: #F56C6C;
   margin-right: 4px;
+}
+
+/* 添加加载状态提示 */
+.validating-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 添加图片容器样式 */
+.eye-img {
+  width: 300px;
+  height: 200px;
+  display: block;
+  margin: 10px 0;
+  border: 1px solid #eee;
+  border-radius: 4px;
 }
   </style>

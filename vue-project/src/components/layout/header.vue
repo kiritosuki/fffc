@@ -12,6 +12,7 @@
         <router-link to="/introduce">介绍</router-link><br>
         <router-link to="/personal">个人</router-link><br>
         <router-link to="/patients/history">历史记录</router-link>
+        <router-link to="/aLotOfPictures">大量图片上传</router-link>
       </aside>
   
       <!-- 动态内容区域 -->
