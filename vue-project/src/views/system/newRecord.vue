@@ -5,6 +5,8 @@
       <el-skeleton v-if="loading" :rows="6" animated />
       
       <!-- 病历表单 -->
+      
+          
       <el-form 
         v-else 
         ref="formRef" 
@@ -12,14 +14,23 @@
         label-width="120px"
         :rules="rules"
       >
+
+      <el-row :gutter="24" >
+        <el-col :span="8">
         <el-form-item label="患者姓名">
           <el-input v-model="medicalRecord.name" disabled/>
         </el-form-item>
+        </el-col>
+
+        <el-col :span="8">
 
         <el-form-item label="年龄">
           <el-input v-model="medicalRecord.age" disabled/>
         </el-form-item>
+        </el-col>
 
+        <el-col :span="8">
+      
         <el-form-item label="性别" prop="gender">
       <el-select 
         v-model="medicalRecord.gender"
@@ -36,105 +47,151 @@
         />
       </el-select>
     </el-form-item>
+        </el-col>
+      </el-row>
 
+      <el-row :gutter="24" :justify="justify" :align="align">
+        <el-col :span="12">
         <el-form-item label="手机号">
           <el-input v-model="medicalRecord.phone" disabled/>
         </el-form-item>
-
+        </el-col>
+        <el-col :span="12">
         <el-form-item label="身份证号">
           <el-input v-model="medicalRecord.idCard" disabled />
         </el-form-item>
+        </el-col>
+      </el-row>
 
+       
+        
+      <el-row :gutter="24">
+  <el-col :span="12">
+    <!-- 左眼照片 -->
+    <el-form-item label="左眼照片">
+      <el-image
+        v-if="medicalRecord.leftImg"
+        :src="medicalRecord.leftImg"
+        :preview-src-list="[medicalRecord.leftImg]"
+        fit="contain"
+        class="eye-image"
+      />
+      <div v-else class="no-image">暂无照片</div>
+    </el-form-item>
+  </el-col>
+  <el-col :span="12">
+    <!-- 右眼照片 -->
+    <el-form-item label="右眼照片">
+      <el-image
+        v-if="medicalRecord.rightImg"
+        :src="medicalRecord.rightImg"
+        :preview-src-list="[medicalRecord.rightImg]"
+        fit="contain"
+        class="eye-image"
+      />
+      <div v-else class="no-image">暂无照片</div>
+    </el-form-item>
+  </el-col>
+</el-row>
+      <el-row :gutter="24" :justify="justify" :align="align">
+        <el-col :span="12">
+        <el-form-item label="左眼关键字">
+          <el-input v-model="medicalRecord.leftDiag" disabled/>
+        </el-form-item>
+        </el-col>
+        <el-col :span="12">
+        <el-form-item label="右眼关键字">
+          <el-input v-model="medicalRecord.rightDiag"  disabled/>
+        </el-form-item>
+        </el-col>
+      </el-row>
+     
+    <el-row :gutter="24" :justify="justify" :align="align">
+        <el-col :span="8">
         <el-form-item label="诊断医师">
           <el-input v-model="medicalRecord.DoctorID" disabled/>
         </el-form-item>
-
-        <!-- 左眼照片 -->
-<el-form-item label="左眼照片">
-  <el-image
-    v-if="medicalRecord.leftImg"
-    :src="medicalRecord.leftImg"
-    :preview-src-list="[medicalRecord.leftImg]"
-    fit="contain"
-    class="eye-img"
-  >
-    <!-- 其他模板内容 -->
-  </el-image>
-  <div v-else class="no-Img">暂无照片</div>
-</el-form-item>
-
-<!-- 右眼照片 -->
-<el-form-item label="右眼照片">
-  <el-image
-    v-if="medicalRecord.rightImg"
-    :src="medicalRecord.rightImg"
-    :preview-src-list="[medicalRecord.rightImg]"
-    fit="contain"
-    class="eye-Img"
-  >
-    <!-- 其他模板内容 -->
-  </el-image>
-  <div v-else class="no-Img">暂无照片</div>
-</el-form-item>
-
-    <el-form-item label="左眼诊断信息关键字">
-        <el-input v-model="medicalRecord.leftDiag" disabled/>
-    </el-form-item>
-
-    <el-form-item label="右眼诊断信息关键字">
-        <el-input v-model="medicalRecord.rightDiag" disabled/>
-    </el-form-item>
+        </el-col>
+        <el-col :span="16">
 
     <el-form-item label="诊断结果">
           <el-input 
             v-model="medicalRecord.diagnosis" 
             type="textarea" 
-            :rows="4"
+            :rows="1"
             disabled
           />
         </el-form-item>
-  
+      </el-col>
+    </el-row>
+    <el-row :gutter="24" :justify="justify" :align="align">
+        <el-col :span="8">
         <el-form-item label="诊断日期">
-          <el-date-picker 
-            v-model="medicalRecord.diagDate" 
+          <el-date-picker
+            v-model="medicalRecord.diagDate"
             type="date"
             value-format="YYYY-MM-DD"
             disabled
           />
         </el-form-item>
-  
+        </el-col>
+        <el-col :span="8">
         <el-form-item label="创建时间">
           <el-input v-model="medicalRecord.createTime" disabled />
         </el-form-item>
-
+        </el-col>
+        <el-col :span="8">
         <el-form-item label="最后更新时间">
           <el-input v-model="medicalRecord.updateTime" disabled />
         </el-form-item>
-
+        </el-col>
+    </el-row>
+        
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
         <el-form-item label="过敏药物">
           <el-input v-model="medicalRecord.allergy" disabled/>
         </el-form-item>
-
+  </el-col>
+  <el-col :span="12">
         <el-form-item label="患者主诉">
           <el-input v-model="medicalRecord.complaint" disabled/>
         </el-form-item>
+  </el-col>
+</el-row>
+
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
+
 
         <el-form-item label="现病史">
           <el-input v-model="medicalRecord.presHistory" disabled/>
         </el-form-item>
+      </el-col>
 
+      <el-col :span="12">
+        
         <el-form-item label="既往史">
           <el-input v-model="medicalRecord.pastHistory"  disabled/>
         </el-form-item>
+      </el-col>
+</el-row>
 
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
         <el-form-item label="阳体特征">
           <el-input v-model="medicalRecord.posFeature" disabled />
         </el-form-item>
-
+      </el-col>
+      <el-col :span="12">
         <el-form-item label="阴体特征">
           <el-input v-model="medicalRecord.negFeature"  disabled/>
         </el-form-item>
+      </el-col>
+</el-row>
 
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
         <el-form-item label="左眼疾病" prop="leftStatusIllList">
   <el-select 
     v-model="medicalRecord.leftStatusIllList"
@@ -155,6 +212,11 @@
   </el-select>
 </el-form-item>
 
+<el-form-item label="左眼其他异常" v-if="showLeftIllInfo">
+        <el-input v-model="medicalRecord.leftIllInfo" :rules="leftIllRule" disabled/>
+      </el-form-item>
+</el-col>
+<el-col :span="12">
 <el-form-item label="右眼疾病" prop="rightStatusIllList">
   <el-select 
     v-model="medicalRecord.rightStatusIllList"
@@ -175,15 +237,18 @@
   </el-select>
 </el-form-item>
 
-
-      <el-form-item label="左眼其他异常" v-if="showLeftIllInfo">
-        <el-input v-model="medicalRecord.leftIllInfo" :rules="leftIllRule" disabled/>
-      </el-form-item>
-
-      <el-form-item label="右眼其他异常" v-if="showRightIllInfo">
+<el-form-item label="右眼其他异常" v-if="showRightIllInfo">
         <el-input v-model="medicalRecord.rightIllInfo" :rules="rightIllRule" disabled/>
       </el-form-item>
   
+</el-col>
+</el-row>
+
+
+
+     
+
+      
     
   
         <div class="form-actions">
@@ -557,5 +622,64 @@ const handleHistory = () => {
   margin: 10px 0;
   border: 1px solid #eee;
   border-radius: 4px;
+}
+
+/* 图片容器基础样式 */
+.eye-image {
+  width: 100%;
+  height: 200px;
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  
+  /* 图片填充方式 */
+  :deep(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+/* 无图占位样式 */
+.no-image {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #ddd;
+  color: #999;
+  background-color: #fafafa;
+}
+
+/* 确保列布局均匀 */
+/* .el-col {
+  display: flex;
+  flex-direction: column;
+  
+  .el-form-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    :deep(.el-form-item__content) {
+      flex: 1;
+    }
+  }
+} */
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .el-col {
+    width: 100%;
+    
+    .eye-image,
+    .no-image {
+      height: 180px;
+    }
+  }
 }
   </style>

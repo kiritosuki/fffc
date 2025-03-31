@@ -1,271 +1,158 @@
 <template>
-  <div class="page-container">
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" class="patient-form">
-      <el-form-item label="病例图片" prop="images">
-        <el-upload
-          action="#"
-          list-type="picture-card"
-          :class="['custom-upload', { 'hide-border': imageList.length > 0 }]"
-          :auto-upload="false"
-          :limit="10"
-          :file-list="imageList"
-          :on-change="(file) => handleAddFile(file)"
-          :on-remove="(file) => handleRemove(file)"
-          multiple
-          drag
-        >
-          <template #default>
-            <div class="drag-area">
-              <el-icon class="drag-icon"><Plus /></el-icon>
-              <div>点击或拖拽添加图片</div>
-              <div class="upload-tip">支持JPG/PNG格式（1-10张）</div>
-            </div>
-          </template>
+  <div class="upload-container">
+    <!-- 上传区域 -->
+    <el-upload
+  action="#"
+  list-type="picture-card"
+  :auto-upload="false"
+  :multiple="true"
+  :limit="10"
+  v-model:file-list="fileList"
+  :on-change="handleChange"
+  :on-remove="handleRemove"
+>
+  <el-icon><Plus /></el-icon>
+  <template #tip>
+    <div class="upload-tip">可上传1-10张眼部图片（支持JPG/PNG格式）</div>
+  </template>
+</el-upload>
 
-          <template #file="{ file }">
-            <div class="image-item">
-              <img class="el-upload-list__item-thumbnail" :src="file.url" />
-              <div class="image-label">图{{ getImageIndex(file) }}</div>
-              <div class="upload-status">
-                <el-progress 
-                  v-if="file.status === 'uploading'"
-                  type="circle" 
-                  :percentage="file.percent"
-                  :width="60"
-                />
-                <el-icon v-else-if="file.status === 'success'" class="success-icon">
-                  <CircleCheck />
-                </el-icon>
-                <el-icon v-else-if="file.status === 'error'" class="error-icon">
-                  <CircleClose />
-                </el-icon>
-              </div>
-            </div>
-          </template>
-        </el-upload>
-      </el-form-item>
 
-      <!-- 诊断结果表格 -->
-      <el-table :data="tableData" v-loading="submitting">
-        <el-table-column label="图片序号" width="100">
-          <template #default="{ $index }">图{{ $index + 1 }}</template>
-        </el-table-column>
-        <el-table-column prop="eye" label="诊断关键字" />
-        <el-table-column prop="info" label="诊断结果" />
-        <el-table-column prop="time" label="时间" />
-      </el-table>
+    <!-- 操作按钮 -->
+    <div class="action-buttons">
+      <el-button 
+        type="primary" 
+        :loading="uploading"
+        @click="handleUpload"
+        :disabled="fileList.length === 0"
+      >
+        <template #loading>
+          <el-icon class="is-loading"><Loading /></el-icon>
+          上传中...
+        </template>
+        一键上传
+      </el-button>
+      <el-button @click="handleClear">一键清除</el-button>
+    </div>
 
-      <div class="form-actions">
-        <el-button @click="handleClearForm">重置</el-button>
-        <el-button 
-          type="primary" 
-          :loading="submitting"
-          :disabled="!canSubmit"
-          @click="handleSubmit"
-        >
-          {{ submitText }}
-        </el-button>
-      </div>
-    </el-form>
+    <!-- 结果表格 -->
+    <el-table :data="resultData" style="width: 100%" v-if="resultData.length > 0">
+      <el-table-column prop="index" label="序号" width="80" />
+      <el-table-column label="图片" width="180">
+        <template #default="{ row }">
+          <el-image 
+            :src="row.img" 
+            :preview-src-list="previewList"
+            fit="cover"
+            style="width: 100px; height: 80px"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column prop="diag" label="眼部关键字" />
+      <el-table-column prop="resInfo" label="诊断结果" />
+      <el-table-column prop="createTime" label="创建时间" width="180" />
+    </el-table>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, CircleCheck, CircleClose } from '@element-plus/icons-vue'
+import { ref, computed } from 'vue'
+import { ElMessage } from 'element-plus'
+import { Plus, Loading } from '@element-plus/icons-vue'
+import api from '@/api'
 
-const imageList = ref([])
-const tableData = ref([])
-const submitting = ref(false)
-const formRef = ref(null)
+const fileList = ref([])
+const resultData = ref([])
+const uploading = ref(false)
 
-// 验证规则
-const validateImages = (rule, value, callback) => {
-  if (imageList.value.length < 1) {
-    callback(new Error('至少需要上传1张图片'))
-  } else if (imageList.value.length > 10) {
-    callback(new Error('最多只能上传10张图片'))
-  } else {
-    callback()
+// 计算属性用于图片预览
+const previewList = computed(() => 
+  resultData.value.map(item => item.img)
+)
+
+// 文件变化处理
+const handleChange = (file) => {
+  const isImage = file.raw.type.includes('image/')
+  const isLt5M = file.raw.size / 1024 / 1024 < 5
+
+  if (!isImage) {
+    ElMessage.error('只能上传图片格式!')
+    return false
   }
-}
-
-const rules = reactive({
-  images: [{ required: true, validator: validateImages, trigger: 'change' }]
-})
-
-// 获取图片序号
-const getImageIndex = (file) => {
-  return imageList.value.indexOf(file) + 1
-}
-
-// 计算属性
-const canSubmit = computed(() => {
-  return imageList.value.length > 0 &&
-    !imageList.value.some(file => file.status === 'uploading')
-})
-
-const submitText = computed(() => {
-  if (submitting.value) return '提交中...'
-  const successCount = imageList.value.filter(f => f.status === 'success').length
-  return successCount === imageList.value.length ? '重新提交' : '开始诊断'
-})
-
-// 文件管理逻辑
-const handleAddFile = (file) => {
-  file.status = 'pending'
-  file.percent = 0
-  file.url = URL.createObjectURL(file.raw)
+  if (!isLt5M) {
+    ElMessage.error('图片大小不能超过5MB!')
+    return false
+  }
   return true
 }
 
-const handleRemove = async (file) => {
-  imageList.value = imageList.value.filter(f => f.uid !== file.uid)
+// 删除文件
+const handleRemove = () => {
+  // 删除逻辑由el-upload自动处理
 }
 
-// 核心上传逻辑（逐一上传）
-const uploadFile = async (file) => {
+// 上传处理
+const handleUpload = async () => {
+  if (fileList.value.length === 0) {
+    ElMessage.warning('请先添加图片')
+    return
+  }
+
+  uploading.value = true
   try {
-    file.status = 'uploading'
-
-    const formData = new FormData()
-    formData.append('image', file.raw)
-    formData.append('index', getImageIndex(file))
-
-    const res = await api.uploadLotImage(formData, {
-      onUploadProgress: e => {
-        file.percent = Math.round((e.loaded * 100) / e.total)
+    const results = []
+    
+    // 并行上传所有图片
+    await Promise.all(fileList.value.map(async (file, index) => {
+      const formData = new FormData()
+      formData.append('file', file.raw)
+      
+      const res = await api.uploadLotImage(formData)
+      
+      if (res.data.code === 1) {
+        results.push({
+          ...res.data.data,
+          index: index + 1
+        })
       }
-    })
-
-    file.status = 'success'
-    file.serverId = res.data.id
-    return res.data
-
-  } catch (err) {
-    file.status = 'error'
-    file.error = err.msg
-    throw err
-  }
-}
-
-// 提交按钮逻辑：逐张上传
-const handleSubmit = async () => {
-  submitting.value = true
-  const results = []
-
-  try {
-    for (let i = 0; i < imageList.value.length; i++) {
-      const file = imageList.value[i]
-
-      // 跳过已经上传成功的图片
-      if (file.status === 'success') continue
-
-      const result = await uploadFile(file)
-
-      // 填充表格数据
-      results.push({
-        eye: result.data.diag,
-        info: result.data.resInfo,
-        time: result.data.createTime
-      })
-    }
-
-    // 更新表格数据
-    tableData.value = results
-
-    // 提示上传成功
-    ElMessage.success('所有图片上传完成，诊断信息已更新')
+    }))
+    
+    resultData.value = results
+    ElMessage.success(`成功上传${results.length}张图片`)
   } catch (error) {
-    ElMessage.error('上传过程中出现错误，请稍后重试')
+    ElMessage.error(error.data.msg || '上传失败')
   } finally {
-    submitting.value = false
+    uploading.value = false
   }
 }
 
-// 清除表单
-const handleClearForm = async () => {
-  try {
-    await ElMessageBox.confirm('确定要清除所有内容吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
-
-    imageList.value = []
-    tableData.value = []
-    formRef.value.resetFields()
-    ElMessage.success('已重置')
-
-  } catch (error) {
-    // 取消操作
-  }
+// 清除所有
+const handleClear = () => {
+  fileList.value = []
+  resultData.value = []
 }
 </script>
 
-  
-  <style scoped>
-  /* 新增图片标签样式 */
-  .image-item {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .image-label {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    text-align: center;
-    padding: 4px;
-    font-size: 12px;
-  }
-  
-  /* 调整上传区域高度 */
-  :deep(.el-upload--picture-card) {
-    width: 160px;
-    height: 160px;
-  }
-  
-  /* 响应式调整 */
-  @media (max-width: 768px) {
-    :deep(.el-upload--picture-card) {
-      width: 100px;
-      height: 100px;
-    }
-    
-    .drag-text {
-      font-size: 12px;
-    }
-  }
-  
-  .upload-tip {
-    color: #666;
-    font-size: 12px;
-    margin-top: 8px;
-  }
-
-  .upload-status {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.9);
-  padding: 5px;
-  border-radius: 50%;
+<style scoped>
+.upload-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.success-icon {
-  color: #67c23a;
-  font-size: 28px;
+.action-buttons {
+  margin: 20px 0;
+  display: flex;
+  gap: 15px;
 }
 
-.error-icon {
-  color: #f56c6c;
-  font-size: 28px;
+.upload-tip {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  margin-top: 8px;
 }
-  </style>
+
+:deep(.el-upload-list__item) {
+  transition: all 0.3s;
+}
+</style>

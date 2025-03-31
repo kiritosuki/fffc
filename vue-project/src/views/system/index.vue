@@ -3,21 +3,18 @@
   <div class="page-container">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-position="right" class="patient-form">
       <!-- 基础信息 -->
-      <el-row :gutter="20">
-        <el-col :span="12">
+      <el-row :gutter="24">
+        <el-col :span="8">
           <el-form-item label="患者姓名" prop="name">
             <el-input v-model="form.name" placeholder="请输入患者姓名" clearable />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="年龄" prop="age">
             <el-input-number v-model="form.age" :min="1" :max="120" controls-position="right" />
           </el-form-item>
         </el-col>
-      </el-row>
-
-      <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="性别" prop="gender">
             <el-radio-group v-model="form.gender">
               <el-radio :value="1">男</el-radio>
@@ -25,12 +22,16 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+      </el-row>
+
+      <el-row :gutter="20">
+        
+        <el-col :span="10">
           <el-form-item label="手机号码" prop="phone">
             <el-input v-model="form.phone" placeholder="请输入手机号" clearable />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="10">
           <el-form-item label="身份证号" prop="idCard">
             <el-input v-model="form.idCard" placeholder="请输入身份证号" clearable>
               <template #append>
@@ -50,6 +51,9 @@
         </el-col>
       </el-row>
 
+      <el-row :gutter="24">
+      
+        <el-col :span="12">
       <!-- 图片上传 -->
       <el-form-item label="左眼照片" prop="leftImage">
         <el-upload action="#" list-type="picture-card"
@@ -67,9 +71,10 @@
             </div>
           </template>
         </el-upload>
-        <div class="upload-tip">支持JPG/PNG格式</div>
+        <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
       </el-form-item>
-
+    </el-col>
+    <el-col :span="12">
       <el-form-item label="右眼照片" prop="rightImage">
         <el-upload action="#" list-type="picture-card"
           :class="['custom-upload', { 'hide-border': rightImageList.length > 0 }]" :auto-upload="false" :limit="1"
@@ -82,14 +87,16 @@
                   <Plus />
                 </el-icon>
                 <div class="drag-text">点击或拖拽文件到此区域</div>
+                <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
               </template>
             </div>
           </template>
         </el-upload>
-        <div class="upload-tip">支持JPG/PNG格式</div>
+        
 
       </el-form-item>
-
+    </el-col>
+    </el-row>
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="过敏药物" prop="allergy">
@@ -570,28 +577,49 @@ const handleCancel = () => {
   transition: all 0.3s;
 }
 
-/* 响应式调整上传卡片的大小 */
 
 
-@media (min-width: 601px) {
-  :deep(.custom-upload .el-upload--picture-card) {
-    width: 14.5vw;
-    height: 14.5vw;
-  }
+
+
+/* 其他样式保持不变... */
+
+/* 固定上传卡片大小 */
+:deep(.custom-upload .el-upload--picture-card),
+:deep(.custom-upload .el-upload-list--picture-card .el-upload-list__item) {
+  width: 300px;
+  height: 200px;
+  line-height: 200px;
+  margin: 0;
 }
 
+/* 调整拖拽区域大小 */
+:deep(.custom-upload .el-upload-dragger) {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片预览样式 */
+:deep(.custom-upload .el-upload-list__item-thumbnail) {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 移除响应式调整，保持固定大小 */
 @media (max-width: 768px) {
-  .patient-form {
-    padding: 10px;
-  }
-
-  :deep(.custom-upload .el-upload--picture-card) {
-    width: 40vw;
-    height: 40vw;
+  :deep(.custom-upload .el-upload--picture-card),
+  :deep(.custom-upload .el-upload-list--picture-card .el-upload-list__item) {
+    width: 300px;
+    height: 200px;
   }
 }
 
-.el-input-group__append {
+
+.el-input-group__append { 
   padding: 0 12px;
 }
 
