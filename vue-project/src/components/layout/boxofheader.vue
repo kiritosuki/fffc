@@ -1,16 +1,3 @@
-<script setup>
-import { useRoute } from 'vue-router';
-
-const route = useRoute();
-</script>
-
-
-
-
-
-
-
-
 <template>
     <div class="app-layout">
       <!-- 固定页眉 -->
@@ -24,20 +11,17 @@ const route = useRoute();
         <router-link to="/analyze">分析</router-link><br>
         <router-link to="/introduce">介绍</router-link><br>
         <router-link to="/personal">个人</router-link><br>
-        <router-link to="/patients/history">历史记录</router-link><br>
+        <router-link to="/patients/history">历史记录</router-link>
         <router-link to="/aLotOfPictures">大量图片上传</router-link>
       </aside>
   
       <!-- 动态内容区域 -->
       <main class="content">
-      <router-view :key="route.fullPath" />
-    </main>
+        <router-view :key="$route.fullPath" />
+      </main>
     </div>
   </template>
   
-
-
-
   <style scoped>
   .app-layout {
     display: grid;
