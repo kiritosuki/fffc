@@ -121,7 +121,8 @@ const beBig = () => {
   width: 100vw;
   margin: -8px;
   padding: 0;
-  transition: grid-template-columns 0.3s;
+  /* transition: grid-template-columns 0.3s; */
+  transition: grid-template-columns 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar {
@@ -132,7 +133,8 @@ const beBig = () => {
   padding: 1.5rem;
   height: 100vh;
   overflow-y: auto;
-  transition: width 0.3s;
+  /* transition: width 0.3s; */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 标准缓入缓出曲线 */
 }
 
 .content {
