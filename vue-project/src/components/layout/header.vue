@@ -34,7 +34,7 @@ const aLotOfPictures = computed(() => {
 })
 
 const asidewidth = ref(210)
-const contentwidth = ref(340)
+const contentwidth = ref(270)
 
 const asideCss = computed(() => ({
   '--asidewidth': `${asidewidth.value}px`  // 添加 -- 前缀并添加单位
@@ -53,7 +53,7 @@ const beSmall = () => {
 }
 const beBig = () => {
   asidewidth.value = 210
-  contentwidth.value = 340
+  contentwidth.value = 270
   ifBig.value = 1
   ifSmall.value = 0
 }
@@ -121,7 +121,7 @@ const beBig = () => {
   width: 100vw;
   margin: -8px;
   padding: 0;
-  transition: grid-template-columns 0.1s;
+  transition: grid-template-columns 0.3s;
 }
 
 .sidebar {
@@ -132,7 +132,7 @@ const beBig = () => {
   padding: 1.5rem;
   height: 100vh;
   overflow-y: auto;
-  transition: width 0.1s;
+  transition: width 0.3s;
 }
 
 .content {
