@@ -76,7 +76,7 @@ const aLotOfPictures = computed(() => {
   display: grid;
   grid-template-areas:
     "sidebar content";
-  grid-template-columns: 250px 1fr;
+  grid-template-columns: 350px 1fr;
   height: 100vh;
   width: 100vw;
   margin: -8px;

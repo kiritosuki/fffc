@@ -2,31 +2,116 @@
 import * as echarts from "echarts";
 import { onMounted } from "vue";
 onMounted(() => {
-  var barChart1 = echarts.init(document.getElementById("barChart1"));
+  var stringChart1 = echarts.init(document.getElementById("stringChart1"));
+  // 原始数据
+const seriesData = [
+  { name: '0-20', data: [25, 32, 28, 35, 30, 27, 38, 33, 40, 45] },
+  { name: '21-40', data: [160, 185, 170, 195, 180, 165, 200, 190, 210, 230] },
+  { name: '41-60', data: [1130, 1222, 1212, 1275, 1289, 1245, 1368, 1421, 1443, 1557] },
+  { name: '61-80', data: [1223, 1378, 1328, 1443, 1355, 1269, 1469, 1563, 1547, 1634] },
+  { name: '80+', data: [73, 87, 72, 96, 76, 75, 99, 87, 104, 117] }
+];
+
+// 按平均值降序排序
+const sortedSeries = [...seriesData].sort((a, b) => {
+  const avgA = a.data.reduce((sum, val) => sum + val, 0) / a.data.length;
+  const avgB = b.data.reduce((sum, val) => sum + val, 0) / b.data.length;
+  return avgB - avgA; // 大的在前（底层）
+});
   // 绘制图表
-  var barOption1 = {
-    title: {
-      text: "患者年龄分布",
+  var stringOption1 = {
+  title: {
+    text: '患者年龄分布'
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['0-20', '21-40', '41-60', '61-80', '80+']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  toolbox: {
+    feature: {
+      saveAsImage: {}
+    }
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: ['2015','2016','2017','2018', '2019', '2020', '2021', '2022', '2023', '2024']
+  },
+  yAxis: {
+    type: 'value'
+  },
+  tooltip: {
+      order: 'valueDesc',
+      trigger: 'axis'
     },
-    tooltip: {},
-    legend: {
-      data: ["年龄"],
+  series: [
+    {
+      name: '0-20',
+      type: 'line',
+      stack: 'Total',
+      data: [25, 32, 28, 35, 30, 27, 38, 33, 40, 45]
+    },    
+    {
+      name: '80+',
+      type: 'line',
+      stack: 'Total',
+      data: [73, 87, 72, 96, 76, 75, 99, 87, 104, 117]
     },
-    xAxis: {
-      data: ["0-20", "21-40", "41-60", "61-80", "80+"],
+    {
+      name: '21-40',
+      type: 'line',
+      stack: 'Total',
+      data: [160, 185, 170, 195, 180, 165, 200, 190, 210, 230]
     },
-    yAxis: {},
-    series: [
-      {
-        name: "年龄",
-        type: "bar",
-        data: [30, 180, 1260, 1360, 80],
-      },
-    ],
-  };
+    {
+      name: '41-60',
+      type: 'line',
+      stack: 'Total',
+      data: [1130, 1222, 1212, 1275, 1289, 1245, 1368, 1421, 1443, 1557]
+    },
+    {
+      name: '61-80',
+      type: 'line',
+      stack: 'Total',
+      data: [1223, 1378, 1328, 1443, 1355, 1269, 1469, 1563, 1547, 1634]
+    }
 
-  barChart1.setOption(barOption1);
+  ],
 
+  // 增强视觉效果
+  emphasis: {
+    focus: 'series',
+    label: {
+      show: true,
+      fontSize: 14
+    }
+  }
+};
+
+  stringChart1.setOption(stringOption1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   var binChart1 = echarts.init(document.getElementById("binChart1"));
 
   var binOption1 = {
@@ -42,10 +127,13 @@ onMounted(() => {
           {
             value: 0.529,
             name: "男性",
+            itemStyle: { color: 'rgb(162, 201, 244)' }
           },
           {
             value: 0.471,
             name: "女性",
+            itemStyle: { color: 'rgb(255, 180, 130)' }
+            
           },
         ],
       },
@@ -55,52 +143,96 @@ onMounted(() => {
   binChart1.setOption(binOption1);
 
   var barChart2 = echarts.init(document.getElementById("barChart2"));
+
   // 绘制图表
   var barOption2 = {
     title: {
       text: "疾病分布",
+      left: 'center'
     },
-    tooltip: {},
-
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' },
+      // 自定义悬停内容
+    formatter: function(params) {
+      // params[0] 是当前悬停的柱子数据
+      const data = params[0];
+      // 定义自定义标签映射（示例：将 N/D/G 转为完整疾病名称）
+      const labelMap = {
+        'N': 'N:正常',
+        'D': 'D:糖尿病',
+        'G': 'G:青光眼',
+        'C': 'C:白内障',
+        'A': 'A:AMD',
+        'H': 'H:高血压',
+        'M': 'M:近视',
+        'O': 'O:其他疾病/异常'
+      };
+      // 返回自定义内容
+      return `${labelMap[data.name]}<br/>患病人数: ${data.value}`;
+    }
+    },
     xAxis: {
       data: ["N", "D", "G", "C", "A", "H", "M", "O"],
+      axisLabel: { rotate: 45 }
     },
-    yAxis: {},
-    series: [
-      {
-        name: "患病人数",
-        type: "bar",
-        data: [1130, 510, 210, 210, 180, 80, 190, 980],
+    yAxis: { type: 'value', name: '患病人数' },
+    series: [{
+      name: "患病人数",
+      type: "bar",
+      data: [
+        { value: 1130, itemStyle: { color: 'rgb(173, 217, 230)' } }, // N - 深蓝
+        { value: 510, itemStyle: { color: 'rgb(254, 204, 203)' } },  // D - 橙
+        { value: 210, itemStyle: { color: 'rgb(216, 248, 217)' } },  // G - 绿
+        { value: 210, itemStyle: { color: 'rgb(255, 255, 203)' } },  // C - 红
+        { value: 180, itemStyle: { color: 'rgb(255, 216, 183)' } },  // A - 紫
+        { value: 80, itemStyle: { color: 'rgb(231, 204, 255)' } },   // H - 棕
+        { value: 190, itemStyle: { color: 'rgb(247, 216, 248)' } },  // M - 粉
+        { value: 980, itemStyle: { color: 'rgb(203, 229, 254)' } }   // O - 灰
+      ],
+      itemStyle: {
+        borderRadius: 4,
+        borderWidth: 0
       },
-    ],
+      // 正常状态下的标签样式
+    label: { 
+      show: true, 
+      position: 'top',
+      color: '#333' // 默认文字颜色
+    },
+    // 悬停时的配置
+    emphasis: {
+      focus: 'self', // 只高亮当前柱子（设为 'series' 会高亮所有同系列柱子）
+      itemStyle: {
+        shadowBlur: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
+      },
+      label: {
+        color: '#c23531', // 悬停时文字变红
+        fontWeight: 'bold'
+      }
+    },
+    // 非悬停柱子的样式（淡化效果）
+    blur: {
+      itemStyle: {
+        opacity: 0.2 // 其他柱子透明度降低
+      },
+      label: {
+        opacity: 0.5 // 其他标签透明度降低
+      }
+    }
+  }]
   };
 
+  // 应用配置
   barChart2.setOption(barOption2);
 
-  var barChart3 = echarts.init(document.getElementById("barChart3"));
-  // 绘制图表
-  var barOption3 = {
-    title: {
-      text: "左右眼诊断一致性",
-    },
-    tooltip: {},
+  // 响应式调整
+  window.addEventListener('resize', function () {
+    barChart2.resize();
+  });
 
-    xAxis: {
-      data: ["N", "D"],
-    },
-    yAxis: {
-      name: "百分比 (%)",
-    },
-    series: [
-      {
-        name: "年龄",
-        type: "bar",
-        data: [0.35, 0.65],
-      },
-    ],
-  };
 
-  barChart3.setOption(barOption3);
 
   var hitChart1 = echarts.init(document.getElementById("hitChart1"));
 
@@ -136,6 +268,7 @@ onMounted(() => {
       splitArea: {
         show: true,
       },
+      interval: 0
     },
     visualMap: {
       min: 0,
@@ -145,7 +278,7 @@ onMounted(() => {
       left: "center",
       bottom: "15%",
       inRange: {
-        color: ["#e0f7fa", "#00bcd4"], // 从浅天蓝色到深天蓝色
+        color: ["#F7A24F", "#C6133B"],
       },
     },
     series: [
@@ -218,7 +351,7 @@ onMounted(() => {
       bottom: "15%",
 
       inRange: {
-        color: ["#e0f7fa", "#00bcd4"], // 从浅天蓝色到深天蓝色
+        color: ["#F7A24F", "#C6133B"],
       },
     },
     series: [
@@ -244,9 +377,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="char" id="barChart1"></div>
+  <div class="char" id="stringChart1"></div>
   <div class="char" id="barChart2"></div>
-  <div class="char" id="barChart3"></div>
+
   <div class="char" id="hitChart1"></div>
   <div class="char" id="hitChart2"></div>
   <div class="char" id="binChart1"></div>
@@ -254,7 +387,7 @@ onMounted(() => {
 
 <style cscoped>
 .char {
-  width: 300px;
-  height: 300px
+  width: 500px;
+  height: 500px
 }
 </style>
