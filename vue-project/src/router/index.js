@@ -20,6 +20,7 @@ const routes = [
   {
   path: '/',
   component: AppLayout, // 父路由使用布局组件
+  redirect: '/home', // 重定向到子路由的默认路径
   children: [
       { path: '/home', component: Home },
       { path: '/admin', component: Admin },

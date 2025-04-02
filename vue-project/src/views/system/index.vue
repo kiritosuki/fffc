@@ -468,8 +468,9 @@ const handleCancel = () => {
 <style scoped>
 .page-container {
   padding: 20px;
-  background: #fff;
+  background: #fefefe;
   min-height: 100vh;
+  border-radius: 30px;
 }
 
 .patient-form {

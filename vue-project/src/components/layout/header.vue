@@ -72,12 +72,12 @@ const beBig = () => {
     <aside class="sidebar" :style="asideCss">
       <div id="topContainer" v-if="ifBig">
       <b id="top">Auris Glow</b>
-      <el-button id="butTop" @click="beSmall"><el-icon :size="32"><CaretLeft /></el-icon></el-button>
+      <el-button id="butTop" @click="beSmall"><img class="icon" src="../../assets/image/箭头.png"></el-button>
       </div>
       <!-- <div id="topContainer">
       <div><span id="top">Auris Glow</span></div><button class="butTop">回</button>
       </div> -->
-      <div v-if="ifBig">
+      <div v-if="ifBig" id="bigone">
       <el-button :class="home" @click="routerPush('/home')" >主页</el-button><br>
       <!-- <el-button :class="homeResult" @click="routerPush('/homeResult')" >主页二</el-button><br> -->
       <el-button :class="admin" @click="routerPush('/admin')" >管理</el-button><br>
@@ -89,7 +89,7 @@ const beBig = () => {
     </div>
     
     <div>
-      <el-button id="bigger" @click="beBig" v-if="ifSmall"><img id="logo" src="../../assets/image/图标.png"></el-button>
+      <el-button id="bigger" @click="beBig" v-if="ifSmall"><img id="logo" src="../../assets/image/图标无字版.png"></el-button>
     </div>
     <div id="smallone" v-if="ifSmall">
       <el-button :class="home" @click="routerPush('/home')" ><el-icon :size="29"><HomeFilled /></el-icon></el-button><br>
@@ -127,7 +127,7 @@ const beBig = () => {
 
 .sidebar {
   grid-area: sidebar;
-  background: rgb(249, 251, 255);
+  background: #f4f2f3;
   position: absolute;
   width: var(--asidewidth);  /* 正确引用 */
   padding: 1.5rem;
@@ -150,7 +150,7 @@ const beBig = () => {
   position: relative; /* 为绝对定位按钮提供参照 */
   width: 100%;
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   height: auto;
   padding-right: 40px; /* 为按钮预留空间 */
 }
@@ -174,9 +174,16 @@ const beBig = () => {
   height: 32px;
   margin: 0;
   padding: 0;
-  background-color: rgb(249, 251, 255);
+  background-color: #f4f2f3;
   border: none;
   flex-shrink: 0; /* 禁止按钮缩小 */
+  color:#646ac2;
+}
+
+.icon{
+  width:30px;
+  height:30px;
+
 }
 /* 
 #topContainer{
@@ -225,23 +232,24 @@ flex: ;
 
 
 .butRouter {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   width: 95%;
   background-color: none;
   height: 35px;
-  background-color:  rgb(249, 251, 255);
+  background-color:  #f4f2f3;
   border: none;
-  font-size: 18px;
+  font-size: 20px;
   font-family: 'PingFang SC','Helvetica Neue', Arial, sans-serif;
 }
 .butRouterDeeper {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   width: 95%;
   background-color: none;
   height: 35px;
-  background-color:  rgb(238, 245, 254);
+  background-color:  #626AC2;
   border: none;
-  font-size: 18px;
+  font-size: 20px;
+  color: white;
   font-family: 'PingFang SC','Helvetica Neue', Arial, sans-serif;
 }
 
@@ -254,10 +262,39 @@ flex: ;
   margin-left: -30px;
   margin-bottom: 50px;
   border: none;
-  background-color: rgb(249, 251, 255);
+  background-color: #f4f2f3;
 }
 #smallone > button{
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
+
+#smallone > button {
+  margin-bottom: 30px;
+  border-radius: 50%; /* 默认圆形 */
+  transition: all 0.3s;
+  
+}
+
+#smallone .el-button:hover {
+  background-color: #efefef !important;
+  color:white;
+}
+
+
+
+#smallone .butRouterDeeper {
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #626AC2 !important;
+}
+
+#smallone .el-icon {
+  color: inherit;
+}
+
 
 </style>
