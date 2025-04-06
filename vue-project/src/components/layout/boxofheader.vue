@@ -34,6 +34,10 @@
     width: 100vw;
   }
   
+
+
+
+  
   .header {
     grid-area: header;
     background: #333;

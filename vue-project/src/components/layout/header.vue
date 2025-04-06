@@ -232,7 +232,7 @@ flex: ;
 
 
 .butRouter {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   width: 95%;
   background-color: none;
   height: 35px;
@@ -257,6 +257,7 @@ flex: ;
   width: 90px;
   height: 50px;
 }
+
 #bigger{
   margin-top: 30px;
   margin-left: -30px;
@@ -264,32 +265,33 @@ flex: ;
   border: none;
   background-color: #f4f2f3;
 }
-#smallone > button{
-  margin-bottom: 30px;
-}
 
 #smallone > button {
   margin-bottom: 30px;
-  border-radius: 50%; /* 默认圆形 */
+  margin-left: 10px;
   transition: all 0.3s;
   
 }
 
 #smallone .el-button:hover {
-  background-color: #efefef !important;
+  background-color: #626AC2 !important;
   color:white;
+  width: 40px;
+  height: 40px;
 }
 
-
+#smallone .butRouter{
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
 
 #smallone .butRouterDeeper {
   border-radius: 8px;
   width: 40px;
   height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: #626AC2 !important;
+  margin-left: 15px;
 }
 
 #smallone .el-icon {
