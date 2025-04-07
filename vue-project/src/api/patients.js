@@ -1,4 +1,5 @@
 import request from "../utils/request"
+import axios from "axios"
 
 
   export function AddPatient(data){
@@ -174,20 +175,36 @@ export function CheckHistory(id){
   })
 }
 
-
-
-export function uploadLotImage(file) {
-  const formData = new FormData()
-  formData.append('file', file) 
-  return request({
-    url: "/quickdiag",
-    method: "POST",
-    data: formData,
+export const uploadLotImage = (formData) => {
+  return axios.post('http://localhost:8080/quickdiag', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data', // 必须明确指定
     }
-  })
-}
+  });
+};
+
+
+// api.js
+// export const uploadLotImage = (formData) => {
+//   return axios.post('/quickdiag', formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data' // 必须明确指定
+//     }
+//   })
+// }
+
+// export function uploadLotImage(file) {
+//   const formData = new FormData()
+//   formData.append('file', file) 
+//   return request({
+//     url: "/quickdiag",
+//     method: "POST",
+//     data: formData,
+//     headers: {
+//       'Content-Type': 'multipart/form-data'
+//     }
+//   })
+// }
 
 
 
