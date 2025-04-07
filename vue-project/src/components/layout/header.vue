@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { AddLocation, CaretLeft, DataAnalysis, Film, FolderAdd, HomeFilled, InfoFilled, UserFilled } from '@element-plus/icons-vue'
-import { computed, ref  } from 'vue';
+import { computed, ref } from 'vue';
 const router = useRouter();
 
 const routerPush = (path) => {
@@ -71,34 +71,45 @@ const beBig = () => {
     <!-- 固定侧边栏 -->
     <aside class="sidebar" :style="asideCss">
       <div id="topContainer" v-if="ifBig">
-      <b id="top">Auris Glow</b>
-      <el-button id="butTop" @click="beSmall"><img class="icon" src="../../assets/image/箭头.png"></el-button>
+        <b id="top">Auris Glow</b>
+        <el-button id="butTop" @click="beSmall"><img class="icon" src="../../assets/image/箭头.png"></el-button>
       </div>
       <!-- <div id="topContainer">
       <div><span id="top">Auris Glow</span></div><button class="butTop">回</button>
       </div> -->
       <div v-if="ifBig" id="bigone">
-      <el-button :class="home" @click="routerPush('/home')" >主页</el-button><br>
-      <!-- <el-button :class="homeResult" @click="routerPush('/homeResult')" >主页二</el-button><br> -->
-      <el-button :class="admin" @click="routerPush('/admin')" >管理</el-button><br>
-      <el-button :class="analyze" @click="routerPush('/analyze')" >分析</el-button><br>
-      <el-button :class="introduce" @click="routerPush('/introduce')" >介绍</el-button><br>
-      <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
-      <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
-      <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')" >大量图片上传</el-button>
-    </div>
-    
-    <div>
-      <el-button id="bigger" @click="beBig" v-if="ifSmall"><img id="logo" src="../../assets/image/图标无字版.png"></el-button>
-    </div>
-    <div id="smallone" v-if="ifSmall">
-      <el-button :class="home" @click="routerPush('/home')" ><el-icon :size="29"><HomeFilled /></el-icon></el-button><br>
-      <el-button :class="admin" @click="routerPush('/admin')" ><el-icon :size="29"><Film /></el-icon></el-button><br>
-      <el-button :class="analyze" @click="routerPush('/analyze')" ><el-icon :size="29"><DataAnalysis /></el-icon></el-button><br>
-      <el-button :class="introduce" @click="routerPush('/introduce')" ><el-icon :size="29"><InfoFilled /></el-icon></el-button><br>
-      <!-- <el-button :class="personal" @click="routerPush('/personal')" ><el-icon :size="29"><UserFilled /></el-icon></el-button><br> -->
-      <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')" ><el-icon :size="29"><FolderAdd /></el-icon></el-button>
-    </div>
+        <el-button :class="home" @click="routerPush('/home')">主页</el-button><br>
+        <!-- <el-button :class="homeResult" @click="routerPush('/homeResult')" >主页二</el-button><br> -->
+        <el-button :class="admin" @click="routerPush('/admin')">管理</el-button><br>
+        <el-button :class="analyze" @click="routerPush('/analyze')">分析</el-button><br>
+        <el-button :class="introduce" @click="routerPush('/introduce')">介绍</el-button><br>
+        <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
+        <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
+        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">大量图片上传</el-button>
+      </div>
+
+      <div>
+        <el-button id="bigger" @click="beBig" v-if="ifSmall"><img id="logo"
+            src="../../assets/image/图标无字版.png"></el-button>
+      </div>
+      <div id="smallone" v-if="ifSmall">
+        <el-button :class="home" @click="routerPush('/home')"><el-icon :size="29">
+            <HomeFilled />
+          </el-icon></el-button><br>
+        <el-button :class="admin" @click="routerPush('/admin')"><el-icon :size="29">
+            <Film />
+          </el-icon></el-button><br>
+        <el-button :class="analyze" @click="routerPush('/analyze')"><el-icon :size="29">
+            <DataAnalysis />
+          </el-icon></el-button><br>
+        <el-button :class="introduce" @click="routerPush('/introduce')"><el-icon :size="29">
+            <InfoFilled />
+          </el-icon></el-button><br>
+        <!-- <el-button :class="personal" @click="routerPush('/personal')" ><el-icon :size="29"><UserFilled /></el-icon></el-button><br> -->
+        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')"><el-icon :size="29">
+            <FolderAdd />
+          </el-icon></el-button>
+      </div>
 
 
 
@@ -106,8 +117,8 @@ const beBig = () => {
 
     <!-- 动态内容区域 -->
     <main class="content">
-    <router-view :key="router.fullPath" />
-  </main>
+      <router-view :key="router.fullPath" />
+    </main>
   </div>
 </template>
 
@@ -116,7 +127,8 @@ const beBig = () => {
   display: grid;
   grid-template-areas:
     "sidebar content";
-    grid-template-columns: var(--contentwidth) 1fr;  /* 正确引用 */
+  grid-template-columns: var(--contentwidth) 1fr;
+  /* 正确引用 */
   height: 100vh;
   width: 100vw;
   margin: -8px;
@@ -127,32 +139,48 @@ const beBig = () => {
 
 .sidebar {
   grid-area: sidebar;
-  background: #f4f2f3;
+  background: #fefefe;
   position: absolute;
-  width: var(--asidewidth);  /* 正确引用 */
+  width: var(--asidewidth);
+  /* 正确引用 */
   padding: 1.5rem;
   height: 100vh;
   overflow-y: auto;
   /* transition: width 0.3s; */
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 标准缓入缓出曲线 */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 标准缓入缓出曲线 */
+  box-shadow:  9px 9px 18px #e4e4e4,
+             -9px -9px 18px #e6e6e6;
 }
 
 .content {
+  align-items: center;
   grid-area: content;
   padding: 1rem;
   height: 100vh;
   overflow: auto;
+  text-align: center;
+  background-color: rgb;
 }
+.content > * {
+  display: block;
+  margin: 0 auto; /* 水平居中 */
+  text-align: left; /* 防止内部文本也居中 */
+  max-width: 100%; /* 防止溢出 */
+}
+
 #topContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative; /* 为绝对定位按钮提供参照 */
+  position: relative;
+  /* 为绝对定位按钮提供参照 */
   width: 100%;
   margin-top: 10px;
   margin-bottom: 50px;
   height: auto;
-  padding-right: 40px; /* 为按钮预留空间 */
+  padding-right: 40px;
+  /* 为按钮预留空间 */
 }
 
 #top {
@@ -174,17 +202,19 @@ const beBig = () => {
   height: 32px;
   margin: 0;
   padding: 0;
-  background-color: #f4f2f3;
+  background-color: #fefefe;
   border: none;
-  flex-shrink: 0; /* 禁止按钮缩小 */
-  color:#646ac2;
+  flex-shrink: 0;
+  /* 禁止按钮缩小 */
+  color: #646ac2;
 }
 
-.icon{
-  width:30px;
-  height:30px;
+.icon {
+  width: 30px;
+  height: 30px;
 
 }
+
 /* 
 #topContainer{
   display: inline-block;
@@ -236,51 +266,52 @@ flex: ;
   width: 95%;
   background-color: none;
   height: 35px;
-  background-color:  #f4f2f3;
+  background-color: #fefefe;
   border: none;
   font-size: 20px;
-  font-family: 'PingFang SC','Helvetica Neue', Arial, sans-serif;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
 }
+
 .butRouterDeeper {
   margin-bottom: 25px;
   width: 95%;
   background-color: none;
   height: 35px;
-  background-color:  #626AC2;
+  background-color: #626AC2;
   border: none;
   font-size: 20px;
   color: white;
-  font-family: 'PingFang SC','Helvetica Neue', Arial, sans-serif;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
 }
 
-#logo{
+#logo {
   width: 90px;
   height: 50px;
 }
 
-#bigger{
+#bigger {
   margin-top: 30px;
   margin-left: -30px;
   margin-bottom: 50px;
   border: none;
-  background-color: #f4f2f3;
+  background-color: #fefefe;
 }
 
-#smallone > button {
+#smallone>button {
   margin-bottom: 30px;
   margin-left: 10px;
   transition: all 0.3s;
-  
+
 }
 
 #smallone .el-button:hover {
   background-color: #626AC2 !important;
-  color:white;
+  color: white;
   width: 40px;
   height: 40px;
 }
 
-#smallone .butRouter{
+#smallone .butRouter {
   width: 40px;
   height: 40px;
   border-radius: 8px;
@@ -297,6 +328,4 @@ flex: ;
 #smallone .el-icon {
   color: inherit;
 }
-
-
 </style>

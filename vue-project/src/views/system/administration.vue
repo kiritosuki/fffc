@@ -647,36 +647,12 @@ const pickerOptions = {
 </script>
 
 <template>
-  <div>
+  <div id="admin">
     <!-- 控制 Drawer 的按钮 -->
     <el-button type="primary" @click="toggleDrawer"> 搜索病例 </el-button>
     <el-button type="danger" @click="DeleteAllSelected"> 一键删除 </el-button>
-    <span>当前页:</span>
-    <el-input-number
-      v-model="checkPage"
-      @change="RefreshPage"
-      :min="1"
-      :max="maxPage"
-      label="描述文字"
-    ></el-input-number>
-    <el-select
-      v-model="checkPageSize"
-      placeholder="请选择"
-      class="pageSizeSelector"
-      @change="RefreshPageSize"
-    >
-      <el-option
-        v-for="item in pageSizeList"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      >
-      </el-option>
-    </el-select>
+ 
 
-    <div>
-      <span>过滤器:</span>
-    </div>
 
     <el-table
       ref="tableRows"
@@ -690,13 +666,13 @@ const pickerOptions = {
     >
       <el-table-column type="selection" width="50"> </el-table-column>
 
-      <el-table-column prop="diagTime" label="诊断日期" width="180">
+      <el-table-column prop="diagTime" label="诊断日期" width="130">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+      <el-table-column prop="name" label="姓名" width="90"> </el-table-column>
       <el-table-column prop="gender" label="性别" width="100">
       </el-table-column>
       <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
-      <el-table-column prop="updateTime" label="最后更新日期">
+      <el-table-column prop="updateTime" label="最后更新日期" width="230">
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
@@ -713,6 +689,16 @@ const pickerOptions = {
         </template>
       </el-table-column>
     </el-table>
+    <div class="pageSelect">
+    <el-input-number
+      v-model="checkPage"
+      @change="RefreshPage"
+      :min="1"
+      :max="maxPage"
+      label="描述文字"
+    ></el-input-number>
+</div>
+
 
     <!-- Drawer 组件 -->
     <el-drawer
@@ -775,10 +761,8 @@ const pickerOptions = {
 </template>
 
 <style scoped>
-.pageSizeSelector .el-select-dropdown__item {
-  width: 100px; /* 根据需要调整宽度 */
-  height: 40px; /* 根据需要调整高度 */
-  line-height: 40px; /* 确保文本垂直居中 */
+#admin {
+  width: 95%;
 }
 
 .search-btn {
@@ -789,10 +773,9 @@ const pickerOptions = {
 .table {
   margin-top: 10px;
 }
-
-.pageSelector {
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  margin-top: 20px; /* 可根据需要调整间距 */
+.pageSelect{
+  margin-top: 10px;
+  text-align: center;
 }
+
 </style>

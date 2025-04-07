@@ -1,19 +1,26 @@
 <!-- src/views/patient/AddPatientPage.vue -->
 <template>
-  <div class="page-container">
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-position="right" class="patient-form">
-      <!-- 基础信息 -->
-      <el-row :gutter="24">
-        <el-col :span="8">
-          <el-form-item label="患者姓名" prop="name">
-            <el-input v-model="form.name" placeholder="请输入患者姓名" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
-          <el-form-item label="年龄" prop="age">
-            <el-input-number v-model="form.age" :min="1" :max="120" controls-position="right" />
-          </el-form-item>
-        </el-col>
+  <div id="body">
+    <div class="page-container">
+      <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-position="right"
+        class="patient-form">
+        <!-- 基础信息 -->
+        <div class="divider">
+          <div class="divider-text">基础信息</div>
+        </div>
+        <el-row :gutter="24">
+          <el-col :span="12">
+            <el-form-item label="患者姓名" prop="name">
+              <el-input v-model="form.name" placeholder="请输入患者姓名" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="年龄" prop="age">
+              <el-input-number v-model="form.age" :min="1" :max="120" controls-position="right" />
+            </el-form-item>
+          </el-col>
+
+        </el-row>
         <el-col :span="8">
           <el-form-item label="性别" prop="gender">
             <el-radio-group v-model="form.gender">
@@ -22,132 +29,142 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-      </el-row>
+        <el-row :gutter="20">
 
-      <el-row :gutter="20">
-        
-        <el-col :span="10">
-          <el-form-item label="手机号码" prop="phone">
-            <el-input v-model="form.phone" placeholder="请输入手机号" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="10">
-          <el-form-item label="身份证号" prop="idCard">
-            <el-input v-model="form.idCard" placeholder="请输入身份证号" clearable>
-              <template #append>
-                <el-button @click="handleQueryPatient" :loading="queryLoading" icon="Search">
-                  <template #loading>
-                    <span class="custom-loading">
-                      <el-icon class="is-loading">
-                        <Loading />
+          <el-col :span="11">
+            <el-form-item label="手机号码" prop="phone">
+              <el-input v-model="form.phone" placeholder="请输入手机号" clearable />
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="13">
+            <el-form-item label="身份证号" prop="idCard">
+              <el-input v-model="form.idCard" placeholder="请输入身份证号" clearable>
+                <template #append>
+                  <el-button @click="handleQueryPatient" :loading="queryLoading" icon="Search">
+                    <template #loading>
+                      <span class="custom-loading">
+                        <el-icon class="is-loading">
+                          <Loading />
+                        </el-icon>
+                        查询中...
+                      </span>
+                    </template>
+                    查询</el-button>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div class="divider">
+          <div class="divider-text">诊断图片</div>
+        </div>
+        <el-row :gutter="24">
+
+
+          <el-col :span="15">
+            <!-- 图片上传 -->
+            <el-form-item label="左眼照片" prop="leftImage">
+              <el-upload action="#" list-type="picture-card"
+                :class="['custom-upload', { 'hide-border': leftImageList.length > 0 }]" :auto-upload="false" :limit="1"
+                :file-list="leftImageList" :on-change="(file) => handleUpload(file, 'left')"
+                :on-remove="() => handleRemove('left')" drag :multiple="false">
+                <template #default>
+                  <div class="drag-area">
+                    <template v-if="leftImageList.length < 1">
+                      <el-icon class="drag-icon">
+                        <Plus />
                       </el-icon>
-                      查询中...
-                    </span>
+                      <div class="drag-text">点击或拖拽文件到此区域</div>
+                    </template>
+                  </div>
+                </template>
+              </el-upload>
+              <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row></el-row>
+        <el-col :span="12">
+          <el-form-item label="右眼照片" prop="rightImage">
+            <el-upload action="#" list-type="picture-card"
+              :class="['custom-upload', { 'hide-border': rightImageList.length > 0 }]" :auto-upload="false" :limit="1"
+              :file-list="rightImageList" :on-change="(file) => handleUpload(file, 'right')"
+              :on-remove="() => handleRemove('right')" drag :multiple="false">
+              <template #default>
+                <div class="drag-area">
+                  <template v-if="rightImageList.length < 1">
+                    <el-icon class="drag-icon">
+                      <Plus />
+                    </el-icon>
+                    <div class="drag-text">点击或拖拽文件到此区域</div>
+                    <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
                   </template>
-                  查询</el-button>
+                </div>
               </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
+            </el-upload>
 
-      <el-row :gutter="24">
-      
-        <el-col :span="12">
-      <!-- 图片上传 -->
-      <el-form-item label="左眼照片" prop="leftImage">
-        <el-upload action="#" list-type="picture-card"
-          :class="['custom-upload', { 'hide-border': leftImageList.length > 0 }]" :auto-upload="false" :limit="1"
-          :file-list="leftImageList" :on-change="(file) => handleUpload(file, 'left')"
-          :on-remove="() => handleRemove('left')" drag :multiple="false">
-          <template #default>
-            <div class="drag-area">
-              <template v-if="leftImageList.length < 1">
-                <el-icon class="drag-icon">
-                  <Plus />
-                </el-icon>
-                <div class="drag-text">点击或拖拽文件到此区域</div>
-              </template>
-            </div>
-          </template>
-        </el-upload>
-        <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
-      </el-form-item>
-    </el-col>
-    <el-col :span="12">
-      <el-form-item label="右眼照片" prop="rightImage">
-        <el-upload action="#" list-type="picture-card"
-          :class="['custom-upload', { 'hide-border': rightImageList.length > 0 }]" :auto-upload="false" :limit="1"
-          :file-list="rightImageList" :on-change="(file) => handleUpload(file, 'right')"
-          :on-remove="() => handleRemove('right')" drag :multiple="false">
-          <template #default>
-            <div class="drag-area">
-              <template v-if="rightImageList.length < 1">
-                <el-icon class="drag-icon">
-                  <Plus />
-                </el-icon>
-                <div class="drag-text">点击或拖拽文件到此区域</div>
-                <!-- <div class="upload-tip">支持JPG/PNG格式</div> -->
-              </template>
-            </div>
-          </template>
-        </el-upload>
-        
 
-      </el-form-item>
-    </el-col>
-    </el-row>
-      <el-row :gutter="20">
-        <el-col :span="12">
-          <el-form-item label="过敏药物" prop="allergy">
-            <el-input v-model="form.allergy" placeholder="请输入过敏药物" clearable />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item label="患者主诉" prop="complaint">
-            <el-input v-model="form.complaint" placeholder="请输入患者主诉" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="是否初诊" prop="visit">
-            <el-radio-group v-model="form.visit">
-              <el-radio :value="1">初诊</el-radio>
-              <el-radio :value="2">复诊</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="现病史" prop="presHistory">
-            <el-input v-model="form.presHistory" placeholder="请输入现病史" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="既往史" prop="pastHistory">
-            <el-input v-model="form.pastHistory" placeholder="请输入既往史" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="阳体特征" prop="posFeature">
-            <el-input v-model="form.posFeature" placeholder="请输入阳体特征" clearable />
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="阴体特征" prop="negFeature">
-            <el-input v-model="form.negFeature" placeholder="请输入阴体特征" clearable />
-          </el-form-item>
-        </el-col>
+        <div class="divider">
+          <div class="divider-text">其他信息</div>
+        </div>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="过敏药物" prop="allergy">
+              <el-input v-model="form.allergy" placeholder="请输入过敏药物" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="患者主诉" prop="complaint">
+              <el-input v-model="form.complaint" placeholder="请输入患者主诉" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="是否初诊" prop="visit">
+              <el-radio-group v-model="form.visit">
+                <el-radio :value="1">初诊</el-radio>
+                <el-radio :value="2">复诊</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="现病史" prop="presHistory">
+              <el-input v-model="form.presHistory" placeholder="请输入现病史" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="既往史" prop="pastHistory">
+              <el-input v-model="form.pastHistory" placeholder="请输入既往史" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="阳体特征" prop="posFeature">
+              <el-input v-model="form.posFeature" placeholder="请输入阳体特征" clearable />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="阴体特征" prop="negFeature">
+              <el-input v-model="form.negFeature" placeholder="请输入阴体特征" clearable />
+            </el-form-item>
+          </el-col>
 
-      </el-row>
+        </el-row>
 
-      <!-- 提交按钮 -->
-      <div class="form-actions">
-        <el-button @click="handleCancel">取消</el-button>
-        <el-button @click="handleClearForm">清除</el-button>
-        <el-button type="primary" :loading="submitting" @click="handleSubmit">
-          {{ submitting ? '提交中...' : '确认添加' }}
-        </el-button>
-      </div>
-    </el-form>
+        <!-- 提交按钮 -->
+        <div class="form-actions">
+          <el-button @click="handleCancel">取消</el-button>
+          <el-button @click="handleClearForm">清除</el-button>
+          <el-button type="primary" :loading="submitting" @click="handleSubmit">
+            {{ submitting ? '提交中...' : '确认添加' }}
+          </el-button>
+        </div>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -466,11 +483,50 @@ const handleCancel = () => {
 </script>
 
 <style scoped>
+.divider {
+  text-align: left;
+  display: inline-block;
+  width: 95%;
+  height: 50px;
+  border-radius: 7px;
+  background-color: rgb(238, 237, 245);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.divider::before {
+  position: absolute;
+  display: block;
+  content: "";
+  background-color: rgb(96, 71, 169);
+  width: 6px;
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+}
+
+.divider-text {
+  margin-top: 13px;
+  margin-left: 23px;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: rgb(96, 71, 169);
+  font-size: 20px;
+}
+
+#body {
+  padding-top: 15px;
+  text-align: center;
+}
+
 .page-container {
+  width: 80%;
+  height: auto;
+  display: inline-block;
+  text-align: center;
   padding: 20px;
   background: #fefefe;
-  min-height: 100vh;
   border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
 }
 
 .patient-form {
@@ -612,6 +668,7 @@ const handleCancel = () => {
 
 /* 移除响应式调整，保持固定大小 */
 @media (max-width: 768px) {
+
   :deep(.custom-upload .el-upload--picture-card),
   :deep(.custom-upload .el-upload-list--picture-card .el-upload-list__item) {
     width: 300px;
@@ -620,7 +677,7 @@ const handleCancel = () => {
 }
 
 
-.el-input-group__append { 
+.el-input-group__append {
   padding: 0 12px;
 }
 
