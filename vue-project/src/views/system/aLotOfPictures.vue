@@ -10,6 +10,8 @@
   v-model:file-list="fileList"
   :on-change="handleChange"
   :on-remove="handleRemove"
+  :drag="true"
+  class="upload-drag-area"
 >
   <el-icon><Plus /></el-icon>
   <template #tip>
@@ -91,46 +93,11 @@ const handleRemove = () => {
   // 删除逻辑由el-upload自动处理
 }
 
-// // 上传处理
-// const handleUpload = async () => {
-//   if (fileList.value.length === 0) {
-//     ElMessage.warning('请先添加图片')
-//     return
-//   }
-
-//   uploading.value = true
-//   try {
-//     const results = []
-    
-//     // 并行上传所有图片
-//     await Promise.all(fileList.value.map(async (file, index) => {
-//       const formData = new FormData()
-//       formData.append('file', file.raw)
-      
-//       const res = await api.uploadLotImage(formData)
-      
-//       if (res.data.code === 1) {
-//         results.push({
-//           ...res.data.data,
-//           index: index + 1
-//         })
-//       }
-//     }))
-    
-//     resultData.value = results
-//     ElMessage.success(`成功上传${results.length}张图片`)
-//   } catch (error) {
-//     ElMessage.error(error.data.msg || '上传失败')
-//   } finally {
-//     uploading.value = false
-//   }
-// }
-
 const handleUpload = async () => {
   uploading.value = true;
   try {
     const results = [];
-    for (const file of fileList.value) {
+    for (const [index, file] of fileList.value.entries()) {  // 获取索引
       const formData = new FormData();
       if (!file.raw || !(file.raw instanceof File)) {
         throw new Error('无效的文件对象');
@@ -141,7 +108,10 @@ const handleUpload = async () => {
       console.log('API 返回:', res);  // 打印 API 返回的完整数据，查看结构
 
       if (res.data.code === 1) {
-        results.push({ ...res.data.data });
+        results.push({
+          ...res.data.data,
+          index: index + 1  // 给每个结果加上索引，序号从1开始
+        });
       } else {
         // 如果返回的 code 不等于 1，说明上传失败，显示具体错误信息
         ElMessage.error(res.data.msg || '上传失败');
@@ -158,7 +128,11 @@ const handleUpload = async () => {
 }
 
 
+
+
+
 // 清除所有
+
 const handleClear = () => {
   fileList.value = []
   resultData.value = []
@@ -166,6 +140,45 @@ const handleClear = () => {
 </script>
 
 <style scoped>
+/* .upload-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.action-buttons {
+  margin: 20px 0;
+  display: flex;
+  gap: 15px;
+}
+
+.upload-tip {
+  font-size: 12px;
+  color: var(--el-text-color-secondary);
+  margin-top: 8px;
+}
+.upload-drag-area {
+  border: 2px dashed #409EFF;
+  padding: 40px;
+  text-align: center;
+  color: #409EFF;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+:deep(.el-upload-dragger) {
+  border: 2px dashed #409EFF !important;
+}
+
+.upload-drag-area:hover {
+  background-color: #f5f7fa;
+}
+
+:deep(.el-upload-list__item) {
+  transition: all 0.3s;
+} */
+
 .upload-container {
   padding: 20px;
   max-width: 1200px;
@@ -184,7 +197,38 @@ const handleClear = () => {
   margin-top: 8px;
 }
 
-:deep(.el-upload-list__item) {
-  transition: all 0.3s;
+/* 拖拽区域样式 */
+.upload-drag-area {
+  border: 2px dashed #409EFF;
+  padding: 40px;
+  text-align: center;
+  color: #409EFF;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.upload-drag-area:hover {
+  background-color: #f5f7fa;
+}
+
+/* 重要：覆盖 Element Plus 默认的虚线框样式 */
+:deep(.el-upload-dragger) {
+  border: 2px dashed #409EFF !important;
+}
+
+:deep(.el-upload-dragger.is-dragover) {
+  background-color: #e6f7ff !important;
+}
+
+/* 去掉悬浮时的虚线框 */
+:deep(.el-upload-dragger .el-upload-dragger__text) {
+  display: none !important;
+}
+
+/* 覆盖掉拖拽时其他默认样式 */
+:deep(.el-upload-dragger.is-dragover) {
+  border: 2px dashed #409EFF !important;
+  background-color: #e6f7ff !important;
 }
 </style>
