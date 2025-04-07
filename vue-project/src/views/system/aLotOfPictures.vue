@@ -91,40 +91,72 @@ const handleRemove = () => {
   // 删除逻辑由el-upload自动处理
 }
 
-// 上传处理
-const handleUpload = async () => {
-  if (fileList.value.length === 0) {
-    ElMessage.warning('请先添加图片')
-    return
-  }
+// // 上传处理
+// const handleUpload = async () => {
+//   if (fileList.value.length === 0) {
+//     ElMessage.warning('请先添加图片')
+//     return
+//   }
 
-  uploading.value = true
+//   uploading.value = true
+//   try {
+//     const results = []
+    
+//     // 并行上传所有图片
+//     await Promise.all(fileList.value.map(async (file, index) => {
+//       const formData = new FormData()
+//       formData.append('file', file.raw)
+      
+//       const res = await api.uploadLotImage(formData)
+      
+//       if (res.data.code === 1) {
+//         results.push({
+//           ...res.data.data,
+//           index: index + 1
+//         })
+//       }
+//     }))
+    
+//     resultData.value = results
+//     ElMessage.success(`成功上传${results.length}张图片`)
+//   } catch (error) {
+//     ElMessage.error(error.data.msg || '上传失败')
+//   } finally {
+//     uploading.value = false
+//   }
+// }
+
+const handleUpload = async () => {
+  uploading.value = true;
   try {
-    const results = []
-    
-    // 并行上传所有图片
-    await Promise.all(fileList.value.map(async (file, index) => {
-      const formData = new FormData()
-      formData.append('file', file.raw)
-      
-      const res = await api.uploadLotImage(formData)
-      
-      if (res.data.code === 1) {
-        results.push({
-          ...res.data.data,
-          index: index + 1
-        })
+    const results = [];
+    for (const file of fileList.value) {
+      const formData = new FormData();
+      if (!file.raw || !(file.raw instanceof File)) {
+        throw new Error('无效的文件对象');
       }
-    }))
-    
-    resultData.value = results
-    ElMessage.success(`成功上传${results.length}张图片`)
+      formData.append('file', file.raw); // 确保键名与后端一致
+      const res = await api.uploadLotImage(formData);
+      
+      console.log('API 返回:', res);  // 打印 API 返回的完整数据，查看结构
+
+      if (res.data.code === 1) {
+        results.push({ ...res.data.data });
+      } else {
+        // 如果返回的 code 不等于 1，说明上传失败，显示具体错误信息
+        ElMessage.error(res.data.msg || '上传失败');
+      }
+    }
+    resultData.value = results;
   } catch (error) {
-    ElMessage.error(error.data.msg || '上传失败')
+    // 打印错误信息
+    console.error('上传出错:', error);
+    ElMessage.error(error.data || '上传失败');
   } finally {
-    uploading.value = false
+    uploading.value = false;
   }
 }
+
 
 // 清除所有
 const handleClear = () => {
