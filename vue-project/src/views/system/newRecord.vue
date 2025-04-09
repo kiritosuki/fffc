@@ -1,6 +1,6 @@
 <!-- src/views/NewRecord.vue -->
 <template>
-  <div class="page-container">
+  <div class="page-container"  :class="{ 'page-visible': pageVisible }">
     <div class="record-container">
       <!-- 加载状态 -->
       <el-skeleton v-if="loading" :rows="6" animated />
@@ -255,13 +255,6 @@
 </el-row>
 
 
-
-
-     
-
-      
-    
-  
         <div class="form-actions">
           <el-button @click="handleCancel">返回</el-button>
           <!-- <el-button 
@@ -290,6 +283,17 @@
   import { reactive } from 'vue'
   import { debounce } from 'lodash-es'
   
+
+  const pageVisible = ref(false)
+
+onMounted(() => {
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
+})
+
+
   const route = useRoute()
   const router = useRouter()
   
@@ -447,7 +451,6 @@ const diseaseMap = computed(() => {
   // 修改后的fetchData函数
   const fetchData = async (force = false) => {
   try {
-    loading.value = true
     const res = await api.getMedicalRecord(route.query.id)
     
     
@@ -484,10 +487,7 @@ medicalRecord.value = processedData
 } catch (error) {
 ElMessage.error('数据加载失败')
 console.error('加载错误详情:', error.response?.data || error.msg)
-} finally {
-loading.value = false
 }
-
 }
 // 修改onMounted
 onMounted(() => {
@@ -588,6 +588,16 @@ const handleHistory = () => {
   </script>
   
   <style scoped>
+  .page-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
   .page-container {
   width: 85%;
   height: auto;
