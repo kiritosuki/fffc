@@ -6,6 +6,9 @@ import router from '../../router';
 import { useRoute } from 'vue-router';
 
 
+const pageVisible = ref(false)
+
+
 // 接收数据
 const route = useRoute()
 const id = route.query.id;
@@ -60,6 +63,10 @@ onMounted(async () => {
   } finally {
     loading.value.close();
   }
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
 })
 
 
@@ -96,7 +103,7 @@ const back = async () => {
 
 
 <template>
-  <div class="page-container">
+  <div class="page-container" :class="{ 'page-visible': pageVisible }">
     <div class="history-container">
     <el-collapse v-model="historyListNumber" @change="selectedListChange">
       <!-- <el-collapse-item title="编号             查询时间" :name="A"></el-collapse-item> -->
@@ -118,7 +125,16 @@ const back = async () => {
 </template>
 
 <style scoped>
+.page-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
 
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .page-container {
   text-align: center;
   position: relative;

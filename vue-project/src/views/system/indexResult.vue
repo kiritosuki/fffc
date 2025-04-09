@@ -3,10 +3,13 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router';
 import router from '../../router';
 import { ElImage, ElLoading, ElMessage } from 'element-plus'
+import 'element-plus/dist/index.css' // 确保导入样式
 import api from '../../api/index'
 import { nextTick } from 'vue';
 // 删除不必要的 `await nextTick();`
 
+
+const pageVisible = ref(false)
 
 
 // 接收数据
@@ -172,12 +175,15 @@ onMounted(async () => {
       console.log("当前 ID:", id)
       leftIllnessListInter.value = response.data.data?.leftStatusIllList
       rightIllnessListInter.value = response.data.data?.rightStatusIllList
+      leftDiag.value = response.data.data?.leftDiag
+      rightDiag.value = response.data.data?.rightDiag
+      resInfo.value = response.data.data?.resInfo
 /*       leftIllnessListInter.value = (response.data.data?.leftStatusIllList || []).map(item => String(item));
       rightIllnessListInter.value = (response.data.data?.rightStatusIllList || []).map(item => String(item)); */
       console.log("leftIllnessListInter:", leftIllnessListInter.value)
       console.log("rightIllnessListInter:", rightIllnessListInter.value)
       console.log("当前 ID:", id)
-      await Vue.nextTick();
+      await nextTick(); 
       // if (leftIllnessListInter.value.includes('8')){
       //   leftinput.value = true
       // } else {
@@ -203,6 +209,13 @@ onMounted(async () => {
   } finally {
     loading.value.close();
   }
+
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
+
+
 })
 // 最后提交按钮点击事件
 const handleFinalResult = async () => {
@@ -438,112 +451,172 @@ watch(rightIllnessListInter, (newVal) => {
 
 
 <template>
-  <div>
+  <div class="body">
+  <div class="page-container" :class="{ 'page-visible': pageVisible }">
+    <div class="hang">
   <div class="indexResult">
-    <div class="checkbox">
-      <p>左眼：</p>
+      <div class="image-container">
       <el-image :src="leftImg" fit="cover" :preview-src-list="leftImgList" class="Elimage">
-        <div class="image-slot"><i class="el-icon-picture-outline"></i></div>
       </el-image>
+      <h3>左眼诊断状况</h3>
+       <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
+      </div>
+      <div class="checkbox">
       <el-checkbox-group v-model="leftIllnessListInter" :min="1">
     <el-checkbox :value="1" @change="leftIfNomal">正常</el-checkbox><br>
     <el-checkbox :value="2" @change="leftNoNomal">糖尿病</el-checkbox><br>
     <el-checkbox :value="3" @change="leftNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox :value="4" @change="leftNoNomal">白内障</el-checkbox>
-    <el-checkbox :value="5" @change="leftNoNomal">AMD</el-checkbox>
-    <el-checkbox :value="6" @change="leftNoNomal">高血压</el-checkbox>
-    <el-checkbox :value="7" @change="leftNoNomal">近视</el-checkbox>
-    <el-checkbox :value="8" @change="leftNoNomal">其他异常</el-checkbox>
+    <el-checkbox :value="4" @change="leftNoNomal">白内障</el-checkbox><br>
+    <el-checkbox :value="5" @change="leftNoNomal">AMD</el-checkbox><br>
+    <el-checkbox :value="6" @change="leftNoNomal">高血压</el-checkbox><br>
+    <el-checkbox :value="7" @change="leftNoNomal">近视</el-checkbox><br>
+    <el-checkbox :value="8" @change="leftNoNomal">其他异常</el-checkbox><br>
   </el-checkbox-group>
-      <div id="lefInput">
-        <el-input type="textarea" :rows="3" placeholder="请输入左眼的症状" v-model="leftDiag" class="input"></el-input>
+      <!-- <div id="lefInput">
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="leftOtherIllness" v-show="leftinput">
         </el-input>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="indexResult">
-    <div class="checkbox">
-      <p>右眼：</p>
+      <div class="image-container">
       <el-image class="Elimage" :src="rightImg" fit="cover" :preview-src-list="rightImgList">
-        <div class="image-slot"></div>
       </el-image>
+      <h3>右眼诊断状况</h3>
+        <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
+      </div>
+      <div class="checkbox">
       <el-checkbox-group v-model="rightIllnessListInter" :min="1">
     <el-checkbox :value="1" @change="rightIfNomal">正常</el-checkbox><br>
     <el-checkbox :value="2" @change="rightNoNomal">糖尿病</el-checkbox><br>
     <el-checkbox :value="3" @change="rightNoNomal">青光眼</el-checkbox><br>
-    <el-checkbox :value="4" @change="rightNoNomal">白内障</el-checkbox>
-    <el-checkbox :value="5" @change="rightNoNomal">AMD</el-checkbox>
-    <el-checkbox :value="6" @change="rightNoNomal">高血压</el-checkbox>
-    <el-checkbox :value="7" @change="rightNoNomal">近视</el-checkbox>
-    <el-checkbox :value="8" @change="rightNoNomal">其他异常</el-checkbox>
+    <el-checkbox :value="4" @change="rightNoNomal">白内障</el-checkbox><br>
+    <el-checkbox :value="5" @change="rightNoNomal">AMD</el-checkbox><br>
+    <el-checkbox :value="6" @change="rightNoNomal">高血压</el-checkbox><br>
+    <el-checkbox :value="7" @change="rightNoNomal">近视</el-checkbox><br>
+    <el-checkbox :value="8" @change="rightNoNomal">其他异常</el-checkbox><br>
   </el-checkbox-group>
-      <div id="rigInput">
-        <el-input type="textarea" :rows="3" placeholder="请输入右眼的症状" v-model="rightDiag" class="input"></el-input>
+      <!-- <div id="rigInput">
         <el-input type="textarea" :rows="3" placeholder="请输入其他异常病症" v-model="rightOtherIllness" v-show="rightinput">
         </el-input>
-      </div>
+      </div> -->
     </div>
   </div>
-
-  <div>
-    <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="resInfo" class="result">
+</div>
+  <div class="result">
+    <h2>诊断结果</h2>
+    <el-input type="textarea" :rows="5" placeholder="本内容由大语言模型生成，仅作参考" v-model="resInfo" >
     </el-input>
-  </div>
-
-  <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit">
+      <el-button type="primary" :loading="submitting" @click="handleFinalResult" id="submit">
     {{ submitting ? '提交中...' : '提交病例' }}
   </el-button>
+  </div>
+
+
+</div>
 </div>
 </template>
 
 <style scoped>
-.indexResult {
-  position: relative;
+.page-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.body {
+  width: 80%;
+  height: auto;
   display: inline-block;
-  width: 30vw;
-  margin: 3vw;
-  padding: 1vw 1vw 3vw 3vw;
-  border: 1px solid #ccc;
+  text-align: center;
+  padding: 20px;
+  padding-top: 35px;
+  background: rgb(244, 244, 244);
+}
+
+.page-container {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
+}
+
+.hang {
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  gap: 15%;
+  
+}
+
+.indexResult {
+  text-align: left;
+  display: flex;
+  gap: 20px;
+  margin: 0px;
+  padding: 0px;
+
+  margin-bottom: 30px;
+  /* border: 1px solid #ccc; */
   border-radius: 10px;
 }
 
+.image-container {
+  display: inline-block;
+  width: 16vw;
+  margin: 0;
+  padding: 0;
+}
+
 .Elimage {
-  width: 12vw;
-  height: 12vw;
-}
-
-
-
-
-.checkbox {
-  display: inline-block;
-  width: 50%;
-}
-
-#lefInput,
-#rigInput {
-  display: inline-block;
-  width: 15vw;
-  position: absolute;
-  top: 30%;
-  left: 50%;
+  width: 16vw;
+  height: 16vw;
 }
 
 .input {
-  margin-bottom: 12vw;
+  width: 16vw;
+  margin-top: 0px;
 }
 
-.result {
+.checkbox {
+  margin-left: 30px;
+  margin-top: 30px;
   display: inline-block;
-  margin-left: 3vw;
-  width: 64vw;
+  width: 30%;
+}
+
+
+h2 {
+  margin-left: 5px;
+  text-align: left;
+}
+
+
+
+
+
+.result {
+  text-align: right;
+  display: inline-block;
+  width: 90%;
 }
 
 #submit {
   margin-top: 1vw;
-  margin-left: 59vw;
+ text-align: right;
 }
 </style>
 
