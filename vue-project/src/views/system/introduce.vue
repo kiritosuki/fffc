@@ -1,6 +1,18 @@
 <template>
-        
-            <div>
+        <div class="container">
+          <div class="header">
+            <div class="a">
+        <div class="b"></div>
+        <div class="c"></div>
+        <div class="d"></div>
+        <div class="e"></div>
+        <p class="f">AURIS GLOW</p>
+    </div>
+          </div>
+
+  
+
+            <div class="text">
             <div id="main">
                 <div id="click-section">
                 <div id="drawerboxes">
@@ -15,6 +27,12 @@
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 4 }">
                     <button class="drawer-btn" @click="slideTo(4)">Spirited Away<span class="drawer-head">4</span></button>
+                    </div>
+                    <div class="drawerbox" :class="{ active: chosenSlideNumber === 5 }">
+                    <button class="drawer-btn" @click="slideTo(5)">Spirited Away<span class="drawer-head">5</span></button>
+                    </div>
+                    <div class="drawerbox" :class="{ active: chosenSlideNumber === 6 }">
+                    <button class="drawer-btn" @click="slideTo(6)">Spirited Away<span class="drawer-head">6</span></button>
                     </div>
                 </div>
                 </div>
@@ -55,10 +73,30 @@
                         <img src="./img/04.gif" alt="">
                     </div>
                     </div>
+
+                    <div id="card5" class="card" :style="{ transform: `translateY(${offset}%)` }">
+                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-title">Spirited Away</div>
+                    <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
+                    <div class="card-img">
+                        <img src="./img/04.gif" alt="">
+                    </div>
+                    </div>
+
+                    <div id="card6" class="card" :style="{ transform: `translateY(${offset}%)` }">
+                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-title">Spirited Away</div>
+                    <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
+                    <div class="card-img">
+                        <img src="./img/04.gif" alt="">
+                    </div>
+                    </div>
                 </div>
                 </div>
             </div>
             </div>
+
+          </div>
   </template>
   
   <script setup>
@@ -90,6 +128,34 @@
       bar.style.transform = `translateY(${barOffset}%)`;
     }
   };
+
+  onMounted(() => {
+  const background = document.querySelector(".background");
+
+  document.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    if (scrollY !== 0) {
+      background.style.backgroundPosition = `calc(50% + ${scrollY}px) calc(50% + ${scrollY}px)`;
+    } else {
+      background.style.backgroundPosition = '';
+    }
+  });
+});
+
+
+
+  // const background = document.querySelector(".background")
+
+  //       document.addEventListener('scroll', () => {
+  //           const scrollY = window.scrollY
+
+  //           if (scrollY !== 0) {
+  //               background.style.backgroundPosition = `calc(50% + ${scrollY}px) calc(50% + ${scrollY}px)`
+  //           }else{
+  //               background.style.backgroundPosition = ''
+  //           }
+  //       })
   </script>
   
 
@@ -106,8 +172,22 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      
+      overflow-x: hidden;
+      height: 100vh;
+      background: linear-gradient(to right bottom,
+          rgba(255, 255, 255,.6),
+          rgba(255, 255, 255,.3),
+          rgba(255, 255, 255,.2)),;
       background-size: cover;
+    }
+    
+    .header{
+      
+            margin: 0;
+            padding: 0;
+            height: 200vh;
+            overflow-x: hidden;
+         
     }
 
     #main {
@@ -270,4 +350,107 @@
     .card-img img {
       width: 100%;
     }
+
+    .header{
+            display: flex;
+            justify-content: center;
+            background-image: url("../../assets/image/介绍页背景.jpg");
+            height: 100vh;
+            width: 80vw;
+        }
+        .a{
+            position: relative;
+            top: 100px;
+            width: 1000px;
+            height: 600px;
+            background-image: url("163727-15190294471b41.jpg");
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .b,
+        .c,
+        .d,
+        .e{
+            position: absolute;
+            width: 1000px;
+            height: 600px;
+            /* 设置阴影 */
+            filter: drop-shadow(4px 4px 12px rgba(0,0,0,.5));
+            background-size: cover;
+            opacity: .7;
+            transition: .5s;
+        }
+        .b::after,
+        .c::after,
+        .d::after,
+        .e::after{
+            content: "";
+            position: absolute;
+            width: 1000px;
+            height: 600px;
+            background-image: url("../../assets/image/介绍页背景.jpg");
+        }
+        .b{
+            left: -400px;
+            transform: rotateZ(100deg);
+            overflow: hidden;
+        }
+        .b::after{
+            transform: rotateZ(-100deg);
+        }
+
+        .c{
+            left: -400px;
+            transform: rotateZ(-100deg);
+            overflow: hidden;
+        }
+        .c::after{
+            transform: rotateZ(100deg);
+        }
+
+        .d{
+            right: -400px;
+            transform: rotateZ(105deg);
+            overflow: hidden;
+        }
+        .d::after{
+            transform: rotateZ(-105deg);
+        }
+
+        .e{
+            right: -400px;
+            transform: rotateZ(-100deg);
+            overflow: hidden;
+        }
+        .e::after{
+            transform: rotateZ(100deg);
+        }
+        .f{
+            opacity: 0;
+            font: 900 50px '';
+            /* 设置字体间距 */
+            letter-spacing: 10px;
+            color: rgb(60,60,70);
+            transition: .5s;
+        }
+        /* 设置动画 */
+        .a:hover .b{
+            left: -550px;
+        }
+        .a:hover .c{
+            left: -600px;
+        }
+        .a:hover .d{
+            right: -550px;
+        }
+        .a:hover .e{
+            right: -610px;
+        }
+        .a:hover .f{
+            opacity: 1;
+        }
+   
 </style>
