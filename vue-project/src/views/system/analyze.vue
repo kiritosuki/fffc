@@ -1,6 +1,9 @@
 <script setup>
 import * as echarts from "echarts";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+// 创建观察器引用
+const hangElements = ref([]);
+
 onMounted(() => {
   var stringChart1 = echarts.init(document.getElementById("stringChart1"));
   // 原始数据
@@ -22,19 +25,22 @@ onMounted(() => {
   var stringOption1 = {
     title: {
       text: '患者年龄分布',
-      left: 'center'
+      left: 'center',
     },
     tooltip: {
       trigger: 'axis'
     },
     legend: {
-      data: ['0-20', '21-40', '41-60', '61-80', '80+']
+      data: ['0-20', '21-40', '41-60', '61-80', '80+'],
+      top: '10%' 
+
     },
     grid: {
       left: '3%',
       right: '4%',
       bottom: '3%',
-      containLabel: true
+      containLabel: true,
+      top: '20%' // 为标题留出空间
     },
     toolbox: {
       feature: {
@@ -118,6 +124,7 @@ onMounted(() => {
   var binOption1 = {
     title: {
       text: "患者性别分布",
+      left: 'center'
     },
     tooltip: {},
     series: [
@@ -248,7 +255,9 @@ onMounted(() => {
       return [item[1], item[0], item[2] || '-'];
     });
   var hitOption1 = {
-    title: { text: "各年龄组疾病分布" },
+    title: { text: "各年龄组疾病分布" ,
+    left: 'center',
+    },
     tooltip: {
       position: "top",
     },
@@ -321,7 +330,9 @@ onMounted(() => {
   });
 
   var hitOption2 = {
-    title: { text: "疾病相关性热图" },
+    title: { text: "疾病相关性热图" ,
+      left: 'center',
+    },
     tooltip: {
       position: "top",
     },
@@ -374,6 +385,26 @@ onMounted(() => {
   };
 
   hitChart2.setOption(hitOption2);
+    // 添加滚动观察器
+    const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        } else {
+          entry.target.classList.remove("show");
+        }
+      });
+    },
+    {
+      threshold: 0.1, // 当元素10%进入视口时触发
+    }
+  );
+
+  // 观察所有hang元素
+  document.querySelectorAll(".hang").forEach((el) => {
+    observer.observe(el);
+  });
 });
 </script>
 
@@ -425,7 +456,7 @@ onMounted(() => {
   background: #ffffff;
   box-shadow: 9px 9px 25px #cccccc,
     -9px -9px 25px #f4f4f4;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .char {
@@ -450,4 +481,23 @@ onMounted(() => {
   text-indent: 2em; /* 首行缩进2个字符（em单位会根据字体大小自动调整） */
   line-height: 1.6; /* 增加行高提升可读性 */
 }
+/* 原有样式保持不变，添加以下动画样式 */
+.hang {
+  /* 原有样式... */
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.hang.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 为不同hang添加不同的动画延迟，创建交错效果 */
+.hang:nth-child(1) { transition-delay: 0.1s; }
+.hang:nth-child(2) { transition-delay: 0.2s; }
+.hang:nth-child(3) { transition-delay: 0.3s; }
+.hang:nth-child(4) { transition-delay: 0.4s; }
+.hang:nth-child(5) { transition-delay: 0.5s; }
 </style>
