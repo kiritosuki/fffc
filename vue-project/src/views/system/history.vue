@@ -15,8 +15,8 @@ const historyListNumber = ref([])
 
 // 直接接收的数据
 const historyListRecieve = ref([
-  { id: 1, name: '1' , leftStatusStrList: ["糖尿病", "高血压"], rightStatusStrList: ["心脏病", "其他异常"]},
-  { id: 2, name: '2' , leftStatusStrList: ["糖尿病"], rightStatusStrList: ["心脏病", "高血压", "其他异常"]},
+  { id: 1, name: '1', leftStatusStrList: ["糖尿病", "高血压"], rightStatusStrList: ["心脏病", "其他异常"] },
+  { id: 2, name: '2', leftStatusStrList: ["糖尿病"], rightStatusStrList: ["心脏病", "高血压", "其他异常"] },
 ])
 
 // 处理后的数据
@@ -41,36 +41,113 @@ onMounted(async () => {
   });
   try {
     console.log("你好")
-  await CheckHistory(id).then((res) => {
-    console.log("你好1")
-    if (res.data?.code == 1) {
-      historyListRecieve.value = res.data.data;
-      historyListFixed.value = historyListRecieve.value
-      console.log(historyListRecieve.value)
-      historyListFixed.value.forEach(item => {
-      item.leftStatusStrList = item.leftStatusStrList.filter(ill => ill !== "其他异常");
-      item.rightStatusStrList = item.rightStatusStrList.filter(ill => ill !== "其他异常");
-    });
-    } else {
-      ElMessage.error(res.data?.msg);
-    }
-}) 
-} catch (error) {
-  ElMessage.error("加载失败,请稍后再试");
-} finally {
-  loading.value.close();
-}
+    await CheckHistory(id).then((res) => {
+      console.log("你好1")
+      if (res.data?.code == 1) {
+        historyListRecieve.value = res.data.data;
+        historyListFixed.value = historyListRecieve.value
+        console.log(historyListRecieve.value)
+        historyListFixed.value.forEach(item => {
+          item.leftStatusStrList = item.leftStatusStrList.filter(ill => ill !== "其他异常");
+          item.rightStatusStrList = item.rightStatusStrList.filter(ill => ill !== "其他异常");
+        });
+      } else {
+        ElMessage.error(res.data?.msg);
+      }
+    })
+  } catch (error) {
+    ElMessage.error("加载失败,请稍后再试");
+  } finally {
+    loading.value.close();
+  }
 })
+
+
+
+const back = async () => {
+  loading.value = ElLoading.service({
+    text: "加载中...",
+    background: "rgba(0, 0, 0, 0.7)", // 背景颜色
+    spinner: "el-icon-loading", // 自定义加载图标
+    target: document.body, // 指定加载动画覆盖的区域
+  });
+  console.log("跳转参数:", {
+    path: "/patients/info",
+    query: { id: id },
+  });
+  // 跳转组件
+  router
+    .push({
+      path: "/patients/info",
+      query: { id: id },
+    })
+    .then(() => {
+      console.log("跳转成功");
+    })
+    .catch((err) => {
+      console.error("跳转失败:", err);
+    });
+  loading.value.close()
+};
+
+
+
 </script>
 
 
 <template>
-<el-collapse v-model="historyListNumber" @change="selectedListChange">
-  <!-- <el-collapse-item title="编号             查询时间" :name="A"></el-collapse-item> -->
-  <el-collapse-item :title="`第${index+1}次    诊断时间：${item.diagTime}`" :name="index" v-for="(item, index) in historyListFixed" :key="item.id">
-    <div>左眼诊断结果：<span v-for="thing in item.leftStatusStrList">{{ thing }}  </span><span>{{ item.leftIllInfo }}</span></div>
-    <div>右眼诊断结果：<span v-for="thing in item.rightStatusStrList">{{ thing }}  </span><span>{{ item.rightIllInfo }}</span></div>
-    <div>诊断结果：{{ item.resInfo }}</div>
-  </el-collapse-item>
-</el-collapse>
+  <div class="page-container">
+    <div class="history-container">
+    <el-collapse v-model="historyListNumber" @change="selectedListChange">
+      <!-- <el-collapse-item title="编号             查询时间" :name="A"></el-collapse-item> -->
+      <el-collapse-item :title="`第${index + 1}次    诊断时间：${item.diagTime}`" :name="index"
+        v-for="(item, index) in historyListFixed" :key="item.id">
+        <div>左眼诊断结果：<span v-for="thing in item.leftStatusStrList">{{ thing + " " }} </span><span>{{ item.leftIllInfo
+            }}</span></div>
+        <div>右眼诊断结果：<span v-for="thing in item.rightStatusStrList">{{ thing + " " }} </span><span>{{ item.rightIllInfo
+            }}</span></div>
+        <div>诊断结果：{{ item.resInfo }}</div>
+      </el-collapse-item>
+    </el-collapse>
+  </div>
+     <div class="option">
+    <el-button id="back" @click="back">返回</el-button>
+  </div>
+  </div>
+ 
 </template>
+
+<style scoped>
+
+.page-container {
+  text-align: center;
+  position: relative;
+  margin-top: 20px;
+  width: 80%;
+  height: 85vh;
+  display: inline-block;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
+}
+
+.history-container {
+  margin: 0px auto;
+  width: 95%;
+  height: 92%;
+  text-align: left;
+  overflow-y: auto;
+}
+
+.option {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+}
+
+</style>

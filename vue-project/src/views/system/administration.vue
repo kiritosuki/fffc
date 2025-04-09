@@ -664,12 +664,12 @@ const pickerOptions = {
         <el-table-column prop="diagTime" label="诊断日期" width="130">
         </el-table-column>
         <el-table-column prop="name" label="姓名" width="90"> </el-table-column>
-        <el-table-column prop="gender" label="性别" width="100">
+        <el-table-column prop="gender" label="性别" width="90">
         </el-table-column>
-        <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
-        <el-table-column prop="updateTime" label="最后更新日期" width="230">
+        <el-table-column prop="doctorName" label="诊断医师" width="90"> </el-table-column>
+        <el-table-column prop="updateTime" label="最后更新日期" width="">
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="">
           <template #default="scope">
             <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
               详细
