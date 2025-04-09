@@ -154,13 +154,11 @@ const beBig = () => {
 }
 
 .content {
-  align-items: center;
   grid-area: content;
   padding: 1rem;
   height: 100vh;
   overflow: auto;
   text-align: center;
-  background-color: rgb;
 }
 .content > * {
   display: block;
