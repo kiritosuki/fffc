@@ -86,23 +86,23 @@ const beBig = () => {
         <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
         <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
         <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">大量图片上传</el-button>
-      
-        <div class="per">
-      <div class="personal">
-        <img id="personal" src="../../assets/image/personal-center.png" class="img">
-        <div id="name">
-          
-          <span id="name" class="name">
-            zhangsan
-          </span>
-        </div>
-        <div id="email" class="email">
-          1234567890@qq.com
-        </div>
-      </div>
 
-    </div>
-      
+        <div class="per">
+          <div class="personal">
+            <img id="personal" src="../../assets/image/personal-center.png" class="img">
+            <div id="name">
+
+              <span id="name" class="name">
+                zhangsan
+              </span>
+            </div>
+            <div id="email" class="email">
+              1234567890@qq.com
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
       <div>
@@ -127,13 +127,13 @@ const beBig = () => {
             <FolderAdd />
           </el-icon></el-button>
 
-          <div class="per">
-      <div class="personal">
-        <img id="personal" src="../../assets/image/personal-center.png" class="img">
-       
-      </div>
+        <div class="per">
+          <div class="personal">
+            <img id="personal" src="../../assets/image/personal-center.png" class="img">
 
-    </div>
+          </div>
+
+        </div>
 
       </div>
 
@@ -173,24 +173,26 @@ const beBig = () => {
   /* transition: width 0.3s; */
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   /* 标准缓入缓出曲线 */
-  box-shadow:  9px 9px 18px #e4e4e4,
-             -9px -9px 18px #e6e6e6;
+  box-shadow: 9px 9px 18px #e4e4e4,
+    -9px -9px 18px #e6e6e6;
 }
 
 .content {
-  align-items: center;
   grid-area: content;
   padding: 1rem;
   height: 100vh;
   overflow: auto;
   text-align: center;
-  background-color: rgb;
 }
-.content > * {
+
+.content>* {
   display: block;
-  margin: 0 auto; /* 水平居中 */
-  text-align: left; /* 防止内部文本也居中 */
-  max-width: 100%; /* 防止溢出 */
+  margin: 0 auto;
+  /* 水平居中 */
+  text-align: left;
+  /* 防止内部文本也居中 */
+  max-width: 100%;
+  /* 防止溢出 */
 }
 
 #topContainer {
@@ -240,7 +242,7 @@ const beBig = () => {
 }
 
 
-.per{
+.per {
   position: absolute;
   bottom: 30px;
   left: 50%;
@@ -251,33 +253,37 @@ const beBig = () => {
   align-items: center;
   text-align: center;
   display: flex;
-flex-direction: row;   /*设置主轴方向是水平方向*/
-align-items: center;
-  bottom: 50px; 
+  flex-direction: row;
+  /*设置主轴方向是水平方向*/
+  align-items: center;
+  bottom: 50px;
 }
 
-.img{
+.img {
   width: 45px;
   height: 45px;
   border-radius: 50%;
   margin-left: -30px;
   position: absolute;
 }
-.name{
+
+.name {
   font-size: 16px;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
-  color: black; 
+  color: black;
   margin-top: 35px;
   margin-left: -40px;
   position: absolute;
 }
-.email{
+
+.email {
   font-size: 14px;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
-  color: gray; 
+  color: gray;
   margin-top: 135px;
-  margin-left:-70px
+  margin-left: -70px
 }
+
 /* 
 #topContainer{
   display: inline-block;
@@ -360,14 +366,14 @@ flex: ;
   margin-bottom: 50px;
   border: none;
   background-color: #fefefe;
-  
+
 }
 
 #smallone>button {
   margin-bottom: 30px;
   margin-left: 10px;
   transition: all 0.3s;
-  
+
 }
 
 #smallone .el-button:hover {
