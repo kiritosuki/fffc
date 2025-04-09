@@ -648,10 +648,11 @@ const pickerOptions = {
 
 <template>
   <div class="page-container">
-    <!-- 控制 Drawer 的按钮 -->
+
 
     <div class="shadebox">
      <div class="option">
+    <!-- 控制 Drawer 的按钮 -->
     <el-button type="primary" @click="toggleDrawer"> 搜索病例 </el-button>
     <el-button type="danger" @click="DeleteAllSelected"> 一键删除 </el-button>
   </div>
@@ -687,9 +688,9 @@ const pickerOptions = {
 
 
       <!-- Drawer 组件 -->
-      <el-drawer v-model="isDrawerOpen" title="搜索栏" :direction="'rtl'" :size="drawersize">
+      <el-drawer v-model="isDrawerOpen" title="搜索栏" :direction="'rtl'" :size="drawersize" id="drawer">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="精确查询" name="first">
+          <el-tab-pane label="精确查询" name="first" id="drawer1">
             <p>身份证号:</p>
             <el-input placeholder="身份证号" v-model="checkIdCard" clearable></el-input>
             <p>电话号码:</p>
@@ -697,7 +698,7 @@ const pickerOptions = {
             <el-button type="primary" class="search-btn" @click="ExactCheck">搜索</el-button>
           </el-tab-pane>
 
-          <el-tab-pane label="模糊查询" name="second">
+          <el-tab-pane label="模糊查询" name="second" id="drawer2">
             <p>姓名:</p>
             <el-input placeholder="姓名" v-model="checkName" clearable></el-input>
             <p>性别:</p>
@@ -758,5 +759,9 @@ const pickerOptions = {
 .pageSelect {
   margin-top: 10px;
   text-align: center;
+}
+
+#drawer1, #drawer2, #drawer {
+  text-align: left;
 }
 </style>
