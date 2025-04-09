@@ -1,5 +1,6 @@
 <!-- src/views/NewRecord.vue -->
 <template>
+  <div class="page-container">
     <div class="record-container">
       <!-- 加载状态 -->
       <el-skeleton v-if="loading" :rows="6" animated />
@@ -14,23 +15,22 @@
         label-width="120px"
         :rules="rules"
       >
-
+      <div class="divider">
+          <div class="divider-text">基础信息</div>
+        </div>
       <el-row :gutter="24" >
-        <el-col :span="8">
+        <el-col :span="12">
         <el-form-item label="患者姓名">
           <el-input v-model="medicalRecord.name" disabled/>
         </el-form-item>
         </el-col>
-
-        <el-col :span="8">
-
+        <el-col :span="12">
         <el-form-item label="年龄">
           <el-input v-model="medicalRecord.age" disabled/>
         </el-form-item>
         </el-col>
-
-        <el-col :span="8">
-      
+      </el-row>
+<el-col :span="8">
         <el-form-item label="性别" prop="gender">
       <el-select 
         v-model="medicalRecord.gender"
@@ -48,8 +48,6 @@
       </el-select>
     </el-form-item>
         </el-col>
-      </el-row>
-
       <el-row :gutter="24" :justify="justify" :align="align">
         <el-col :span="12">
         <el-form-item label="手机号">
@@ -64,7 +62,9 @@
       </el-row>
 
        
-        
+      <div class="divider">
+          <div class="divider-text">诊断图片</div>
+        </div>
       <el-row :gutter="24">
   <el-col :span="12">
     <!-- 左眼照片 -->
@@ -92,7 +92,11 @@
       <div v-else class="no-image">暂无照片</div>
     </el-form-item>
   </el-col>
+  
 </el-row>
+<div class="divider">
+          <div class="divider-text">诊断结果</div>
+        </div>
       <el-row :gutter="24" :justify="justify" :align="align">
         <el-col :span="12">
         <el-form-item label="左眼关键字">
@@ -106,90 +110,6 @@
         </el-col>
       </el-row>
      
-    <el-row :gutter="24" :justify="justify" :align="align">
-        <el-col :span="8">
-        <el-form-item label="诊断医师">
-          <el-input v-model="medicalRecord.DoctorID" disabled/>
-        </el-form-item>
-        </el-col>
-        <el-col :span="16">
-
-    <el-form-item label="诊断结果">
-          <el-input 
-            v-model="medicalRecord.diagnosis" 
-            type="textarea" 
-            :rows="1"
-            disabled
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row :gutter="24" :justify="justify" :align="align">
-        <el-col :span="8">
-        <el-form-item label="诊断日期">
-          <el-date-picker
-            v-model="medicalRecord.diagDate"
-            type="date"
-            value-format="YYYY-MM-DD"
-            disabled
-          />
-        </el-form-item>
-        </el-col>
-        <el-col :span="8">
-        <el-form-item label="创建时间">
-          <el-input v-model="medicalRecord.createTime" disabled />
-        </el-form-item>
-        </el-col>
-        <el-col :span="8">
-        <el-form-item label="最后更新时间">
-          <el-input v-model="medicalRecord.updateTime" disabled />
-        </el-form-item>
-        </el-col>
-    </el-row>
-        
-<el-row :gutter="24" :justify="justify" :align="align">
-  <el-col :span="12">
-        <el-form-item label="过敏药物">
-          <el-input v-model="medicalRecord.allergy" disabled/>
-        </el-form-item>
-  </el-col>
-  <el-col :span="12">
-        <el-form-item label="患者主诉">
-          <el-input v-model="medicalRecord.complaint" disabled/>
-        </el-form-item>
-  </el-col>
-</el-row>
-
-<el-row :gutter="24" :justify="justify" :align="align">
-  <el-col :span="12">
-
-
-        <el-form-item label="现病史">
-          <el-input v-model="medicalRecord.presHistory" disabled/>
-        </el-form-item>
-      </el-col>
-
-      <el-col :span="12">
-        
-        <el-form-item label="既往史">
-          <el-input v-model="medicalRecord.pastHistory"  disabled/>
-        </el-form-item>
-      </el-col>
-</el-row>
-
-<el-row :gutter="24" :justify="justify" :align="align">
-  <el-col :span="12">
-        <el-form-item label="阳体特征">
-          <el-input v-model="medicalRecord.posFeature" disabled />
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="阴体特征">
-          <el-input v-model="medicalRecord.negFeature"  disabled/>
-        </el-form-item>
-      </el-col>
-</el-row>
-
 <el-row :gutter="24" :justify="justify" :align="align">
   <el-col :span="12">
         <el-form-item label="左眼疾病" prop="leftStatusIllList">
@@ -243,6 +163,97 @@
   
 </el-col>
 </el-row>
+    <el-row :gutter="24" :justify="justify" :align="align">
+        <el-col :span="24">
+
+    <el-form-item label="诊断结果">
+          <el-input 
+            v-model="medicalRecord.diagnosis" 
+            type="textarea" 
+            :rows="1"
+            disabled
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <div class="divider">
+          <div class="divider-text">其他信息</div>
+      </div>
+      <el-row :gutter="24">
+             <el-col :span="12">
+        <el-form-item label="诊断医师">
+          <el-input v-model="medicalRecord.DoctorID" disabled/>
+        </el-form-item>
+        </el-col>
+                <el-col :span="12">
+        <el-form-item label="诊断日期">
+          <el-date-picker
+            v-model="medicalRecord.diagDate"
+            type="date"
+            value-format="YYYY-MM-DD"
+            disabled
+          />
+        </el-form-item>
+        </el-col>
+      </el-row>
+ 
+    <el-row :gutter="24" :justify="justify" :align="align">
+
+        <el-col :span="12">
+        <el-form-item label="创建时间">
+          <el-input v-model="medicalRecord.createTime" disabled />
+        </el-form-item>
+        </el-col>
+        <el-col :span="12">
+        <el-form-item label="最后更新时间">
+          <el-input v-model="medicalRecord.updateTime" disabled />
+        </el-form-item>
+        </el-col>
+    </el-row>
+        
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
+        <el-form-item label="过敏药物">
+          <el-input v-model="medicalRecord.allergy" disabled/>
+        </el-form-item>
+  </el-col>
+  <el-col :span="12">
+        <el-form-item label="患者主诉">
+          <el-input v-model="medicalRecord.complaint" disabled/>
+        </el-form-item>
+  </el-col>
+</el-row>
+
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
+
+
+        <el-form-item label="现病史">
+          <el-input v-model="medicalRecord.presHistory" disabled/>
+        </el-form-item>
+      </el-col>
+
+      <el-col :span="12">
+        
+        <el-form-item label="既往史">
+          <el-input v-model="medicalRecord.pastHistory"  disabled/>
+        </el-form-item>
+      </el-col>
+</el-row>
+
+<el-row :gutter="24" :justify="justify" :align="align">
+  <el-col :span="12">
+        <el-form-item label="阳体特征">
+          <el-input v-model="medicalRecord.posFeature" disabled />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item label="阴体特征">
+          <el-input v-model="medicalRecord.negFeature"  disabled/>
+        </el-form-item>
+      </el-col>
+</el-row>
+
 
 
 
@@ -268,6 +279,7 @@
         </div>
       </el-form>
     </div>
+  </div>
   </template>
   
   <script setup>
@@ -576,11 +588,50 @@ const handleHistory = () => {
   </script>
   
   <style scoped>
+  .page-container {
+  width: 85%;
+  height: auto;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
+}
+.divider {
+  text-align: left;
+  display: inline-block;
+  width: 95%;
+  height: 50px;
+  border-radius: 7px;
+  background-color: rgb(238, 237, 245);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.divider::before {
+  position: absolute;
+  display: block;
+  content: "";
+  background-color: rgb(96, 71, 169);
+  width: 6px;
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+}
+
+.divider-text {
+  margin-top: 13px;
+  margin-left: 23px;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: rgb(96, 71, 169);
+  font-size: 20px;
+}
   .record-container {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
-    background: #fff;
+    background: #fefefe;
   }
   
   .form-actions {

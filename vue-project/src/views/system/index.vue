@@ -1,7 +1,7 @@
 <!-- src/views/patient/AddPatientPage.vue -->
 <template>
   <div id="body">
-    <div class="page-container">
+    <div class="page-container" :class="{ 'page-visible': pageVisible }">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-position="right"
         class="patient-form">
         <!-- 基础信息 -->
@@ -170,12 +170,23 @@
 
 <script setup>
 // 保持原有script部分内容不变，仅移除弹窗相关逻辑
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
 import api from '../../api/index'
 import { useRouter } from 'vue-router'
 import Loading from '../error/loading.vue'
+
+
+const pageVisible = ref(false)
+
+onMounted(() => {
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
+})
+
 const router = useRouter();
 const submitting = ref(false)
 const formRef = ref(null)
@@ -483,6 +494,16 @@ const handleCancel = () => {
 </script>
 
 <style scoped>
+.page-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .divider {
   text-align: left;
   display: inline-block;
