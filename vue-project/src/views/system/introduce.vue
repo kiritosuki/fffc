@@ -1,23 +1,27 @@
 <template>
         <div class="container">
-          <div class="header">
+          <div class="header" :class="{ hidden: currentPage !== 1 }">
             <div class="a">
         <div class="b"></div>
         <div class="c"></div>
         <div class="d"></div>
         <div class="e"></div>
-        <p class="f">AURIS GLOW</p>
+        <div class="f"><img class="icon" src="../../assets/image/图标无字版.png" alt="">
+          <h1>AURIS GLOW</h1>
+          <p>Project Overview</p>
+        </div>
+        
     </div>
           </div>
 
   
 
-            <div class="text">
+            <div class="text" :class="{ visible: currentPage === 2 }">
             <div id="main">
                 <div id="click-section">
                 <div id="drawerboxes">
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 1 }">
-                    <button class="drawer-btn" @click="slideTo(1)">The Wind Rises<span class="drawer-head">1</span></button>
+                    <button class="drawer-btn" @click="slideTo(1)">The Wind Rise<span class="drawer-head">1</span></button>
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 2 }">
                     <button class="drawer-btn" @click="slideTo(2)">Children of the Wind<span class="drawer-head">2</span></button>
@@ -100,7 +104,38 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+ import { ref, onMounted, onBeforeUnmount } from 'vue';
+
+const currentPage = ref(1); // 当前页面 1-header 2-text
+let isScrolling = false;    // 防止滚动冲突
+
+const handleWheel = (e) => {
+  if (isScrolling) return;
+  isScrolling = true;
+
+  // 判断滚动方向
+  const delta = Math.sign(e.deltaY);
+  
+  if (delta > 0 && currentPage.value === 1) {
+    // 向下滚动切换到text
+    currentPage.value = 2;
+  } else if (delta < 0 && currentPage.value === 2) {
+    // 向上滚动切换回header
+    currentPage.value = 1;
+  }
+
+  setTimeout(() => {
+    isScrolling = false;
+  }, 800); // 滚动节流时间
+};
+
+onMounted(() => {
+  window.addEventListener('wheel', handleWheel, { passive: false });
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('wheel', handleWheel);
+});
   
   let chosenSlideNumber = ref(1); // 当前选择的幻灯片编号
   let offset = 0; // 幻灯片偏移量
@@ -166,6 +201,7 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      
     }
 
     body {
@@ -173,6 +209,7 @@
       justify-content: center;
       align-items: center;
       overflow-x: hidden;
+      
       height: 100vh;
       background: linear-gradient(to right bottom,
           rgba(255, 255, 255,.6),
@@ -181,14 +218,17 @@
       background-size: cover;
     }
     
-    .header{
+    /* .header{
       
             margin: 0;
             padding: 0;
             height: 200vh;
             overflow-x: hidden;
          
-    }
+    } */
+
+  
+
 
     #main {
       
@@ -248,12 +288,14 @@
       border: none;
       transition: background-color .5s ease-in-out;
       color: #ffffff00;
+      
     }
 
     .drawer-btn.active {
       
       background-size: cover;
       color: rgb(70, 100, 180);
+      z-index: 1010;
     }
 
     .drawer-btn:hover {
@@ -351,17 +393,52 @@
       width: 100%;
     }
 
-    .header{
+    .container {
+  height: 300vh;
+  overflow: hidden;
+}
+
+.header {
+  position: fixed;
+  display: flex;
+            justify-content: center;
+            background-image: url("../../assets/image/介绍页背景.jpg");
+            height: 100vh;
+
+            width: 85vw;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.header.hidden {
+  transform: translateY(-110%);
+}
+
+.text {
+  position: fixed;
+  top: 110vh;
+  
+  width: 100%;
+  height: 100vh;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text.visible {
+  transform: translateY(-110%);
+  
+}
+
+    /* .header{
             display: flex;
             justify-content: center;
             background-image: url("../../assets/image/介绍页背景.jpg");
             height: 100vh;
-            width: 80vw;
-        }
+            
+        } */
         .a{
             position: relative;
             top: 100px;
-            width: 1000px;
+            width: 70vw;
             height: 600px;
             background-image: url("163727-15190294471b41.jpg");
             background-size: cover;
@@ -451,6 +528,25 @@
         }
         .a:hover .f{
             opacity: 1;
+        }
+
+        .icon{
+          height: 25vh;
+          justify-items: center;
+          
+        }
+
+        h1{
+          margin-top:-50px;
+          font-size: 50px;
+          color: rgb(60,60,70);
+          text-align: center;
+          z-index: 1000;
+        }
+
+        p{
+          font-size: 30px;
+          text-align: center;
         }
    
 </style>
