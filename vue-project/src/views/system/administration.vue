@@ -87,7 +87,7 @@ const RefreshRows = async (
       name,
       gender,
       begin,
-      end, 
+      end,
       phone,
       idCard,
       page,
@@ -412,7 +412,7 @@ const tableDataRows = ref([
   },
 ]);
 
-const tableDataRowsFix =ref([])
+const tableDataRowsFix = ref([])
 
 const FixGender = () => {
   tableDataRowsFix.value = tableDataRows.value.map((item) => {
@@ -479,7 +479,7 @@ const handleEdit = async (index, row) => {
     .catch((err) => {
       console.error("跳转失败:", err);
     });
-    loading.value.close()
+  loading.value.close()
 };
 
 // 初始化表格数据
@@ -647,123 +647,104 @@ const pickerOptions = {
 </script>
 
 <template>
-  <div id="admin">
+  <div class="page-container">
     <!-- 控制 Drawer 的按钮 -->
+
+    <div class="shadebox">
+     <div class="option">
     <el-button type="primary" @click="toggleDrawer"> 搜索病例 </el-button>
     <el-button type="danger" @click="DeleteAllSelected"> 一键删除 </el-button>
- 
+  </div>
 
 
-    <el-table
-      ref="tableRows"
-      :data="tableDataRowsFix"
-      stripe
-      style="width: 100%"
-      class="table"
-      height="72vh"
-      highlight-current-row
-      @selection-change="handleSelectionChange"
-    >
-      <el-table-column type="selection" width="50"> </el-table-column>
+      <el-table ref="tableRows" :data="tableDataRowsFix" stripe style="width: 100%" class="table" height="72vh"
+        highlight-current-row @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="50"> </el-table-column>
 
-      <el-table-column prop="diagTime" label="诊断日期" width="130">
-      </el-table-column>
-      <el-table-column prop="name" label="姓名" width="90"> </el-table-column>
-      <el-table-column prop="gender" label="性别" width="100">
-      </el-table-column>
-      <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
-      <el-table-column prop="updateTime" label="最后更新日期" width="230">
-      </el-table-column>
-      <el-table-column label="操作">
-        <template #default="scope">
-          <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
-            详细
-          </el-button>
-          <el-button
-            size="small"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-          >
-            删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <div class="pageSelect">
-    <el-input-number
-      v-model="checkPage"
-      @change="RefreshPage"
-      :min="1"
-      :max="maxPage"
-      label="描述文字"
-    ></el-input-number>
-</div>
+        <el-table-column prop="diagTime" label="诊断日期" width="130">
+        </el-table-column>
+        <el-table-column prop="name" label="姓名" width="90"> </el-table-column>
+        <el-table-column prop="gender" label="性别" width="100">
+        </el-table-column>
+        <el-table-column prop="doctorName" label="诊断医师"> </el-table-column>
+        <el-table-column prop="updateTime" label="最后更新日期" width="230">
+        </el-table-column>
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">
+              详细
+            </el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pageSelect">
+        <el-input-number v-model="checkPage" @change="RefreshPage" :min="1" :max="maxPage"
+          label="描述文字"></el-input-number>
+      </div>
 
 
-    <!-- Drawer 组件 -->
-    <el-drawer
-      v-model="isDrawerOpen"
-      title="搜索栏"
-      :direction="'rtl'"
-      :size="drawersize"
-    >
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="精确查询" name="first">
-          <p>身份证号:</p>
-          <el-input
-            placeholder="身份证号"
-            v-model="checkIdCard"
-            clearable
-          ></el-input>
-          <p>电话号码:</p>
-          <el-input
-            placeholder="电话号码"
-            v-model="checkPhoneNumber"
-            clearable
-          ></el-input>
-          <el-button type="primary" class="search-btn" @click="ExactCheck"
-            >搜索</el-button
-          >
-        </el-tab-pane>
+      <!-- Drawer 组件 -->
+      <el-drawer v-model="isDrawerOpen" title="搜索栏" :direction="'rtl'" :size="drawersize">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="精确查询" name="first">
+            <p>身份证号:</p>
+            <el-input placeholder="身份证号" v-model="checkIdCard" clearable></el-input>
+            <p>电话号码:</p>
+            <el-input placeholder="电话号码" v-model="checkPhoneNumber" clearable></el-input>
+            <el-button type="primary" class="search-btn" @click="ExactCheck">搜索</el-button>
+          </el-tab-pane>
 
-        <el-tab-pane label="模糊查询" name="second">
-          <p>姓名:</p>
-          <el-input placeholder="姓名" v-model="checkName" clearable></el-input>
-          <p>性别:</p>
-          <el-radio v-model="checkGender" label="1">男</el-radio>
-          <el-radio v-model="checkGender" label="0">女</el-radio>
-          <p>诊断时间：</p>
-          <div class="block">
-            <el-date-picker
-              v-model="checkTime"
-              type="daterange"
-              style="width: 94%"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :picker-options="pickerOptions"
-            >
-            </el-date-picker>
-          </div>
-          <el-button type="primary" class="search-btn" @click="VagueCheck"
-            >搜索</el-button
-          >
-        </el-tab-pane>
-      </el-tabs>
-    </el-drawer>
+          <el-tab-pane label="模糊查询" name="second">
+            <p>姓名:</p>
+            <el-input placeholder="姓名" v-model="checkName" clearable></el-input>
+            <p>性别:</p>
+            <el-radio v-model="checkGender" label="1">男</el-radio>
+            <el-radio v-model="checkGender" label="0">女</el-radio>
+            <p>诊断时间：</p>
+            <div class="block">
+              <el-date-picker v-model="checkTime" type="daterange" style="width: 94%" unlink-panels range-separator="至"
+                start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+            <el-button type="primary" class="search-btn" @click="VagueCheck">搜索</el-button>
+          </el-tab-pane>
+        </el-tabs>
+      </el-drawer>
 
-    <!-- <div class="pageSelector">
+      <!-- <div class="pageSelector">
     <el-pagination background layout="prev, pager, next" :total="totalPatient" :page-size="checkPageSize" hide-on-single-page>
     </el-pagination>
     </div> -->
+    </div>
   </div>
 </template>
 
 <style scoped>
-#admin {
-  width: 95%;
+.page-container {
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
 }
+
+.shadebox {
+  width: 85%;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
+}
+.option {
+  text-align: left;
+}
+
 
 .search-btn {
   margin-top: 2vw;
@@ -773,9 +754,9 @@ const pickerOptions = {
 .table {
   margin-top: 10px;
 }
-.pageSelect{
+
+.pageSelect {
   margin-top: 10px;
   text-align: center;
 }
-
 </style>
