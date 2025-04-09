@@ -10,7 +10,7 @@
   v-model:file-list="fileList"
   :on-change="handleChange"
   :on-remove="handleRemove"
-  :drag="true"
+  
   class="upload-drag-area"
 >
   <el-icon><Plus /></el-icon>
@@ -140,45 +140,6 @@ const handleClear = () => {
 </script>
 
 <style scoped>
-/* .upload-container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.action-buttons {
-  margin: 20px 0;
-  display: flex;
-  gap: 15px;
-}
-
-.upload-tip {
-  font-size: 12px;
-  color: var(--el-text-color-secondary);
-  margin-top: 8px;
-}
-.upload-drag-area {
-  border: 2px dashed #409EFF;
-  padding: 40px;
-  text-align: center;
-  color: #409EFF;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
-}
-
-:deep(.el-upload-dragger) {
-  border: 2px dashed #409EFF !important;
-}
-
-.upload-drag-area:hover {
-  background-color: #f5f7fa;
-}
-
-:deep(.el-upload-list__item) {
-  transition: all 0.3s;
-} */
-
 .upload-container {
   padding: 20px;
   max-width: 1200px;
@@ -197,38 +158,13 @@ const handleClear = () => {
   margin-top: 8px;
 }
 
-/* 拖拽区域样式 */
-.upload-drag-area {
-  border: 2px dashed #409EFF;
-  padding: 40px;
-  text-align: center;
-  color: #409EFF;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: background-color 0.3s;
+
+
+
+
+:deep(.el-upload-list__item) {
+  transition: all 0.3s;
 }
 
-.upload-drag-area:hover {
-  background-color: #f5f7fa;
-}
 
-/* 重要：覆盖 Element Plus 默认的虚线框样式 */
-:deep(.el-upload-dragger) {
-  border: 2px dashed #409EFF !important;
-}
-
-:deep(.el-upload-dragger.is-dragover) {
-  background-color: #e6f7ff !important;
-}
-
-/* 去掉悬浮时的虚线框 */
-:deep(.el-upload-dragger .el-upload-dragger__text) {
-  display: none !important;
-}
-
-/* 覆盖掉拖拽时其他默认样式 */
-:deep(.el-upload-dragger.is-dragover) {
-  border: 2px dashed #409EFF !important;
-  background-color: #e6f7ff !important;
-}
 </style>

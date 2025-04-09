@@ -86,6 +86,23 @@ const beBig = () => {
         <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
         <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
         <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">大量图片上传</el-button>
+      
+        <div class="per">
+      <div class="personal">
+        <img id="personal" src="../../assets/image/personal-center.png" class="img">
+        <div id="name">
+          
+          <span id="name" class="name">
+            zhangsan
+          </span>
+        </div>
+        <div id="email" class="email">
+          1234567890@qq.com
+        </div>
+      </div>
+
+    </div>
+      
       </div>
 
       <div>
@@ -109,9 +126,16 @@ const beBig = () => {
         <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')"><el-icon :size="29">
             <FolderAdd />
           </el-icon></el-button>
+
+          <div class="per">
+      <div class="personal">
+        <img id="personal" src="../../assets/image/personal-center.png" class="img">
+       
       </div>
 
+    </div>
 
+      </div>
 
     </aside>
 
@@ -213,6 +237,45 @@ const beBig = () => {
 
 }
 
+
+.per{
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+}
+
+.personal {
+  position: relative;
+  align-items: center;
+  text-align: center;
+  display: flex;
+flex-direction: row;   /*设置主轴方向是水平方向*/
+align-items: center;
+  bottom: 50px; 
+}
+
+.img{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-left: -30px;
+  position: absolute;
+}
+.name{
+  font-size: 16px;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: black; 
+  margin-top: 35px;
+  margin-left: -40px;
+  position: absolute;
+}
+.email{
+  font-size: 14px;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: gray; 
+  margin-top: 135px;
+  margin-left:-70px
+}
 /* 
 #topContainer{
   display: inline-block;
@@ -267,6 +330,7 @@ flex: ;
   background-color: #fefefe;
   border: none;
   font-size: 20px;
+  border-radius: 16px;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -279,6 +343,7 @@ flex: ;
   border: none;
   font-size: 20px;
   color: white;
+  border-radius: 16px !important;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -293,13 +358,14 @@ flex: ;
   margin-bottom: 50px;
   border: none;
   background-color: #fefefe;
+  
 }
 
 #smallone>button {
   margin-bottom: 30px;
   margin-left: 10px;
   transition: all 0.3s;
-
+  
 }
 
 #smallone .el-button:hover {
@@ -312,11 +378,11 @@ flex: ;
 #smallone .butRouter {
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 10px !important;
 }
 
 #smallone .butRouterDeeper {
-  border-radius: 8px;
+  border-radius: 10px !important;
   width: 40px;
   height: 40px;
   background-color: #626AC2 !important;
@@ -326,4 +392,6 @@ flex: ;
 #smallone .el-icon {
   color: inherit;
 }
+
+
 </style>
