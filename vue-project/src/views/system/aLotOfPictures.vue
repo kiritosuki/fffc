@@ -38,7 +38,7 @@
     </div>
 
     <!-- 结果表格 -->
-    <el-table :data="resultData" style="width: 100%" v-if="resultData.length > 0">
+    <el-table :data="resultData" style="width: 100%" v-if="resultData.length > 0" class="table">
       <el-table-column prop="index" label="序号" width="80" />
       <el-table-column label="图片" width="180">
         <template #default="{ row }">
@@ -164,6 +164,10 @@ const handleClear = () => {
 
 :deep(.el-upload-list__item) {
   transition: all 0.3s;
+}
+
+.table{
+  z-index: -10;
 }
 
 
