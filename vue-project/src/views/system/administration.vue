@@ -6,6 +6,12 @@ import { useRouter } from "vue-router";
 import { watch } from "vue";
 import router from "../../router";
 
+// 初始化
+const pageVisible = ref(false)
+
+
+
+
 // 用于存储加载动画的实例
 const loading = ref(null);
 
@@ -525,6 +531,12 @@ onMounted(async () => {
   } finally {
     loading.value.close();
   }
+
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
+
 });
 
 // 全页面开关抽屉
@@ -650,7 +662,7 @@ const pickerOptions = {
   <div class="page-container">
 
 
-    <div class="shadebox">
+    <div class="shadebox" :class="{ 'page-visible': pageVisible }">
      <div class="option">
     <!-- 控制 Drawer 的按钮 -->
     <el-button type="primary" @click="toggleDrawer"> 搜索病例 </el-button>
@@ -724,6 +736,17 @@ const pickerOptions = {
 </template>
 
 <style scoped>
+.shadebox {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .page-container {
   width: 100%;
   height: auto;
