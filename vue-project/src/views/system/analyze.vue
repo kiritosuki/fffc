@@ -474,6 +474,7 @@ onMounted(() => {
   flex: 440px;
   display: inline-block;
   text-align: left;
+  font-family: 'KaiTi';
   padding: 20px;
   /* 新增以下样式 */
   display: flex;
