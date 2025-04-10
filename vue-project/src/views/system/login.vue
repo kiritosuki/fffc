@@ -2,31 +2,30 @@
     <div class="shell">
         
         <el-form ref="formRef"  :model="form" :rules="rules" label-width="100px" label-position="right" class="form" id="b-form">
-            <h2>WELCOME TO AURIS GLOW</h2>
+            <h2>WELCOME <br> AURIS GLOW</h2>
 
             <!-- 基础信息 -->
-             <div class="form_item">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="昵称" prop="username" >
-                            <div class="input-wrapper">
-                                <el-input v-model="form.username" class="input-wrapper" placeholder="请输入昵称" clearable />
-                            </div>
+            <div class="form_item">
+                <el-row :gutter="20" justify="center">  <!-- 添加 justify="center" -->
+                    <el-col :span="16">  <!-- 调整 span 为适当宽度 -->
+                        <el-form-item label="昵称" prop="username" class="centered-form-item">
+                            <el-input v-model="form.username" placeholder="请输入昵称" clearable />
                         </el-form-item>
                     </el-col>
                 </el-row>
-             </div>
-             <div class="form_item">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="密码" prop="password">
-                        <div class="input-wrapper">
-                            <el-input v-model="form.password" class="input-wrapper" placeholder="请输入密码" clearable />
-                            <button type="button" id="eyeball">
+            </div>
+            
+            <div class="form_item">
+                <el-row :gutter="20" justify="center">
+                    <el-col :span="16">
+                        <el-form-item label="密码" prop="password" class="centered-form-item">
+                            <!-- <div class="input-wrapper"> -->
+                                <el-input v-model="form.password" placeholder="请输入密码" clearable />
+                            <!-- <button type="button" id="eyeball">
                                 <div class="eye"></div>
                             </button>
-                            <div id="beam"></div>
-                        </div>
+                            <div id="beam"></div> -->
+                        <!-- </div> -->
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -67,13 +66,15 @@ const togglePasswordVisibility = () => {
 
 // 提交表单的函数
 const submitForm = async () => {
+    console.log(form.username);
   submitting.value = true;
   try {
+    console.log(form.username+"2");
     const res = await api.login({
       username: form.username,
       password: form.password,
     });
-
+    console.log(form.username+"3");
     if (res.data.code === 1) {
       ElMessage.success('登录成功');
       router.push('/home');
@@ -88,33 +89,56 @@ const submitForm = async () => {
 };
 
 // 使用 onMounted 生命周期钩子来执行 DOM 相关操作
-onMounted(() => {
-  const root = document.documentElement; // 获取根元素
-  const eye = document.querySelector('#eyeball'); // 获取眼睛按钮元素
-  const beam = document.querySelector('#beam'); // 获取光束元素
-
-  // 鼠标移动事件监听器
-  root.addEventListener('mousemove', (e) => {
-    let rect = beam.getBoundingClientRect(); // 获取光束元素的位置信息
-    let mouseX = rect.right + (rect.width / 2); // 计算光束的横坐标
-    let mouseY = rect.top + (rect.height / 2); // 计算光束的纵坐标
-    let rad = Math.atan2(mouseX - e.pageX, mouseY - e.pageY); // 计算角度
-    let degrees = (rad * (20 / Math.PI) * -1) - 350; // 转换为角度
-    root.style.setProperty('--beamDegrees', `${degrees}deg`); // 设置光束的旋转角度
-  });
-
-  // 眼睛按钮点击事件监听器
-  eye.addEventListener('click', (e) => {
-    e.preventDefault(); // 阻止默认行为
-    document.body.classList.toggle('show-password'); // 切换显示密码的类
-    togglePasswordVisibility(); // 切换密码显示
-  });
-});
+// onMounted(() => {
+//   const root = document.documentElement; // 获取根元素
+//   const eye = document.querySelector('#eyeball'); // 获取眼睛按钮元素
+//   const beam = document.querySelector('#beam'); // 获取光束元素
+//   // 鼠标移动事件监听器
+//   root.addEventListener('mousemove', (e) => {
+//     let rect = beam.getBoundingClientRect(); // 获取光束元素的位置信息
+//     let mouseX = rect.right + (rect.width / 2); // 计算光束的横坐标
+//     let mouseY = rect.top + (rect.height / 2); // 计算光束的纵坐标
+//     let rad = Math.atan2(mouseX - e.pageX, mouseY - e.pageY); // 计算角度
+//     let degrees = (rad * (20 / Math.PI) * -1) - 350; // 转换为角度
+//     root.style.setProperty('--beamDegrees', `${degrees}deg`); // 设置光束的旋转角度
+//   });
+//   // 眼睛按钮点击事件监听器
+//   eye.addEventListener('click', (e) => {
+//     e.preventDefault(); // 阻止默认行为
+//     document.body.classList.toggle('show-password'); // 切换显示密码的类
+//     togglePasswordVisibility(); // 切换密码显示
+//   });
+// });
 </script>
 
 
 
 <style scoped>
+.centered-form-item {
+    display: flex;
+    justify-content: center;
+}
+
+.centered-form-item :deep(.el-form-item__content) {
+    flex: 1;
+    max-width: 250px; /* 根据实际需要调整 */
+}
+
+.centered-form-item :deep(.el-form-item__label) {
+    flex: 0 0 auto;
+    justify-content: center;
+}
+
+/* 调整表单容器 */
+.form {
+    width: 100%;
+    max-width: 800px; /* 根据实际需要调整 */
+    margin: 0 auto;
+}
+
+.form-item{
+    text-align: center;
+}
  /* 设置全局样式 */
  * {
             box-sizing: border-box;
@@ -178,13 +202,16 @@ onMounted(() => {
 
         /* 设置表单样式 */
         form {
+            width: 70%;
+            height: 75%;
             transform: translate3d(0, 0, 0);
             /* 3D变换，无位移 */
             padding: 50px;
             /* 设置内边距为10px */
-            border: 20px solid var(--border);
-            border-radius: 10px;
-            box-shadow: 10px 10px 10px #00000065;
+              background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
         }
 
         form>*+* {
@@ -212,6 +239,9 @@ onMounted(() => {
         h2 {
             font-size: 4rem;
             margin: 0;
+            text-align: center;
+            margin-top: -10px;
+            margin-bottom: 30px;
         }
 
         label:focus,
@@ -436,5 +466,9 @@ onMounted(() => {
             margin-left: 20rem;
             font-size: large;
         }
+        #submit {
+    display: block;
+    margin: 20px auto 0;
+}
 
 </style>

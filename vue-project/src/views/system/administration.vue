@@ -759,7 +759,7 @@ const pickerOptions = {
   width: 85%;
   display: inline-block;
   text-align: center;
-  padding: 20px;
+  padding:30px;
   background: #fefefe;
   border-radius: 30px;
   box-shadow: 9px 9px 18px #c3c3c3,

@@ -558,7 +558,7 @@ watch(rightIllnessListInter, (newVal) => {
   height: auto;
   display: flex;
   justify-content: center;
-  gap: 15%;
+  gap: 5%;
   
 }
 

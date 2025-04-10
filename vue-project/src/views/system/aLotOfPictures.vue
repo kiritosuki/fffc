@@ -1,5 +1,12 @@
 <template>
+  <div class="body">
+    <div class="page-container" :class="{ 'page-visible': pageVisible }">
+          
   <div class="upload-container">
+<div class="divider">
+          <div class="divider-text">提交区</div>
+        </div>
+            <!-- 操作按钮 -->
     <!-- 上传区域 -->
     <el-upload
   action="#"
@@ -10,7 +17,6 @@
   v-model:file-list="fileList"
   :on-change="handleChange"
   :on-remove="handleRemove"
-  
   class="upload-drag-area"
 >
   <el-icon><Plus /></el-icon>
@@ -18,10 +24,7 @@
     <div class="upload-tip">可上传1-10张眼部图片（支持JPG/PNG格式）</div>
   </template>
 </el-upload>
-
-
-    <!-- 操作按钮 -->
-    <div class="action-buttons">
+<div class="action-buttons">
       <el-button 
         type="primary" 
         :loading="uploading"
@@ -36,9 +39,12 @@
       </el-button>
       <el-button @click="handleClear">一键清除</el-button>
     </div>
-
+<div class="divider" v-if="ifUploading">
+    <div class="divider-text">诊断信息</div>
+  </div>
+<div id="table">
     <!-- 结果表格 -->
-    <el-table :data="resultData" style="width: 100%" v-if="resultData.length > 0" class="table">
+    <el-table :data="resultData" style="width: 100%" v-if="resultData.length > 0">
       <el-table-column prop="index" label="序号" width="80" />
       <el-table-column label="图片" width="180">
         <template #default="{ row }">
@@ -54,11 +60,11 @@
       <el-table-column prop="resInfo" label="诊断结果" />
       <el-table-column prop="createTime" label="创建时间" width="180" />
     </el-table>
-  </div>
+  </div></div></div></div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Plus, Loading } from '@element-plus/icons-vue'
 import api from '@/api'
@@ -66,6 +72,16 @@ import api from '@/api'
 const fileList = ref([])
 const resultData = ref([])
 const uploading = ref(false)
+const ifUploading = ref(0)
+
+const pageVisible = ref(false)
+
+onMounted(() => {
+  // 页面加载完成后触发动画
+  setTimeout(() => {
+    pageVisible.value = true
+  }, 100) // 添加微小延迟确保DOM已渲染
+})
 
 // 计算属性用于图片预览
 const previewList = computed(() => 
@@ -124,6 +140,7 @@ const handleUpload = async () => {
     ElMessage.error(error.data || '上传失败');
   } finally {
     uploading.value = false;
+    ifUploading.value = 1;
   }
 }
 
@@ -136,10 +153,75 @@ const handleUpload = async () => {
 const handleClear = () => {
   fileList.value = []
   resultData.value = []
+  ifUploading.value = 0;
 }
 </script>
 
 <style scoped>
+.divider {
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+  height: 50px;
+  border-radius: 7px;
+  background-color: rgb(238, 237, 245);
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.divider::before {
+  position: absolute;
+  display: block;
+  content: "";
+  background-color: rgb(96, 71, 169);
+  width: 6px;
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+}
+
+.divider-text {
+  margin-top: 13px;
+  margin-left: 23px;
+  font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  color: rgb(96, 71, 169);
+  font-size: 20px;
+}
+
+.page-container {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.page-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.body {
+  padding-top: 15px;
+  text-align: center;
+}
+
+.page-container {
+  width: 80%;
+  min-height: 85vh;
+  display: inline-block;
+  text-align: center;
+  padding: 20px;
+  background: #fefefe;
+  border-radius: 30px;
+  box-shadow: 9px 9px 18px #c3c3c3,
+    -9px -9px 18px #e6e6e6;
+}
+
+#table {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .upload-container {
   padding: 20px;
   max-width: 1200px;
@@ -147,8 +229,9 @@ const handleClear = () => {
 }
 
 .action-buttons {
-  margin: 20px 0;
+  margin: 0px 0px 20px 0;
   display: flex;
+  flex-direction: row-reverse;
   gap: 15px;
 }
 
@@ -164,10 +247,6 @@ const handleClear = () => {
 
 :deep(.el-upload-list__item) {
   transition: all 0.3s;
-}
-
-.table{
-  z-index: -10;
 }
 
 
