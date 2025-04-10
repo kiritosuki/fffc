@@ -443,7 +443,7 @@ onMounted(() => {
 <style scoped>
 @font-face {
   font-family: guifanzi;
-    src: url('../../../public/fonts/in7KTGPRWCIQ/AlimamaDongFangDaKai-Regular.woff');
+    src: url('../../../src/assets/fonts/in7KTGPRWCIQ/AlimamaDongFangDaKai-Regular.otf');
 }
 .charts-container {
   display: inline-block;
@@ -479,6 +479,7 @@ onMounted(() => {
   display: inline-block;
   text-align: left;
   font-family: guifanzi;
+  color: rgb(39, 39, 39);
   padding: 20px;
   /* 新增以下样式 */
   display: flex;
