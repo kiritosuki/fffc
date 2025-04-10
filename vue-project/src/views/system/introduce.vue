@@ -108,16 +108,16 @@
                       <div class="shell">
                             <div class="box">
                                 <div class="images">
-                                    <img src="../../assets/image/智能7.png">
+                                    <img src="../../assets/image/安全.png">
                                 </div>
                                 <div class="content">
                                     <h2>Model Introduction</h2>
-                                    
+                                    <h3>RET-CLIP采用了双编码器架构，包含一个图像编码器和一个文本编码器。图像编码器是Vision Transformer (ViT),而文本编码器则是基于Transformer架构的BERT。这两个编码器分别将图像和文本映射到共享的高维特征空间，使得语义相关的图文对在该空间中距离较近，而不相关的图文对距离较远。</h3>
                                 </div>
                             </div>
                             <div class="box">
                                 <div class="images">
-                                    <img src="../../assets/image/智能方案.png">
+                                    <img src="../../assets/image/智能办公.png">
                                 </div>
                                 <div class="content">
                                     <h2>Data</h2>
@@ -129,7 +129,7 @@
                             </div>
                             <div class="box">
                                 <div class="images">
-                                    <img src="../../assets/image/机器人.png">
+                                    <img src="../../assets/image/工作.png">
                                 </div>
                                 <div class="content">
                                     <h2>Performance</h2>
@@ -230,10 +230,10 @@
 
                     <div id="card5" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Auris Glow</div>
-                    <div class="card-title">Demo</div>
-                    <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
+                    <div class="card-title">Video</div>
+                    <div class="card-content"></div>
                     <div class="card-img">
-                        <img src="./img/04.gif" alt="">
+                        <img src="../../assets/image/图标无字版.png" alt="">
                     </div>
                     </div>
 
@@ -547,6 +547,7 @@ onBeforeUnmount(() => {
       width: 100%;
       height: 400px;
       overflow: hidden;
+      margin-left:-30px;
     }
 
     .card-img img {
@@ -714,6 +715,7 @@ onBeforeUnmount(() => {
           user-select: none;
           font-size: 30px;
           text-align: center;
+          letter-spacing: 3px;
         }
    
 /* 卡片悬浮 */
