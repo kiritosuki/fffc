@@ -47,12 +47,13 @@
                     <template #loading>
                       <span class="custom-loading">
                         <el-icon class="is-loading">
-                          <Loading />
+                          <!-- <Loading /> -->
                         </el-icon>
                         查询中...
                       </span>
                     </template>
-                    查询</el-button>
+                    <!-- 查询 -->
+                  </el-button>
                 </template>
               </el-input>
             </el-form-item>

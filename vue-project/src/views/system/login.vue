@@ -138,6 +138,7 @@ const submitForm = async () => {
 
 .form-item{
     text-align: center;
+    margin-top:100px;
 }
  /* 设置全局样式 */
  * {
@@ -188,6 +189,7 @@ const submitForm = async () => {
             /* 设置背景图片为./img/1.png */
             background-size: cover;
             /* 背景图片等比例缩放铺满容器 */
+            
         }
 
         /* 设置显示密码时的样式 */
@@ -212,10 +214,11 @@ const submitForm = async () => {
   border-radius: 30px;
   box-shadow: 9px 9px 18px #c3c3c3,
     -9px -9px 18px #e6e6e6;
+    
         }
 
         form>*+* {
-            margin-top: 15px;
+            margin-top: 30px;
             /* 设置相邻元素之间的上边距为15px */
         }
 
@@ -240,7 +243,7 @@ const submitForm = async () => {
             font-size: 4rem;
             margin: 0;
             text-align: center;
-            margin-top: -10px;
+            margin-top: 50px;
             margin-bottom: 30px;
         }
 
@@ -276,16 +279,12 @@ const submitForm = async () => {
             width: 100%;
             cursor: pointer;
             /* 设置鼠标样式为手型 */
-            margin: 20px 0 0 2px;
-            /* 设置外边距为20px 0 0 2px */
-            padding: 0.75rem 1.25rem;
+            
             /* 设置内边距为0.75rem 1.25rem */
-            color: var(--bgColor);
+            color: white;
             /* 设置字体颜色为变量--bgColor的值 */
-            background-color: var(--inputColor);
-            /* 设置背景颜色为变量--inputColor的值 */
-            box-shadow: 4px 4px 0 rgba(30, 144, 255, 0.2);
-            /* 设置阴影效果 */
+            background-color: rgba(0, 89, 255, 0.788);
+            
         }
 
         [id=submit]:active {

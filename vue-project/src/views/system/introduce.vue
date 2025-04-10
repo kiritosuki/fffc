@@ -54,40 +54,182 @@
                 </div>
                 <div id="card-section">
                     <div id="card1" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-small-title">Auris Glow</div>
                     <div class="card-title">Project Overview</div>
-                    <div class="card-content">Quote: "Even in the dark night, the stars will not disappear." Reflection: In the journey of life, we may encounter storms and difficulties, but as long as we have faith and hope in our hearts, we can find light even in the darkness.</div>
+                    <div class="card-content">
+
+                      <div class="shell">
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/机器办公.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Problem Statement</h2>
+                                    <h3>诊断复杂性高：眼底病变常伴随多种疾病并发，需依赖医生经验识别细微病理特征，易受主观判断影响。</h3>
+                                      <h3>资源分布不均：优质眼科医疗资源集中于大城市，基层医疗机构缺乏专业设备与专家支持，导致偏远地区筛查覆盖率低。</h3>
+                                      <h3>效率与成本问题：传统人工诊断耗时较长，且依赖专家经验，难以满足大规模筛查需求。
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能方案.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Our Solution</h2>
+                                    <!-- <h3>本项目提出基于微调的RET-CLIP多模态模型，针对眼底图像的多标签分类任务进行优化。其核心创新点包括：</h3> -->
+                                    <h3>多模态融合：结合视觉（眼底图像）与文本（临床描述）信息，通过双编码器架构（Vision Transformer + RoBERTa）建立跨模态关联，提升复杂病变的识别能力。</h3>
+                                    <h3>元数据增强：创新性地整合患者年龄、性别等元数据，通过多层感知机（MLP）编码后与图像特征融合，增强模型对年龄相关疾病（如病理性近视）的敏感性。</h3>
+                                  <h3>高效训练策略：采用贝叶斯优化与自适应学习率调度，平衡模型复杂度与计算资源，确保在有限算力下实现高精度</h3>
+                                  </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/机器人.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Value Proposition</h2>
+                                    <h3>提升诊断效率与准确性：模型在多标签分类任务中表现优异（如糖尿病视网膜病变准确率达95%），减少医生工作负担，降低漏诊率。</h3>
+                                    <h3>助力医疗普惠：支持基层医疗机构通过便携设备与云端模型实现远程筛查，推动优质医疗资源下沉，助力健康中国战略。</h3>
+                                  <h3>科研与教育价值：通过大规模数据分析发现疾病关联性，为临床研究提供新视角；同时为医学生与基层医生提供标准化培训工具。</h3>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
                     <div class="card-img">
                         <img src="./img/17.gif" alt="">
                     </div>
                     </div>
                     <div id="card2" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Technical Details</div>
+                    <div class="card-small-title">Auris Glow</div>
                     <div class="card-title">Technical Details</div>
-                    <div class="card-content">Quote: "The wind is calling, to fly freely." Reflection: The wind symbolizes freedom and inspiration. We should bravely follow the voice of our hearts, break through all limitations, and pursue our dreams. </div>
+                    <div class="card-content">
+                      <div class="shell">
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能7.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Model Introduction</h2>
+                                    
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能方案.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Data</h2>
+                                    <h3>数据来源：基于国内多家三甲医院合作的匿名化眼底图像数据集（共5,826张），涵盖糖尿病视网膜病变、青光眼、黄斑变性等10类疾病，数据分布兼顾年龄、性别多样性（中位年龄58岁，男性占比52%）。</h3>
+                                    <h3>图像增强：通过CLAHE均衡化与BM3D去噪，提升图像对比度并减少噪声。</h3>
+                                    <h3>数据清洗：剔除低质量图像（如镜头污点、视盘不可见），保留高质量样本以提高模型鲁棒性。</h3>
+                                 
+                                  </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/机器人.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Performance</h2>
+                                    <h3>相比YOLOv5，本模型在各类疾病上表现更均衡（如青光眼95%、正常样本82%），且支持多模态推理。</h3>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                    </div>
                     <div class="card-img">
                         <img src="./img/08.gif" alt="">
                     </div>
                     </div>
                     <div id="card3" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-small-title">Auris Glow</div>
                     <div class="card-title">Key Features</div>
-                    <div class="card-content">Quote: "At the end of the sky, there is another world." Reflection: Sometimes we may feel lost and confused, but as long as we maintain faith and hope, we will surely find our own piece of sky and achieve our dreams. </div>
+                    <div class="card-content">
+                      
+                      <div class="shell">
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能7.png">
+                                </div>
+                                <div class="content">
+                                    <h2>Model Introduction</h2>
+                                    <h3>同步检测糖尿病视网膜病变、青光眼、黄斑变性、病理性近视等10类眼底疾病，支持并发病例分析。</h3>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能体.png">
+                                </div>
+                                <div class="content">
+                                    <h2>高效响应</h2>
+                                    <h3>单张图像分析耗时<2秒，支持每小时处理千级样本，满足基层筛查需求。</h3>
+                                    
+                                 
+                                  </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/AI协作.png">
+                                </div>
+                                <div class="content">
+                                    <h2>动态扩展性</h2>
+                                    <h3>基于零样本学习能力，可快速适应新疾病类别（如未标注的罕见病），无需重新标注数据。</h3>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                          
+                          </div>
                     <div class="card-img">
                         <img src="./img/03.gif" alt="">
                     </div>
                     </div>
                     <div id="card4" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-small-title">Auris Glow</div>
                     <div class="card-title">Applications</div>
-                    <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
+                    <div class="card-content">
+                      <div class="shell">
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/人机交互.png">
+                                </div>
+                                <div class="content">
+                                    <h2>临床辅助诊断</h2>
+                                    <h3>帮助医生更快、更准地进行诊断，减少漏诊误诊。</h3>
+                                </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/bot.png">
+                                </div>
+                                <div class="content">
+                                    <h2>远程医疗/基层筛查</h2>
+                                    <h3>用于眼科学生或初级医生的培训。</h3>
+                                    
+                                 
+                                  </div>
+                            </div>
+                            <div class="box">
+                                <div class="images">
+                                    <img src="../../assets/image/智能12.png">
+                                </div>
+                                <div class="content">
+                                    <h2>教育培训</h2>
+                                    <h3>基于零样本学习能力，可快速适应新疾病类别（如未标注的罕见病），无需重新标注数据。</h3>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                    </div>
                     <div class="card-img">
                         <img src="./img/04.gif" alt="">
                     </div>
                     </div>
 
                     <div id="card5" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
+                    <div class="card-small-title">Auris Glow</div>
                     <div class="card-title">Demo</div>
                     <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
                     <div class="card-img">
@@ -241,7 +383,7 @@ onBeforeUnmount(() => {
     }
 
     #click-section {
-      width: 35%;
+      width: 20%;
       height: 100%;
       padding: 20px 0;
       position: relative;
@@ -282,6 +424,7 @@ onBeforeUnmount(() => {
     }
 
     .drawer-btn {
+      user-select: none;
       width: 100%;
       height: 100%;
       font: 800 30px '';
@@ -300,8 +443,9 @@ onBeforeUnmount(() => {
     } */
 
     :deep(.drawer-btn.active) {
+      user-select: none;
   background-color: #626AC2 !important;
-  color: white !important;
+  color: #ffffff00 !important;
   }
 
     .drawer-btn:hover {
@@ -319,9 +463,10 @@ onBeforeUnmount(() => {
     }
 
     #slide-section {
+      user-select: none;
       position: relative;
       height: 100%;
-      width: 65%;
+      width: 100%;
       display: flex;
       justify-content: center;
       padding: 0 40px;
@@ -333,6 +478,7 @@ onBeforeUnmount(() => {
     }
 
     #slide-bar {
+      user-select: none;
       position: absolute;
       top: 10%;
       left: 40px;
@@ -342,6 +488,7 @@ onBeforeUnmount(() => {
     }
 
     #bar {
+      user-select: none;
       position: absolute;
       height: calc(100% / 4);
       width: 5px;
@@ -353,11 +500,12 @@ onBeforeUnmount(() => {
 
     #card-section {
       height: 100%;
-      width: 80%;
+      width: 95%;
       overflow: hidden;
     }
 
     .card {
+      user-select: none;
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -369,6 +517,7 @@ onBeforeUnmount(() => {
     }
 
     .card-small-title {
+      user-select: none;
       font-size: 30px;
       font-weight: 600;
       padding-bottom: min(5%, 10px);
@@ -376,6 +525,7 @@ onBeforeUnmount(() => {
     }
 
     .card-title {
+      user-select: none;
       font-size: 80px;
       font-weight: 700;
       padding-bottom: min(20%, 40px);
@@ -383,10 +533,14 @@ onBeforeUnmount(() => {
     }
 
     .card-content {
+      user-select: none;
       font-size: 24px;
       font-weight: 400;
       color: rgb(94, 123, 255);
       margin-bottom: 60px;
+      display: flex;
+            justify-content: center;
+            align-items: center;
     }
 
     .card-img {
@@ -421,6 +575,7 @@ onBeforeUnmount(() => {
 }
 
 .text {
+  user-select: none;
   position: fixed;
   top: 110vh;
   
@@ -442,6 +597,7 @@ onBeforeUnmount(() => {
             
         } */
         .a{
+          user-select: none;
             position: relative;
             top: 100px;
             width: 70vw;
@@ -457,6 +613,7 @@ onBeforeUnmount(() => {
         .c,
         .d,
         .e{
+          user-select: none;
             position: absolute;
             width: 1000px;
             height: 600px;
@@ -470,6 +627,7 @@ onBeforeUnmount(() => {
         .c::after,
         .d::after,
         .e::after{
+          user-select: none;
             content: "";
             position: absolute;
             width: 1000px;
@@ -537,12 +695,14 @@ onBeforeUnmount(() => {
         }
 
         .icon{
+          user-select: none;
           height: 25vh;
           justify-items: center;
           
         }
 
         h1{
+          user-select: none;
           margin-top:-50px;
           font-size: 50px;
           color: rgb(60,60,70);
@@ -551,8 +711,103 @@ onBeforeUnmount(() => {
         }
 
         p{
+          user-select: none;
           font-size: 30px;
           text-align: center;
         }
    
+/* 卡片悬浮 */
+
+        .shell {
+            position: relative;
+            min-width: 1000px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* 设置3d变化 */
+            transform-style: preserve-3d;
+            /* 添加透视效果 */
+            perspective: 900px;
+            margin-top: 50px;
+            margin-left: -50px;
+        }
+
+        .shell .box {
+            position: relative;
+            width: 250px;
+            height: 350px;
+            transition: 0.3s;
+            overflow: hidden;
+            margin: 30px;
+            transform: rotateY(0deg);
+            transition-delay: .1s;
+            border-radius: 5px;
+            border: #fff 5px solid;
+        }
+
+        /* 当鼠标所有卡片的父元素点shell上时，
+        所有卡片像Y轴翻转20度 */
+        .shell:hover .box {
+            transform: rotateY(20deg);
+        }
+
+        /* 当鼠标悬浮在当前卡片上时，当前卡片的翻转角度为0，
+        并放大一点二五倍，加个阴影 */
+        .shell .box:hover {
+            transform: rotateY(0deg) scale(1.25);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        /* 当鼠标悬浮在卡片上时，
+        当前卡片后面的所有卡片全部都反向翻转负20度 */
+        .shell .box:hover~.box {
+            transform: rotateY(-20deg);
+        }
+
+        .shell .box .images img {
+          margin-top:50px;
+            width: 100%;
+        }
+
+        .shell .box .content {
+            position: absolute;
+            top: 0;
+            width: 95%;
+            height: 100%;
+            z-index: 999;
+            padding: 15px;
+            overflow: auto;
+            overflow-y: hidden;
+        }
+
+        .shell .box .content h2 {
+            color: black;
+            transition: 0.3s;
+            font-size: 20px;
+            transform: translateY(-100px);
+        }
+
+        .shell .box:hover .content h2 {
+            transform: translateY(-5px);
+        }
+
+        .shell .box .content h3 {
+            color: rgb(0, 0, 0);
+            transition: 0.3s;
+            font-size: 14px;
+            transform: translateY(600px);
+            background-color: rgba(255, 255, 255, 0.7);
+            overflow: auto;
+            font-family: kaiti;
+        }
+
+        .shell .box:hover .content h3 {
+            transform: translateY(30px);
+        }
+
+        @font-face {
+          font-family: kaiti;
+          src: url(../../assets/font/汉仪全唐诗简.ttf);
+        }
 </style>
