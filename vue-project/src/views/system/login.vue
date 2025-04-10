@@ -66,13 +66,15 @@ const togglePasswordVisibility = () => {
 
 // 提交表单的函数
 const submitForm = async () => {
+    console.log(form.username);
   submitting.value = true;
   try {
+    console.log(form.username+"2");
     const res = await api.login({
       username: form.username,
       password: form.password,
     });
-
+    console.log(form.username+"3");
     if (res.data.code === 1) {
       ElMessage.success('登录成功');
       router.push('/home');
@@ -87,28 +89,26 @@ const submitForm = async () => {
 };
 
 // 使用 onMounted 生命周期钩子来执行 DOM 相关操作
-onMounted(() => {
-  const root = document.documentElement; // 获取根元素
-  const eye = document.querySelector('#eyeball'); // 获取眼睛按钮元素
-  const beam = document.querySelector('#beam'); // 获取光束元素
-
-  // 鼠标移动事件监听器
-  root.addEventListener('mousemove', (e) => {
-    let rect = beam.getBoundingClientRect(); // 获取光束元素的位置信息
-    let mouseX = rect.right + (rect.width / 2); // 计算光束的横坐标
-    let mouseY = rect.top + (rect.height / 2); // 计算光束的纵坐标
-    let rad = Math.atan2(mouseX - e.pageX, mouseY - e.pageY); // 计算角度
-    let degrees = (rad * (20 / Math.PI) * -1) - 350; // 转换为角度
-    root.style.setProperty('--beamDegrees', `${degrees}deg`); // 设置光束的旋转角度
-  });
-
-  // 眼睛按钮点击事件监听器
-  eye.addEventListener('click', (e) => {
-    e.preventDefault(); // 阻止默认行为
-    document.body.classList.toggle('show-password'); // 切换显示密码的类
-    togglePasswordVisibility(); // 切换密码显示
-  });
-});
+// onMounted(() => {
+//   const root = document.documentElement; // 获取根元素
+//   const eye = document.querySelector('#eyeball'); // 获取眼睛按钮元素
+//   const beam = document.querySelector('#beam'); // 获取光束元素
+//   // 鼠标移动事件监听器
+//   root.addEventListener('mousemove', (e) => {
+//     let rect = beam.getBoundingClientRect(); // 获取光束元素的位置信息
+//     let mouseX = rect.right + (rect.width / 2); // 计算光束的横坐标
+//     let mouseY = rect.top + (rect.height / 2); // 计算光束的纵坐标
+//     let rad = Math.atan2(mouseX - e.pageX, mouseY - e.pageY); // 计算角度
+//     let degrees = (rad * (20 / Math.PI) * -1) - 350; // 转换为角度
+//     root.style.setProperty('--beamDegrees', `${degrees}deg`); // 设置光束的旋转角度
+//   });
+//   // 眼睛按钮点击事件监听器
+//   eye.addEventListener('click', (e) => {
+//     e.preventDefault(); // 阻止默认行为
+//     document.body.classList.toggle('show-password'); // 切换显示密码的类
+//     togglePasswordVisibility(); // 切换密码显示
+//   });
+// });
 </script>
 
 
