@@ -78,12 +78,13 @@ const beBig = () => {
       <div><span id="top">Auris Glow</span></div><button class="butTop">回</button>
       </div> -->
       <div v-if="ifBig" id="bigone">
-        <el-button :class="home" @click="routerPush('/home')">主页</el-button><br>
+        
+        <el-button :class="home" @click="routerPush('/home')"><span>主页</span></el-button><br>
         <!-- <el-button :class="homeResult" @click="routerPush('/homeResult')" >主页二</el-button><br> -->
-        <el-button :class="admin" @click="routerPush('/admin')">管理</el-button><br>
-        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">上传</el-button><br>
-        <el-button :class="analyze" @click="routerPush('/analyze')">分析</el-button><br>
-        <el-button :class="introduce" @click="routerPush('/introduce')">介绍</el-button><br>
+        <el-button :class="admin" @click="routerPush('/admin')"><span>管理</span></el-button><br>
+        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')"><span>上传</span></el-button><br>
+        <el-button :class="analyze" @click="routerPush('/analyze')"><span>分析</span></el-button><br>
+        <el-button :class="introduce" @click="routerPush('/introduce')"><span>介绍</span></el-button><br>
         <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
         <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
 
@@ -338,10 +339,56 @@ flex: ;
   font-size: 20px;
   border-radius: 16px;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  transition: all 0.3s;
 }
 
+#bigone .el-button:hover {
+  background-color: #626AC2 !important;
+  color: white;
+
+}
+
+
+
+.butRouter span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.butRouter span::after {
+  content: '>';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -25px;
+  transition: 0.5s;
+}
+
+.butRouter:hover span {
+  padding-right: 15px;
+}
+
+.butRouter:hover span::after {
+  opacity: 1;
+  right: -5px;
+}
+
+.butRouter:active span::after{
+  opacity: 0;
+  top: 0;
+  right: -25px;
+  transition: 0.5s;
+}
+.butRouter:active span{
+  padding-right: 0px;
+  transition: 0.5s;
+}
+
+
 .butRouterDeeper {
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   width: 95%;
   background-color: none;
   height: 35px;
@@ -351,6 +398,7 @@ flex: ;
   color: white;
   border-radius: 16px !important;
   font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  transition: all 0.3s;
 }
 
 #logo {
@@ -398,6 +446,7 @@ flex: ;
 #smallone .el-icon {
   color: inherit;
 }
+
 
 
 </style>
