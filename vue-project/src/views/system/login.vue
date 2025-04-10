@@ -2,7 +2,7 @@
     <div class="shell">
         
         <el-form ref="formRef"  :model="form" :rules="rules" label-width="100px" label-position="right" class="form" id="b-form">
-            <h2>WELCOME TO AURIS GLOW</h2>
+            <h2>WELCOME <br> AURIS GLOW</h2>
 
             <!-- 基础信息 -->
              <div class="form_item">
@@ -115,6 +115,12 @@ onMounted(() => {
 
 
 <style scoped>
+h2{
+    text-align: center;
+}
+.form-item{
+    text-align: center;
+}
  /* 设置全局样式 */
  * {
             box-sizing: border-box;
@@ -182,7 +188,7 @@ onMounted(() => {
             /* 3D变换，无位移 */
             padding: 50px;
             /* 设置内边距为10px */
-            background: #fefefe;
+              background: #fefefe;
   border-radius: 30px;
   box-shadow: 9px 9px 18px #c3c3c3,
     -9px -9px 18px #e6e6e6;
