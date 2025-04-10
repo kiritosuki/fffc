@@ -6,7 +6,8 @@
         class="patient-form">
         <!-- 基础信息 -->
         <div class="divider">
-          <div class="divider-text">基础信息</div>
+          <div class="divider-text">基础信息<div class="img-container"><img src="@/assets/svg/snippets-fill.svg" alt=""><img src="@/assets/svg/save-fill.svg" alt=""></div></div>
+          
         </div>
         <el-row :gutter="24">
           <el-col :span="12">
@@ -60,7 +61,7 @@
           </el-col>
         </el-row>
         <div class="divider">
-          <div class="divider-text">诊断图片</div>
+          <div class="divider-text">诊断图片<div class="img-container"><img src="@/assets/svg/snippets-fill.svg" alt=""><img src="@/assets/svg/save-fill.svg" alt=""></div></div>
         </div>
         <el-row :gutter="24">
 
@@ -112,7 +113,7 @@
           </el-form-item>
         </el-col>
         <div class="divider">
-          <div class="divider-text">其他信息</div>
+          <div class="divider-text">其他信息<div class="img-container"><img src="@/assets/svg/snippets-fill.svg" alt=""><img src="@/assets/svg/save-fill.svg" alt=""></div></div>
         </div>
         <el-row :gutter="20">
           <el-col :span="12">
@@ -534,6 +535,18 @@ const handleCancel = () => {
   font-size: 20px;
 }
 
+.img-container {
+  position: absolute;
+  right: 20px;
+  display: inline-block;
+}
+.img-container img {
+  color: rgb(96, 71, 169);
+  width: 30px;
+  height: auto;
+  margin-top: -2px;
+  margin-left: 10px;
+}
 #body {
   padding-top: 15px;
   text-align: center;
