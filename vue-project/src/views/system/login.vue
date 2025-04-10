@@ -5,28 +5,27 @@
             <h2>WELCOME <br> AURIS GLOW</h2>
 
             <!-- 基础信息 -->
-             <div class="form_item">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="昵称" prop="username" >
-                            <div class="input-wrapper">
-                                <el-input v-model="form.username" class="input-wrapper" placeholder="请输入昵称" clearable />
-                            </div>
+            <div class="form_item">
+                <el-row :gutter="20" justify="center">  <!-- 添加 justify="center" -->
+                    <el-col :span="16">  <!-- 调整 span 为适当宽度 -->
+                        <el-form-item label="昵称" prop="username" class="centered-form-item">
+                            <el-input v-model="form.username" placeholder="请输入昵称" clearable />
                         </el-form-item>
                     </el-col>
                 </el-row>
-             </div>
-             <div class="form_item">
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="密码" prop="password">
-                        <div class="input-wrapper">
-                            <el-input v-model="form.password" class="input-wrapper" placeholder="请输入密码" clearable />
-                            <button type="button" id="eyeball">
+            </div>
+            
+            <div class="form_item">
+                <el-row :gutter="20" justify="center">
+                    <el-col :span="16">
+                        <el-form-item label="密码" prop="password" class="centered-form-item">
+                            <!-- <div class="input-wrapper"> -->
+                                <el-input v-model="form.password" placeholder="请输入密码" clearable />
+                            <!-- <button type="button" id="eyeball">
                                 <div class="eye"></div>
                             </button>
-                            <div id="beam"></div>
-                        </div>
+                            <div id="beam"></div> -->
+                        <!-- </div> -->
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -115,9 +114,28 @@ onMounted(() => {
 
 
 <style scoped>
-h2{
-    text-align: center;
+.centered-form-item {
+    display: flex;
+    justify-content: center;
 }
+
+.centered-form-item :deep(.el-form-item__content) {
+    flex: 1;
+    max-width: 250px; /* 根据实际需要调整 */
+}
+
+.centered-form-item :deep(.el-form-item__label) {
+    flex: 0 0 auto;
+    justify-content: center;
+}
+
+/* 调整表单容器 */
+.form {
+    width: 100%;
+    max-width: 800px; /* 根据实际需要调整 */
+    margin: 0 auto;
+}
+
 .form-item{
     text-align: center;
 }
@@ -184,6 +202,8 @@ h2{
 
         /* 设置表单样式 */
         form {
+            width: 70%;
+            height: 75%;
             transform: translate3d(0, 0, 0);
             /* 3D变换，无位移 */
             padding: 50px;
@@ -219,6 +239,9 @@ h2{
         h2 {
             font-size: 4rem;
             margin: 0;
+            text-align: center;
+            margin-top: -10px;
+            margin-bottom: 30px;
         }
 
         label:focus,
@@ -443,5 +466,9 @@ h2{
             margin-left: 20rem;
             font-size: large;
         }
+        #submit {
+    display: block;
+    margin: 20px auto 0;
+}
 
 </style>
