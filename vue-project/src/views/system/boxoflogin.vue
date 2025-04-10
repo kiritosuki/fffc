@@ -182,10 +182,9 @@ onMounted(() => {
             /* 3D变换，无位移 */
             padding: 50px;
             /* 设置内边距为10px */
-            background: #fefefe;
-  border-radius: 30px;
-  box-shadow: 9px 9px 18px #c3c3c3,
-    -9px -9px 18px #e6e6e6;
+            border: 20px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 10px 10px 10px #00000065;
         }
 
         form>*+* {
