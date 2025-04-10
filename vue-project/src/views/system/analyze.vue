@@ -442,11 +442,8 @@ onMounted(() => {
 
 <style scoped>
 @font-face {
-  font-family: "阿里妈妈东方大楷 Regular";
-  font-weight: 400;  
-  src: url("/vue-project/public/fonts/in7KTGPRWCIQ//AlimamaDongFangDaKai-Regular.woff2") format("woff2"),
-  url("/vue-project/public/fonts/in7KTGPRWCIQ//AlimamaDongFangDaKai-Regular.woff") format("woff");
-  font-display: swap;
+  font-family: guifanzi;
+    src: url('../../../public/fonts/in7KTGPRWCIQ/AlimamaDongFangDaKai-Regular.woff');
 }
 .charts-container {
   display: inline-block;
@@ -481,7 +478,7 @@ onMounted(() => {
   flex: 440px;
   display: inline-block;
   text-align: left;
-  font-family: "阿里妈妈东方大楷 Regular", "KaiTi";
+  font-family: guifanzi;
   padding: 20px;
   /* 新增以下样式 */
   display: flex;
