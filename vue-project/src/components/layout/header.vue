@@ -81,11 +81,12 @@ const beBig = () => {
         <el-button :class="home" @click="routerPush('/home')">主页</el-button><br>
         <!-- <el-button :class="homeResult" @click="routerPush('/homeResult')" >主页二</el-button><br> -->
         <el-button :class="admin" @click="routerPush('/admin')">管理</el-button><br>
+        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">上传</el-button><br>
         <el-button :class="analyze" @click="routerPush('/analyze')">分析</el-button><br>
         <el-button :class="introduce" @click="routerPush('/introduce')">介绍</el-button><br>
         <!-- <el-button :class="personal" @click="routerPush('/personal')" >个人</el-button><br> -->
         <!-- <el-button :class="history" @click="routerPush('/patients/history')" >历史记录</el-button><br> -->
-        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')">大量图片上传</el-button>
+
 
         <div class="per">
           <div class="personal">
@@ -116,6 +117,9 @@ const beBig = () => {
         <el-button :class="admin" @click="routerPush('/admin')"><el-icon :size="29">
             <Film />
           </el-icon></el-button><br>
+        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')"><el-icon :size="29">
+            <FolderAdd />
+          </el-icon></el-button><br>
         <el-button :class="analyze" @click="routerPush('/analyze')"><el-icon :size="29">
             <DataAnalysis />
           </el-icon></el-button><br>
@@ -123,20 +127,14 @@ const beBig = () => {
             <InfoFilled />
           </el-icon></el-button><br>
         <!-- <el-button :class="personal" @click="routerPush('/personal')" ><el-icon :size="29"><UserFilled /></el-icon></el-button><br> -->
-        <el-button :class="aLotOfPictures" @click="routerPush('/aLotOfPictures')"><el-icon :size="29">
-            <FolderAdd />
-          </el-icon></el-button>
+
 
         <div class="per">
           <div class="personal">
             <img id="personal" src="../../assets/image/personal-center.png" class="img">
-
           </div>
-
         </div>
-
       </div>
-
     </aside>
 
     <!-- 动态内容区域 -->
