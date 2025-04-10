@@ -21,23 +21,31 @@
                 <div id="click-section">
                 <div id="drawerboxes">
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 1 }">
-                    <button class="drawer-btn" @click="slideTo(1)">The Wind Rise<span class="drawer-head">1</span></button>
+                      <button class="drawer-btn" 
+         :class="{ active: chosenSlideNumber === 1 }"
+         @click="slideTo(1)">Project Overview<span class="drawer-head">1</span></button>
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 2 }">
-                    <button class="drawer-btn" @click="slideTo(2)">Children of the Wind<span class="drawer-head">2</span></button>
+                      <button class="drawer-btn" 
+         :class="{ active: chosenSlideNumber === 2 }"
+         @click="slideTo(2)">Technical Details<span class="drawer-head">2</span></button>
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 3 }">
-                    <button class="drawer-btn" @click="slideTo(3)">Castle in the Sky<span class="drawer-head">3</span></button>
+                      <button class="drawer-btn" 
+         :class="{ active: chosenSlideNumber === 3 }"
+         @click="slideTo(3)">Key Features<span class="drawer-head">3</span></button>
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 4 }">
-                    <button class="drawer-btn" @click="slideTo(4)">Spirited Away<span class="drawer-head">4</span></button>
+                      <button class="drawer-btn" 
+         :class="{ active: chosenSlideNumber === 4 }"
+         @click="slideTo(4)">Applications<span class="drawer-head">4</span></button>
                     </div>
                     <div class="drawerbox" :class="{ active: chosenSlideNumber === 5 }">
-                    <button class="drawer-btn" @click="slideTo(5)">Spirited Away<span class="drawer-head">5</span></button>
+                      <button class="drawer-btn" 
+         :class="{ active: chosenSlideNumber === 5 }"
+         @click="slideTo(5)">Demo<span class="drawer-head">5</span></button>
                     </div>
-                    <div class="drawerbox" :class="{ active: chosenSlideNumber === 6 }">
-                    <button class="drawer-btn" @click="slideTo(6)">Spirited Away<span class="drawer-head">6</span></button>
-                    </div>
+                    
                 </div>
                 </div>
                 <div id="slide-section">
@@ -47,15 +55,15 @@
                 <div id="card-section">
                     <div id="card1" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">The Wind Rises</div>
+                    <div class="card-title">Project Overview</div>
                     <div class="card-content">Quote: "Even in the dark night, the stars will not disappear." Reflection: In the journey of life, we may encounter storms and difficulties, but as long as we have faith and hope in our hearts, we can find light even in the darkness.</div>
                     <div class="card-img">
                         <img src="./img/17.gif" alt="">
                     </div>
                     </div>
                     <div id="card2" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">Children of the Wind</div>
+                    <div class="card-small-title">Technical Details</div>
+                    <div class="card-title">Technical Details</div>
                     <div class="card-content">Quote: "The wind is calling, to fly freely." Reflection: The wind symbolizes freedom and inspiration. We should bravely follow the voice of our hearts, break through all limitations, and pursue our dreams. </div>
                     <div class="card-img">
                         <img src="./img/08.gif" alt="">
@@ -63,7 +71,7 @@
                     </div>
                     <div id="card3" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">Castle in the Sky</div>
+                    <div class="card-title">Key Features</div>
                     <div class="card-content">Quote: "At the end of the sky, there is another world." Reflection: Sometimes we may feel lost and confused, but as long as we maintain faith and hope, we will surely find our own piece of sky and achieve our dreams. </div>
                     <div class="card-img">
                         <img src="./img/03.gif" alt="">
@@ -71,7 +79,7 @@
                     </div>
                     <div id="card4" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">Spirited Away</div>
+                    <div class="card-title">Applications</div>
                     <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
                     <div class="card-img">
                         <img src="./img/04.gif" alt="">
@@ -80,21 +88,14 @@
 
                     <div id="card5" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">Spirited Away</div>
+                    <div class="card-title">Demo</div>
                     <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
                     <div class="card-img">
                         <img src="./img/04.gif" alt="">
                     </div>
                     </div>
 
-                    <div id="card6" class="card" :style="{ transform: `translateY(${offset}%)` }">
-                    <div class="card-small-title">Miyazaki Hayao</div>
-                    <div class="card-title">Spirited Away</div>
-                    <div class="card-content">Quote: "Don't stop, don't be afraid, just keep going, and you will find the answer." Reflection: In the journey of life, we will encounter various difficulties and challenges, but as long as we persevere, fear no hardship, and believe in our own strength, we will find the answers and achieve our dreams.</div>
-                    <div class="card-img">
-                        <img src="./img/04.gif" alt="">
-                    </div>
-                    </div>
+                    
                 </div>
                 </div>
             </div>
@@ -291,12 +292,17 @@ onBeforeUnmount(() => {
       
     }
 
-    .drawer-btn.active {
+    /* .drawer-btn.active {
       
       background-size: cover;
       color: rgb(70, 100, 180);
       z-index: 1010;
-    }
+    } */
+
+    :deep(.drawer-btn.active) {
+  background-color: #626AC2 !important;
+  color: white !important;
+  }
 
     .drawer-btn:hover {
       cursor: pointer;
@@ -405,7 +411,7 @@ onBeforeUnmount(() => {
             background-image: url("../../assets/image/介绍页背景.jpg");
             height: 100vh;
 
-            width: 85vw;
+            width: 90vw;
   transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
