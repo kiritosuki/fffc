@@ -97,9 +97,7 @@
                             
                         </div>
                     </div>
-                    <div class="card-img">
-                        <img src="./img/17.gif" alt="">
-                    </div>
+                   
                     </div>
                     <div id="card2" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Auris Glow</div>
@@ -139,9 +137,7 @@
                                 </div>
                             </div>
                     </div>
-                    <div class="card-img">
-                        <img src="./img/08.gif" alt="">
-                    </div>
+                    
                     </div>
                     <div id="card3" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Auris Glow</div>
@@ -182,9 +178,7 @@
                             </div>
                           
                           </div>
-                    <div class="card-img">
-                        <img src="./img/03.gif" alt="">
-                    </div>
+                    
                     </div>
                     <div id="card4" class="card" :style="{ transform: `translateY(${offset}%)` }">
                     <div class="card-small-title">Auris Glow</div>
@@ -223,9 +217,7 @@
                                 </div>
                             </div>
                     </div>
-                    <div class="card-img">
-                        <img src="./img/04.gif" alt="">
-                    </div>
+                    
                     </div>
 
                     <div id="card5" class="card" :style="{ transform: `translateY(${offset}%)` }">
@@ -233,7 +225,7 @@
                     <div class="card-title">Video</div>
                     <div class="card-content"></div>
                     <div class="card-img">
-                        <img src="../../assets/image/图标无字版.png" alt="">
+                        <img class="fengmian" src="../../assets/image/FENGMIAN.png" alt="">
                     </div>
                     </div>
 
@@ -545,14 +537,12 @@ onBeforeUnmount(() => {
 
     .card-img {
       width: 100%;
-      height: 400px;
-      overflow: hidden;
+      height: 1000px;
+      
       margin-left:-30px;
     }
 
-    .card-img img {
-      width: 100%;
-    }
+    
 
     .container {
   height: 300vh;
@@ -812,4 +802,17 @@ onBeforeUnmount(() => {
           font-family: kaiti;
           src: url(../../assets/font/汉仪全唐诗简.ttf);
         }
+
+        .fengmian{
+          
+          height: 50vh;
+        }
+
+        .card-img img{
+          margin-top:-60px;
+          margin-left:80px;
+          width: 80%;
+          height: 55vh;
+        }
+
 </style>
