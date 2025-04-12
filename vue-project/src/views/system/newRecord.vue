@@ -168,9 +168,9 @@
 
     <el-form-item label="诊断结果">
           <el-input 
-            v-model="medicalRecord.diagnosis" 
+            v-model="medicalRecord.resInfo" 
             type="textarea" 
-            :rows="1"
+            :rows="4"
             disabled
           />
         </el-form-item>
@@ -182,13 +182,13 @@
       <el-row :gutter="24">
              <el-col :span="12">
         <el-form-item label="诊断医师">
-          <el-input v-model="medicalRecord.DoctorID" disabled/>
+          <el-input v-model="medicalRecord.doctorName" disabled/>
         </el-form-item>
         </el-col>
                 <el-col :span="12">
         <el-form-item label="诊断日期">
           <el-date-picker
-            v-model="medicalRecord.diagDate"
+            v-model="medicalRecord.diagTime"
             type="date"
             value-format="YYYY-MM-DD"
             disabled
@@ -348,8 +348,8 @@ const diseaseMap = computed(() => {
     rightImg: '',
     leftDiag: '',
     rightDiag: '',
-    diagnosis: '',
-    diagDate: '',
+    resInfo: '',
+    diagTime: '',
     createTime: '',
     updateTime: '',
     allergy: '',
@@ -361,7 +361,8 @@ const diseaseMap = computed(() => {
     leftStatusIllList: [],
     rightStatusIllList: [],
     leftIllInfo: '',
-    rightIllInfo: ''
+    rightIllInfo: '',
+    doctorName:''
   })
 
   // 计算属性，映射疾病ID为名称
@@ -404,7 +405,7 @@ const diseaseMap = computed(() => {
   rightDiag: [
     { required: true, message: '请输入右眼诊断信息关键字', trigger: 'blur' }
   ],
-  diagDate: [
+  diagTime: [
     { disabled: true, message: '请选择诊断日期', trigger: 'change' }
   ],
   createTime: [
@@ -444,7 +445,10 @@ const diseaseMap = computed(() => {
     rightIllInfo: {
       get() { return rightIllRule.value },
       set() {}
-    }
+    },
+    doctorName: [
+      { required: true, message: '请输入医生姓名', trigger: 'blur' }
+    ]
 })
   
   // 获取病历数据
