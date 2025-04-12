@@ -167,7 +167,7 @@ const DeleteAndRefresh = async (ids) => {
       }
     });
   } catch (error) {
-    ElMessage.error("服务器丢失，请稍后再试");
+    
   } finally {
     loading.value.close();
   }
@@ -194,7 +194,7 @@ const DeleteAndRefresh = async (ids) => {
     });
     ElMessage.success("数据加载成功");
   } catch (error) {
-    ElMessage.error("服务器丢失，请稍后再试");
+    
   } finally {
     // 关闭加载动画
     loading.value.close();
@@ -699,6 +699,13 @@ const pickerOptions = {
       </div>
 
 
+      <!-- <div class="pageSelector">
+    <el-pagination background layout="prev, pager, next" :total="totalPatient" :page-size="checkPageSize" hide-on-single-page>
+    </el-pagination>
+    </div> -->
+    </div>
+  </div>
+  
       <!-- Drawer 组件 -->
       <el-drawer v-model="isDrawerOpen" title="搜索栏" :direction="'rtl'" :size="drawersize" id="drawer">
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -715,7 +722,7 @@ const pickerOptions = {
             <el-input placeholder="姓名" v-model="checkName" clearable></el-input>
             <p>性别:</p>
             <el-radio v-model="checkGender" label="1">男</el-radio>
-            <el-radio v-model="checkGender" label="0">女</el-radio>
+            <el-radio v-model="checkGender" label="2">女</el-radio>
             <p>诊断时间：</p>
             <div class="block">
               <el-date-picker v-model="checkTime" type="daterange" style="width: 94%" unlink-panels range-separator="至"
@@ -727,12 +734,6 @@ const pickerOptions = {
         </el-tabs>
       </el-drawer>
 
-      <!-- <div class="pageSelector">
-    <el-pagination background layout="prev, pager, next" :total="totalPatient" :page-size="checkPageSize" hide-on-single-page>
-    </el-pagination>
-    </div> -->
-    </div>
-  </div>
 </template>
 
 <style scoped>
