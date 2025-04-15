@@ -458,7 +458,7 @@ const diseaseMap = computed(() => {
     const res = await api.getMedicalRecord(route.query.id)
     
     
-    // 调试输出
+    // 调试输出  
     console.log('API响应状态:', res.status)
     console.log('原始图片路径:', {
       left: res.data.data.leftImg,
@@ -477,7 +477,7 @@ const diseaseMap = computed(() => {
       ...res.data.data,
       leftImg: formatImageUrl(res.data.data.leftImg),
       rightImg: formatImageUrl(res.data.data.rightImg),
-     
+      gender: res.data.data.gender === 1 ? '男' : '女',
     }
 
 console.log('处理后的图片URL:', {

@@ -9,7 +9,7 @@
                 <el-row :gutter="20" justify="center">  <!-- 添加 justify="center" -->
                     <el-col :span="16">  <!-- 调整 span 为适当宽度 -->
                         <el-form-item label="昵称" prop="username" class="centered-form-item">
-                            <el-input type="password" v-model="form.username" placeholder="请输入昵称" clearable />
+                            <el-input  v-model="form.username" placeholder="请输入昵称" clearable />
                         </el-form-item>
                     </el-col>
                 </el-row>
