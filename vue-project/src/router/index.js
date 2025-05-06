@@ -1,9 +1,6 @@
 // router.js
 import { createRouter, createWebHistory } from 'vue-router'
 
-
-
-
 import Home from '../views/system/index.vue'
 import HomeResult from '../views/system/indexResult.vue'
 import introduce from '../views/system/introduce.vue'
@@ -30,10 +27,12 @@ const routes = [
       { path: '/personal', component: personal},
       { path: '/patients/info', component: newRecord,props: (route) => ({ id: route.query.id })},
       { path: '/patients/history', component: history, props: (route) => ({ id: route.query.id })},
-      { path: '/login', component: login},
+
       { path: '/aLotOfPictures', component: aLotOfPictures},
     ]
-  }
+  },
+  { path: '/login', component: login},
+
 ]
 
 const router = createRouter({
