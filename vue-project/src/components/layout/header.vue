@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { AddLocation, CaretLeft, DataAnalysis, Film, FolderAdd, HomeFilled, InfoFilled, UserFilled } from '@element-plus/icons-vue'
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 const router = useRouter();
 
 const routerPush = (path) => {
@@ -57,6 +57,18 @@ const beBig = () => {
   ifBig.value = 1
   ifSmall.value = 0
 }
+
+const ifOK = ref(0)
+
+onMounted(() => {
+  setTimeout(() => {
+  ifOK.value = true
+  console.log(ifOK.value)
+  }, 100) // 添加微小延迟确保DOM已渲染
+})
+
+
+
 </script>
 
 
@@ -67,9 +79,9 @@ const beBig = () => {
 
 
 <template>
-  <div class="app-layout" :style="contentCss">
+  <div class="app-layout" :style="contentCss" >
     <!-- 固定侧边栏 -->
-    <aside class="sidebar" :style="asideCss">
+    <aside class="sidebar" :style="asideCss" :class="{'show': ifOK , 'hide': !ifOK}">
       <div id="topContainer" v-if="ifBig">
         <b id="top">Auris Glow</b>
         <el-button id="butTop" @click="beSmall"><img class="icon" src="../../assets/image/箭头.png"></el-button>
@@ -170,10 +182,18 @@ const beBig = () => {
   height: 100vh;
   overflow-y: auto;
   /* transition: width 0.3s; */
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   /* 标准缓入缓出曲线 */
   box-shadow: 9px 9px 18px #e4e4e4,
     -9px -9px 18px #e6e6e6;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hide {
+  opacity: 0;
+  transform: translateX(-100px);
+}
+.show {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .content {
