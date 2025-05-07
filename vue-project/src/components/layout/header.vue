@@ -63,7 +63,6 @@ const ifOK = ref(0)
 onMounted(() => {
   setTimeout(() => {
   ifOK.value = true
-  console.log(ifOK.value)
   }, 100) // 添加微小延迟确保DOM已渲染
 })
 

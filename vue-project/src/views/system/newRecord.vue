@@ -48,7 +48,7 @@
       </el-select>
     </el-form-item>
         </el-col>
-      <el-row :gutter="24" :justify="justify" :align="align">
+      <el-row :gutter="24">
         <el-col :span="12">
         <el-form-item label="手机号">
           <el-input v-model="medicalRecord.phone" disabled/>
@@ -97,7 +97,7 @@
 <div class="divider">
           <div class="divider-text">诊断结果</div>
         </div>
-      <el-row :gutter="24" :justify="justify" :align="align">
+      <el-row :gutter="24">
         <el-col :span="12">
         <el-form-item label="左眼关键字">
           <el-input v-model="medicalRecord.leftDiag" disabled/>
@@ -110,7 +110,7 @@
         </el-col>
       </el-row>
      
-<el-row :gutter="24" :justify="justify" :align="align">
+<el-row :gutter="24">
   <el-col :span="12">
         <el-form-item label="左眼疾病" prop="leftStatusIllList">
   <el-select 
@@ -163,7 +163,7 @@
   
 </el-col>
 </el-row>
-    <el-row :gutter="24" :justify="justify" :align="align">
+    <el-row :gutter="24">
         <el-col :span="24">
 
     <el-form-item label="诊断结果">
@@ -197,7 +197,7 @@
         </el-col>
       </el-row>
  
-    <el-row :gutter="24" :justify="justify" :align="align">
+    <el-row :gutter="24">
 
         <el-col :span="12">
         <el-form-item label="创建时间">
@@ -211,7 +211,7 @@
         </el-col>
     </el-row>
         
-<el-row :gutter="24" :justify="justify" :align="align">
+<el-row :gutter="24">
   <el-col :span="12">
         <el-form-item label="过敏药物">
           <el-input v-model="medicalRecord.allergy" disabled/>
@@ -224,7 +224,7 @@
   </el-col>
 </el-row>
 
-<el-row :gutter="24" :justify="justify" :align="align">
+<el-row :gutter="24">
   <el-col :span="12">
 
 
@@ -241,7 +241,7 @@
       </el-col>
 </el-row>
 
-<el-row :gutter="24" :justify="justify" :align="align">
+<el-row :gutter="24">
   <el-col :span="12">
         <el-form-item label="阳体特征">
           <el-input v-model="medicalRecord.posFeature" disabled />
